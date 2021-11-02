@@ -37,6 +37,10 @@ public abstract class Match {
 		this.board = newBoard();
 	}
 
+	public String getGame() {
+		return this.getClass().getSimpleName();
+	}
+	
 	public String getId() {
 		return id;
 	}
