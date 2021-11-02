@@ -1,0 +1,10 @@
+[
+	{
+		"name"  : "Tres en raya",
+		"clazz" : "edu.uclm.esi.tys2122.tictactoe.TictactoeGame"
+	},
+	{
+		"name"  : "Ajedrez",
+		"clazz" : "edu.uclm.esi.tys2122.newchess.ChessGame"
+	}
+]
