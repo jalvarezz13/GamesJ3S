@@ -1,0 +1,104 @@
+<div class="oj-hybrid-applayout-page">
+  <div class="oj-applayout-fixed-top">
+    <header role="banner" class="oj-hybrid-applayout-header">
+      <oj-module config="[[headerConfig]]"></oj-module>
+    </header>
+  </div>
+  <div class="oj-applayout-content">
+    <div role="main" class="oj-hybrid-applayout-content">
+      <div class="oj-hybrid-padding">
+        <h1>Juegos disponibles</h1>
+        <div>
+            <span data-bind="html : error" style="color : red"></span>
+            <!-- ko foreach : games -->
+              <div>
+                <label data-bind="html : name"></label>&nbsp;
+                <button data-bind="click : function() { $parent.joinGame($data); }">Jugar partida</button>
+              </div>
+            <!-- /ko -->
+        </div>
+
+        <ol>
+          <!-- ko foreach : matches -->
+            <li>
+              <div>Id: <label data-bind="html : id"></label></div>
+
+              <div>Preparada: <span data-bind="html : ready"></span></div>
+              <div>Jugador 1: <span data-bind="html : players[0].name"></span></div>
+
+              <div>Jugador 2: 
+                <!-- ko if : players[1] -->
+                  <span data-bind="html : players[1].name"></span>
+                <!-- /ko -->
+                <!-- ko ifnot : players[1] -->
+                  Esperando
+                <!-- /ko -->
+              </div>
+      
+              <div>Jugador con el turno:
+                <!-- ko if : playerWithTurn -->
+                  <span data-bind="html : playerWithTurn.name"></span>
+                <!-- /ko -->
+              </div>
+
+              <div>Ganador:
+                <!-- ko if : winner --> 
+                  <span data-bind="html : winner.name"></span>
+                <!-- /ko -->
+                <!-- ko ifnot : winner -->
+                  De momento, nadie
+                <!-- /ko -->
+              </div>
+
+              <div>Perdedor:
+                <!-- ko if : looser --> 
+                  <span data-bind="html : looser.name"></span>
+                <!-- /ko -->
+                <!-- ko ifnot : looser -->
+                  De momento, nadie
+                <!-- /ko -->
+              </div>
+
+              <div>Acabó en empate: <span data-bind="html : draw"></span></div>
+
+			  <!-- ko if : game=="TictactoeMatch" -->
+	              <!-- ko with : board -->
+	                <!-- ko foreach : squares -->
+	                  <!-- ko foreach : $data -->
+	                    <input data-bind="value : $data" type="text" size="1">
+	                  <!-- /ko -->
+	                  <br>
+	                <!-- /ko -->
+	              <!-- /ko -->
+	          <!-- /ko -->
+	          
+	          <!-- ko if : game=="ChessMatch" -->
+	          	<!-- ko with : board -->
+	          		<table border="1">
+		                <!-- ko foreach : squares -->
+		                	<tr>
+								<!-- ko foreach : $data -->
+									  <td>
+									  	 <img data-bind="attr : { src : imagen }, style : { 'background-color' : color }">
+									  </td>
+								<!-- /ko -->
+							</tr>
+		                <!-- /ko -->
+		            </table>
+	              <!-- /ko -->
+	          <!-- /ko -->
+
+              <br>
+              <input data-bind="value : $parent.x" type="number" size="1" placeholder="X">
+              <input data-bind="value : $parent.y" type="number" size="1" placeholder="Y">
+              <button data-bind="click : function() { $parent.mover($data); }">Mover</button>
+              <br>
+              <button data-bind="click : function() { $parent.reload($data); }">Recargar partida</button>
+            </li>
+          <!-- /ko -->
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
