@@ -30,10 +30,8 @@ public class User {
 	@Column(length = 36)
 	private String id;
 	@NotBlank 
-	@Column(length = 100)
 	private String email;
 	@NotBlank
-	@Column(length = 40)
 	private String name;
 	@NotBlank
 	private String pwd;

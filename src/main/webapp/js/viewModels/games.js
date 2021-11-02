@@ -10,8 +10,7 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 
 			self.x = ko.observable(null);
 			self.y = ko.observable(null);
-			
-			self.message = ko.observable(null);
+
 			self.error = ko.observable(null);
 						
 			// Header Config
@@ -65,19 +64,13 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 				contentType : "application/json",
 				success : function(response) {
 					console.log(JSON.stringify(response));
-					let matriz = self.pintarMatriz(response);
-					self.message(matriz);
 				},
 				error : function(response) {
 					console.error(response);
-					self.error(response.responseJSON.message);
+					self.error(response);
 				}
 			}
 			$.ajax(data);
-		}
-		
-		pintarMatriz(response){
-			return response["board"]["squares"];
 		}
 
 		conectarAWebSocket() {
