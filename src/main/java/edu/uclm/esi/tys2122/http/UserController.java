@@ -28,8 +28,12 @@ import edu.uclm.esi.tys2122.services.UserService;
 @RequestMapping("user")
 public class UserController extends CookiesController {
 	
+	/* Attributes */
+	
 	@Autowired
 	private UserService userService;
+	
+	/* Routes */
 	
 	@PostMapping(value = "/login")
 	public void login(HttpServletRequest request, HttpServletResponse response, @RequestBody Map<String, Object> credenciales) {

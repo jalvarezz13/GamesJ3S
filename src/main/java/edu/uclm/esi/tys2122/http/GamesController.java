@@ -1,13 +1,5 @@
 package edu.uclm.esi.tys2122.http;
 
-import java.security.SecureRandom;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.servlet.http.HttpSession;
-
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,20 +10,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.HttpSession;
+import java.security.SecureRandom;
+import java.util.List;
+import java.util.Map;
+import org.json.JSONObject;
+
 import edu.uclm.esi.tys2122.model.Game;
 import edu.uclm.esi.tys2122.model.Match;
 import edu.uclm.esi.tys2122.model.User;
 import edu.uclm.esi.tys2122.services.GamesService;
-import edu.uclm.esi.tys2122.services.UserService;
+
 
 @RestController
 @RequestMapping("games")
 public class GamesController extends CookiesController {
+	
+	/* Attributes */
+	
 	@Autowired
 	private GamesService gamesService;
 	
-	@Autowired
-	private UserService userService;
+	/* Routes */
 	
 	@GetMapping("/getGames")
 	public List<Game> getGames(HttpSession session) throws Exception {
@@ -53,7 +53,7 @@ public class GamesController extends CookiesController {
 
 		Game game = Manager.get().findGame(gameName);
 		if (game==null)
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se encuentra el juego " + gameName);
+			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST ,"No se encuentra el juego " + gameName);
 		
 		Match match = getMatch(game);
 		match.addPlayer(user);
@@ -72,17 +72,19 @@ public class GamesController extends CookiesController {
 		Match match = gamesService.getMatch(jso.getString("matchId"));
 		try {
 			match.move(user.getId(), jso);
-			//match.notifyNewState(user.getId());
 			return match;
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
+			 throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
 		}
+		//match.notifyNewState(user.getId());
 	}
 	
 	@GetMapping("/findMatch/{matchId}")
 	public Match findMatch(@PathVariable String matchId) {
 		return gamesService.getMatch(matchId);
 	}
+	
+	/* Functions */
 
 	private Match getMatch(Game game) {
 		Match match;

@@ -7,11 +7,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public abstract class CookiesController {
+	
+	/* Attributes */
+	
 	public final String COOKIE_NAME = "laCookie";
 	public final String COOKIE_PATH = "/";
+	
+	/* Functions */
 
 	protected Cookie readOrCreateCookie(HttpServletRequest request, HttpServletResponse response) {
-		Cookie[] cookies = request.getCookies();
+		Cookie [] cookies = request.getCookies();
 		if (cookies==null)
 			return createCookie(response);
 		Cookie cookie = findCookie(cookies);

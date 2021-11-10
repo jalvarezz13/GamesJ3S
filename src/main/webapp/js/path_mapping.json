@@ -12,7 +12,6 @@
   },
 
   "libs": {
-
     "knockout": {
       "cdn": "3rdparty",
       "cwd": "node_modules/knockout/build/output",
@@ -115,22 +114,22 @@
       "release": {
         "src": ["min*/**"],
         "path": "libs/oj/v1",
-		"pathSuffix": "/min'",
+        "pathSuffix": "/min'",
         "cdnPath": "min"
       },
       "release_es5": {
-		"cwd": "min_es5",
+        "cwd": "min_es5",
         "src": ["**"],
         "path": "libs/oj/v1/min_es5",
         "cdnPath": "min_es5"
       }
-    },    
+    },
 
     "ojL10n": {
       "cdn": "jet",
       "cwd": "node_modules/@oracle/oraclejet/dist/js/libs/oj",
       "debug": {
-        "src":  "ojL10n.js",
+        "src": "ojL10n.js",
         "path": "libs/oj/v1/ojL10n.js",
         "cdnPath": "ojL10n"
       },
@@ -145,7 +144,7 @@
       "cdn": "jet",
       "cwd": "node_modules/@oracle/oraclejet/dist/js/libs/oj/resources",
       "debug": {
-        "src":  ["**"],
+        "src": ["**"],
         "path": "libs/oj/v1/resources",
         "cdnPath": "resources"
       },
@@ -177,7 +176,7 @@
       "cdn": "3rdparty",
       "cwd": "node_modules/requirejs-text",
       "debug": {
-        "src":  "text.js",
+        "src": "text.js",
         "path": "libs/require/text.js",
         "cdnPath": "require/text"
       },
@@ -192,7 +191,7 @@
       "cdn": "3rdparty",
       "cwd": "node_modules/signals/dist",
       "debug": {
-        "src":  "signals.js",
+        "src": "signals.js",
         "path": "libs/js-signals/signals.js",
         "cdnPath": "js-signals/signals"
       },
@@ -207,7 +206,7 @@
       "cdn": "3rdparty",
       "cwd": "node_modules/@oracle/oraclejet/dist/js/libs/touchr",
       "debug": {
-        "src":  "touchr.js",
+        "src": "touchr.js",
         "path": "libs/touchr/touchr.js",
         "cdnPath": "touchr/touchr"
       },
@@ -222,7 +221,7 @@
       "cdn": "3rdparty",
       "cwd": "node_modules/@oracle/oraclejet/dist/js/libs/regenerator-runtime",
       "debug": {
-        "src":  "runtime.js",
+        "src": "runtime.js",
         "path": "libs/regenerator-runtime/runtime.js",
         "cdnPath": "regenerator-runtime/runtime"
       },
@@ -237,7 +236,7 @@
       "cdn": "3rdparty",
       "cwd": "node_modules/@oracle/oraclejet/dist/js/libs/corejs",
       "debug": {
-        "src":  "shim.js",
+        "src": "shim.js",
         "path": "libs/corejs/shim.js",
         "cdnPath": "corejs/shim"
       },
@@ -246,13 +245,13 @@
         "path": "libs/corejs/shim.min.js",
         "cdnPath": "corejs/shim.min"
       }
-    },    
-        
+    },
+
     "customElements": {
       "cdn": "3rdparty",
       "cwd": "node_modules/@webcomponents/custom-elements",
       "debug": {
-        "src":  ["custom-elements.min.js", "custom-elements.min.js.map"],
+        "src": ["custom-elements.min.js", "custom-elements.min.js.map"],
         "path": "libs/webcomponents/custom-elements.min.js",
         "cdnPath": "webcomponents/custom-elements.min"
       },
@@ -267,8 +266,8 @@
       "cdn": "3rdparty",
       "cwd": "proj4/dist",
       "debug": {
-        "src":  "proj4-src.js",
-        "path": "libs/proj4js/dist/proj4-src.js", 
+        "src": "proj4-src.js",
+        "path": "libs/proj4js/dist/proj4-src.js",
         "cdnPath": "proj4js/dist/proj4"
       },
       "release": {
@@ -277,12 +276,12 @@
         "cdnPath": "proj4js/dist/proj4"
       }
     },
-        
+
     "css": {
       "cdn": "3rdparty",
       "cwd": "node_modules/require-css",
       "debug": {
-        "src":  ["css.js", "css-builder.js", "normalize.js"],
+        "src": ["css.js", "css-builder.js", "normalize.js"],
         "path": "libs/require-css/css.js",
         "cdnPath": "require-css/css"
       },
@@ -292,6 +291,5 @@
         "cdnPath": "require-css/css.min"
       }
     }
-
   }
 }

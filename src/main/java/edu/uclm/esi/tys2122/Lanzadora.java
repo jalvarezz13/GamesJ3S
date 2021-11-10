@@ -19,5 +19,4 @@ public class Lanzadora extends SpringBootServletInitializer {
 		return builder.sources(Lanzadora.class);
     }
 	
-
 }

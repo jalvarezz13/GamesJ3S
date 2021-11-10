@@ -19,6 +19,8 @@ import edu.uclm.esi.tys2122.websockets.WrapperSession;
 @Component
 public class Manager {
 	
+	/* Attributes */
+	
 	private Vector<Game> games;
 	
 	private JSONObject configuration;
@@ -29,12 +31,13 @@ public class Manager {
 
 	private ConcurrentHashMap<String, WrapperSession> ajedrezSessionsPorWs;
 	
+	/* Constructors */
+	
 	private Manager() {
 		this.games = new Vector<>();
 		this.httpSessions = new ConcurrentHashMap<>();
 		this.ajedrezSessionsPorHttp = new ConcurrentHashMap<>();
 		this.ajedrezSessionsPorWs = new ConcurrentHashMap<>();
-		
 		try {
 			loadParameters();
 		} catch (Exception e) {
@@ -43,18 +46,44 @@ public class Manager {
 		}
 	}
 	
+	/* Singleton */
+	
 	private static class ManagerHolder {
-		static Manager singleton=new Manager();
+		static Manager singleton = new Manager();
 	}
 	
 	@Bean
 	public static Manager get() {
 		return ManagerHolder.singleton;
 	}
-
-	public JSONObject getConfiguration() {
-		return configuration;
+	
+	/* Functions */
+	
+	public Game findGame(String gameName) {
+		for (Game game : this.games)
+			if (game.getName().equals(gameName))
+				return game;
+		return null;
 	}
+	
+	public void add(Game game) {
+		this.games.add(game);
+	}
+	
+	public void add(HttpSession session) {
+		this.httpSessions.put(session.getId(),session);
+	}
+
+	public void add(WrapperSession wrapperSession, String httpSessionId) {
+		HttpSession httpSession = this.httpSessions.get(httpSessionId);
+		User user = (User) httpSession.getAttribute("user");
+		user.setSession(wrapperSession);
+		wrapperSession.setHttpSession(httpSession);
+		this.ajedrezSessionsPorHttp.put(httpSessionId, wrapperSession);
+		this.ajedrezSessionsPorWs.put(wrapperSession.getWsSession().getId(), wrapperSession);
+	}
+	
+	/* Utilities */
 	
 	private void loadParameters() throws IOException {
 		this.configuration = read("./parametros.txt");
@@ -84,31 +113,46 @@ public class Manager {
 		this.games.clear();
 	}
 
-	public void add(Game game) {
-		this.games.add(game);
-	}
+	/* Getters And Setters */
 	
 	public Vector<Game> getGames() {
 		return games;
 	}
-
-	public Game findGame(String gameName) {
-		for (Game game : this.games)
-			if (game.getName().equals(gameName))
-				return game;
-		return null;
+	
+	public void setGames(Vector<Game> games) {
+		this.games = games;
 	}
 
-	public void add(WrapperSession wrapperSession, String httpSessionId) {
-		HttpSession httpSession = this.httpSessions.get(httpSessionId);
-		User user = (User) httpSession.getAttribute("user");
-		user.setSession(wrapperSession);
-		wrapperSession.setHttpSession(httpSession);
-		this.ajedrezSessionsPorHttp.put(httpSessionId, wrapperSession);
-		this.ajedrezSessionsPorWs.put(wrapperSession.getWsSession().getId(), wrapperSession);
+	public JSONObject getConfiguration() {
+		return configuration;
+	}
+	
+	public void setConfiguration(JSONObject configuration) {
+		this.configuration = configuration;
+	}
+	
+	public ConcurrentHashMap<String, HttpSession> getHttpSessions() {
+		return httpSessions;
 	}
 
-	public void add(HttpSession session) {
-		this.httpSessions.put(session.getId(),session);
+	public void setHttpSessions(ConcurrentHashMap<String, HttpSession> httpSessions) {
+		this.httpSessions = httpSessions;
 	}
+
+	public ConcurrentHashMap<String, WrapperSession> getAjedrezSessionsPorHttp() {
+		return ajedrezSessionsPorHttp;
+	}
+
+	public void setAjedrezSessionsPorHttp(ConcurrentHashMap<String, WrapperSession> ajedrezSessionsPorHttp) {
+		this.ajedrezSessionsPorHttp = ajedrezSessionsPorHttp;
+	}
+
+	public ConcurrentHashMap<String, WrapperSession> getAjedrezSessionsPorWs() {
+		return ajedrezSessionsPorWs;
+	}
+
+	public void setAjedrezSessionsPorWs(ConcurrentHashMap<String, WrapperSession> ajedrezSessionsPorWs) {
+		this.ajedrezSessionsPorWs = ajedrezSessionsPorWs;
+	}
+
 }

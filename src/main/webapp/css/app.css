@@ -21,3 +21,33 @@
   height: 1px;
   overflow: hidden;
 }
+
+.oj-hybrid-applayout-header {
+  color: white;
+  background-color: #232e33;
+}
+
+.oj-hybrid-applayout-page {
+  background-color: #263238;
+  color: white !important;
+}
+
+.oj-hybrid-padding {
+  color: white !important;
+}
+
+.oj-applayout-content .oj-hybrid-applayout-content .oj-hybrid-padding > h1 {
+  color: white !important;
+}
+
+.oj-hybrid-applayout-bar-title .oj-hybrid-applayout-header-title {
+  color: white !important;
+}
+
+.oj-navigationlist-element {
+  background-color: rgba(0, 0, 0, 0.664) !important;
+  color: white !important;
+}
+.oj-navigationlist-item-label {
+  color: white !important;
+}

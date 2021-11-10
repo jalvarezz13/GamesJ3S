@@ -3,7 +3,12 @@ package edu.uclm.esi.tys2122.tictactoe;
 import edu.uclm.esi.tys2122.model.Board;
 
 public class TictactoeBoard extends Board {
+	
+	/* Attributes */
+	
 	private int[][] squares;
+	
+	/* Constructors */
 	
 	public TictactoeBoard() {
 		this.squares = new int[3][3];
@@ -12,7 +17,13 @@ public class TictactoeBoard extends Board {
 				this.squares[i][j] = 0;
 	}
 	
+	/* Setters And Getters */
+	
 	public int[][] getSquares() {
 		return squares;
+	}
+
+	public void setSquares(int[][] squares) {
+		this.squares = squares;
 	}
 }

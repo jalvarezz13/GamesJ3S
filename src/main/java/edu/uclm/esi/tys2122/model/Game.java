@@ -4,10 +4,14 @@ import java.util.List;
 import java.util.Vector;
 
 public abstract class Game {
-	private String name;
 	
+	/* Attributes */
+	
+	private String name;
 	private List<Match> pendingMatches;
 	private List<Match> playingMatches;
+	
+	/* Constructors */
 	
 	public Game() {
 		this.pendingMatches = new Vector<>();
@@ -19,6 +23,12 @@ public abstract class Game {
 		this.name = name;
 	}
 
+	/* Functions */
+	
+	public abstract Match newMatch();
+	
+	/* Getters And Setters */
+	
 	public String getName() {
 		return name;
 	}
@@ -31,10 +41,16 @@ public abstract class Game {
 		return pendingMatches;
 	}
 	
+	public void setPendingMatches(List<Match> pendingMatches) {
+		this.pendingMatches = pendingMatches;
+	}
+	
 	public List<Match> getPlayingMatches() {
 		return playingMatches;
 	}
-	
-	public abstract Match newMatch();
+
+	public void setPlayingMatches(List<Match> playingMatches) {
+		this.playingMatches = playingMatches;
+	}
 
 }

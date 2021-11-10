@@ -3,8 +3,6 @@ package edu.uclm.esi.tys2122.tictactoe;
 import java.security.SecureRandom;
 
 import org.json.JSONObject;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import edu.uclm.esi.tys2122.model.Board;
 import edu.uclm.esi.tys2122.model.Match;
@@ -12,29 +10,16 @@ import edu.uclm.esi.tys2122.model.User;
 
 public class TictactoeMatch extends Match {
 	
+	/* Attributes */
+	
 	private User winner, looser;
 	private boolean draw;
+	
+	/* Functions */
 	
 	@Override
 	protected Board newBoard() {
 		return new TictactoeBoard();
-	}
-
-	@Override
-	protected void checkReady() {
-		this.ready = this.players.size()==2;
-		if (this.ready)
-			this.playerWithTurn = new SecureRandom().nextBoolean() ? this.players.get(0) : this.players.get(1);
-	}
-
-	public int getSquare(Integer x, Integer y) {
-		TictactoeBoard board = (TictactoeBoard) this.getBoard();
-		return board.getSquares()[x][y];
-	}
-
-	public void setSquare(Integer x, Integer y, int value) {
-		TictactoeBoard board = (TictactoeBoard) this.getBoard();
-		board.getSquares()[x][y]=value;
 	}
 
 	@Override
@@ -73,6 +58,13 @@ public class TictactoeMatch extends Match {
 					return false;
 		return true;
 	}
+	
+	@Override
+	protected void checkReady() {
+		this.ready = this.players.size()==2;
+		if (this.ready)
+			this.playerWithTurn = new SecureRandom().nextBoolean() ? this.players.get(0) : this.players.get(1);
+	}
 
 	private void checkWinner() {
 		TictactoeBoard board = (TictactoeBoard) this.getBoard();
@@ -94,6 +86,20 @@ public class TictactoeMatch extends Match {
 			this.looser = this.winner==this.players.get(0) ? this.players.get(1) : this.players.get(0);
 		}
 	}
+	
+	/* Utilities */
+	
+	public int getSquare(Integer x, Integer y) {
+		TictactoeBoard board = (TictactoeBoard) this.getBoard();
+		return board.getSquares()[x][y];
+	}
+
+	public void setSquare(Integer x, Integer y, int value) {
+		TictactoeBoard board = (TictactoeBoard) this.getBoard();
+		board.getSquares()[x][y]=value;
+	}
+	
+	/* Getter And Setters */
 
 	public User getWinner() {
 		return winner;

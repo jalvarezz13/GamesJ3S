@@ -1,68 +1,68 @@
-define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
-		'jquery' ], function(ko, app, moduleUtils, accUtils, $) {
+define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery"], function (ko, app, moduleUtils, accUtils, $) {
+  class LoginViewModel {
+    constructor() {
+      var self = this;
 
-	class LoginViewModel {
-		constructor() {
-			var self = this;
-			
-			self.userName = ko.observable("pepe");
-			self.pwd = ko.observable("pepe123");
-			self.message = ko.observable();
-			self.error = ko.observable();
-			
-			// Header Config
-			self.headerConfig = ko.observable({
-				'view' : [],
-				'viewModel' : null
-			});
-			moduleUtils.createView({
-				'viewPath' : 'views/header.html'
-			}).then(function(view) {
-				self.headerConfig({
-					'view' : view,
-					'viewModel' : app.getHeaderModel()
-				})
-			})
-		}
+      self.userName = ko.observable("pepe");
+      self.pwd = ko.observable("pepe123");
+      self.message = ko.observable();
+      self.error = ko.observable();
 
-		login() {
-			var self = this;
-			var info = {
-				name : this.userName(),
-				pwd : this.pwd()
-			};
-			var data = {
-				data : JSON.stringify(info),
-				url : "user/login",
-				type : "post",
-				contentType : 'application/json',
-				success : function(response) {
-					app.router.go( { path : "games"} );
-				},
-				error : function(response) {
-					self.error(response.responseJSON.errorMessage);
-				}
-			};
-			$.ajax(data);
-		}
-		
-		register() {
-			app.router.go( { path : "register" } );
-		}
+      // Header Config
+      self.headerConfig = ko.observable({
+        view: [],
+        viewModel: null,
+      });
+      moduleUtils
+        .createView({
+          viewPath: "views/header.html",
+        })
+        .then(function (view) {
+          self.headerConfig({
+            view: view,
+            viewModel: app.getHeaderModel(),
+          });
+        });
+    }
 
-		connected() {
-			accUtils.announce('Login page loaded.');
-			document.title = "Login";
-		};
+    login() {
+      var self = this;
+      var info = {
+        name: this.userName(),
+        pwd: this.pwd(),
+      };
+      var data = {
+        data: JSON.stringify(info),
+        url: "user/login",
+        type: "post",
+        contentType: "application/json",
+        success: function (response) {
+          app.router.go({ path: "games" });
+        },
+        error: function (response) {
+          self.error(response.responseJSON.errorMessage);
+        },
+      };
+      $.ajax(data);
+    }
 
-		disconnected() {
-			// Implement if needed
-		};
+    register() {
+      app.router.go({ path: "register" });
+    }
 
-		transitionCompleted() {
-			// Implement if needed
-		};
-	}
+    connected() {
+      accUtils.announce("Login page loaded.");
+      // document.title = "Login";
+    }
 
-	return LoginViewModel;
+    disconnected() {
+      // Implement if needed
+    }
+
+    transitionCompleted() {
+      // Implement if needed
+    }
+  }
+
+  return LoginViewModel;
 });

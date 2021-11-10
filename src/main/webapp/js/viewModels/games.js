@@ -87,9 +87,9 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 				type : "get",
 				url : "/games/joinGame/" + game.name,
 				success : function(response) {
-				      self.matches.push(response);
-			          self.conectarAWebSocket();
-			          console.log(JSON.stringify(response));
+					self.matches.push(response);
+					self.conectarAWebSocket();
+					console.log(JSON.stringify(response));
 				},
 				error : function(response) {
 					console.error(response.responseJSON.message);

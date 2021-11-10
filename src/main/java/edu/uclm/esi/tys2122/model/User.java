@@ -26,6 +26,9 @@ import edu.uclm.esi.tys2122.websockets.WrapperSession;
 	@Index(unique = true, columnList = "name"),
 })
 public class User {
+	
+	/* Attributes */
+	
 	@Id
 	@Column(length = 36)
 	private String id;
@@ -42,14 +45,31 @@ public class User {
 	private String pwd;
 	
 	private String picture;
+	
 	private Long confirmationDate;
 	
 	@Transient
 	private WrapperSession session;
 	
+	/* Constructors */
+	
 	public User() {
 		this.id = UUID.randomUUID().toString();
 	}
+	
+	/* Functions */
+	
+	public void setPicture(byte[] picture) {
+		byte[] b64 = Base64.getEncoder().encode(picture);
+		this.picture = new String(b64);	
+	}
+	
+	public void sendMessage(JSONObject jso) throws IOException {
+		WebSocketSession wsSession = this.session.getWsSession();
+		wsSession.sendMessage(new TextMessage(jso.toString()));
+	}
+	
+	/* Getters And Setters */
 
 	public String getId() {
 		return id;
@@ -88,16 +108,11 @@ public class User {
 	public String getPicture() {
 		return picture;
 	}
-
-	public void setPicture(byte[] picture) {
-		byte[] b64 = Base64.getEncoder().encode(picture);
-		this.picture = new String(b64);	
-	}
 	
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
-	
+
 	@JsonIgnore
 	public Long getConfirmationDate() {
 		return confirmationDate;
@@ -115,11 +130,5 @@ public class User {
 	public void setSession(WrapperSession session) {
 		this.session = session;
 	}
-
-	public void sendMessage(JSONObject jso) throws IOException {
-		WebSocketSession wsSession = this.session.getWsSession();
-		wsSession.sendMessage(new TextMessage(jso.toString()));
-	}
-	
 	
 }

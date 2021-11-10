@@ -5,9 +5,13 @@ import edu.uclm.esi.tys2122.model.Match;
 
 public class TictactoeGame extends Game {
 	
+	/* Constructors */
+	
 	public TictactoeGame() {
 		super();
 	}
+	
+	/* Functions */
 
 	@Override
 	public Match newMatch() {

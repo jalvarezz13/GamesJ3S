@@ -15,40 +15,45 @@ import edu.uclm.esi.tys2122.model.Match;
 @Service
 public class GamesService {
 	
+	/* Attributes */
+	
 	private ConcurrentHashMap<String, Match> matches;
+	
+	/* Constructors */
 	
 	public GamesService() throws Exception {
 		this.matches = new ConcurrentHashMap<>();
-		JSONArray jsonJuegosLeidos = Manager.get().readFileAsJSONArray("games.txt");
-		JSONObject tempJuego;
+		JSONArray jsonReadGame = Manager.get().readFileAsJSONArray("games.txt");
+		JSONObject tempGame;
 		String name, clazz;
 		Game game;
 		Manager.get().clearGames();
-		
-		for (int i=0; i<jsonJuegosLeidos.length(); i++) {
-			tempJuego = jsonJuegosLeidos.getJSONObject(i);
-			name = tempJuego.getString("name");
-			clazz = tempJuego.getString("clazz");
+		for (int i=0; i<jsonReadGame.length(); i++) {
+			tempGame = jsonReadGame.getJSONObject(i);
+			name = tempGame.getString("name");
+			clazz = tempGame.getString("clazz");
 			game = (Game) Class.forName(clazz).newInstance();
 			game.setName(name);
 			Manager.get().add(game);
 		}
 	}
 	
+	/* Functions */
+	
 	public Match newMatch(Class<? extends Match> clazz) throws InstantiationException, IllegalAccessException {
 		return clazz.newInstance();
 	}
-
-	public List<Game> getGames() throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
-		return Manager.get().getGames();
+	
+	public Match getMatch(String matchId) {
+		return this.matches.get(matchId);
 	}
 
 	public void put(Match match) {
 		this.matches.put(match.getId(), match);
 	}
 
-	public Match getMatch(String matchId) {
-		return this.matches.get(matchId);
+	public List<Game> getGames() throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
+		return Manager.get().getGames();
 	}
 
 }

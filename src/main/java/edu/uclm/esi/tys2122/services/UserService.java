@@ -19,6 +19,9 @@ import edu.uclm.esi.tys2122.model.User;
 
 @Service
 public class UserService {
+	
+	/* Attributes */
+	
 	@Autowired
 	private LoginRepository loginDAO;
 	
@@ -30,13 +33,26 @@ public class UserService {
 	
 	private ConcurrentHashMap<String, User> connectedUsers;
 	
+	/* Constructors */
+	
 	public UserService() {
 		this.connectedUsers = new ConcurrentHashMap<>();
+	}
+	
+	/* Functions */
+	
+	public void insertLogin(User user, String ip, Cookie cookie) {
+		Login login = new Login();
+		login.setEmail(user.getEmail());
+		login.setDate(System.currentTimeMillis());
+		login.setIp(ip);
+		login.setCookieValue(cookie.getValue());
+		loginDAO.save(login);
 	}
 
 	public User doLogin(String name, String pwd, String ip) {
 		User user = userRepo.findByNameAndPwd(name, pwd);
-		if (user==null) //  || user.getConfirmationDate()==null)
+		if (user==null)
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Credenciales no válidas o cuenta no validada");
 		
 		this.connectedUsers.put(user.getId(), user);
@@ -45,14 +61,12 @@ public class UserService {
 
 	public void save(User user) {
 		userRepo.save(user);
-		
 		Token token = new Token(user.getEmail());
 		tokenRepo.save(token);
-		/*Email smtp=new Email();
-		smtp.send(user.getEmail(), "Bienvenido al sistema", 
-			"Para confirmar, pulse aquí: " +
-			"http://localhost/user/validateAccount/" + token.getId());*/
-
+	}
+	
+	public User findUser(String userId) {
+		return this.connectedUsers.get(userId);
 	}
 
 	public void validateToken(String tokenId) {
@@ -70,19 +84,6 @@ public class UserService {
 				userRepo.save(user);
 			} else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado");
 		} else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Token " + tokenId + " no encontrado");
-	}
-
-	public void insertLogin(User user, String ip, Cookie cookie) {
-		Login login = new Login();
-		login.setEmail(user.getEmail());
-		login.setDate(System.currentTimeMillis());
-		login.setIp(ip);
-		login.setCookieValue(cookie.getValue());
-		loginDAO.save(login);
-	}
-
-	public User findUser(String userId) {
-		return this.connectedUsers.get(userId);
 	}
 
 }

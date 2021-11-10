@@ -10,32 +10,30 @@
       <div class="oj-hybrid-padding">
         <h1>Login</h1>
         <div>
-            <div class="oj-flex">
-            	<div class="oj-sm-12">
-            		<input type="text" placeholder="Nombre de usuario" data-bind="value : userName">
-            	</div>
-            	<div class="oj-sm-12">
-            		<input type="password" placeholder="Contraseña" data-bind="value : pwd">
-            	</div>
-            	<div class="oj-sm-12">
-            		<button data-bind="click : login">Entrar</button>
-            	</div>
-            	<div class="oj-sm-12" data-bind="html : message" style="color : blue">
-            	</div>
-            	<div class="oj-sm-12" data-bind="html : error" style="color : red">
-            	</div>
+          <div class="oj-flex">
+            <div class="oj-sm-12">
+              <input type="text" placeholder="Nombre de usuario" data-bind="value : userName" />
             </div>
-            
-            <div class="oj-flex">
-            	<div class="oj-sm-12">
-            		<a>Recuperar contraseña</a>
-            	</div>
+            <div class="oj-sm-12">
+              <input type="password" placeholder="Contraseña" data-bind="value : pwd" />
             </div>
-            <div class="oj-flex">
-            	<div class="oj-sm-12">
-            		<a data-bind="click : register">Crear cuenta</a>
-            	</div>
+            <div class="oj-sm-12">
+              <button data-bind="click : login">Entrar</button>
             </div>
+            <div class="oj-sm-12" data-bind="html : message" style="color: blue"></div>
+            <div class="oj-sm-12" data-bind="html : error" style="color: red"></div>
+          </div>
+
+          <div class="oj-flex">
+            <div class="oj-sm-12">
+              <a>Recuperar contraseña</a>
+            </div>
+          </div>
+          <div class="oj-flex">
+            <div class="oj-sm-12">
+              <a data-bind="click : register">Crear cuenta</a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

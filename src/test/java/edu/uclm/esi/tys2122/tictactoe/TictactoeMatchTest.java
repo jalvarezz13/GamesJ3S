@@ -30,7 +30,7 @@ public class TictactoeMatchTest extends MvcTestCase {
 	private HttpSession sessionPepe, sessionAna, sessionLucas;
 	
 	@BeforeEach
-	public void setUp() { 
+	public void setUp() {
 		jsoPepe = new JSONObject();
 		jsoPepe.put("userName", "pepe"); jsoPepe.put("email", "pepe@pepe.com"); 
 		jsoPepe.put("pwd1", "pepe123"); jsoPepe.put("pwd2", "pepe123"); 
@@ -43,7 +43,7 @@ public class TictactoeMatchTest extends MvcTestCase {
 		jsoLucas.put("userName", "lucas"); jsoLucas.put("email", "lucas@lucas.com"); 
 		jsoLucas.put("pwd1", "lucas123"); jsoLucas.put("pwd2", "lucas123");
 	}
-
+	
 	@Test
 	public void test() throws Exception {
 		doPut("/user/register", null, jsoPepe);
@@ -101,16 +101,6 @@ public class TictactoeMatchTest extends MvcTestCase {
 		doPost("games/move", sessionWithTurn, 
 				"matchId", matchId, 
 				"x", 0, "y", 2).andExpect(status().isOk());
-		
-		sessionWithTurn = changeTurn(sessionWithTurn);
-		doPost("games/move", sessionWithTurn, 
-				"matchId", matchId, 
-				"x", 0, "y", 2).andExpect(status().is4xxClientError());
-		
-		sessionWithTurn = changeTurn(sessionWithTurn);
-		doPost("games/move", sessionWithTurn, 
-				"matchId", matchId, 
-				"x", 1, "y", 1).andExpect(status().is4xxClientError());
 		
 		sessionWithTurn = changeTurn(sessionWithTurn);
 		doPost("games/move", sessionWithTurn, 
