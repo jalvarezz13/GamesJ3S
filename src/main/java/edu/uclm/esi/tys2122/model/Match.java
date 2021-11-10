@@ -20,7 +20,7 @@ public abstract class Match {
 	private String id;
 	
 	@Transient
-	private Board board;
+	private Board board; 
 	
 	@Transient
 	protected Vector<User> players;
@@ -97,5 +97,4 @@ public abstract class Match {
 				}
 		}
 	}
-
 }

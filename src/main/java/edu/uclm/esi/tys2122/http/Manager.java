@@ -29,7 +29,6 @@ public class Manager {
 
 	private ConcurrentHashMap<String, WrapperSession> ajedrezSessionsPorWs;
 	
-
 	private Manager() {
 		this.games = new Vector<>();
 		this.httpSessions = new ConcurrentHashMap<>();

@@ -13,8 +13,7 @@
                     <!-- ko foreach : games -->
                     <div>
                         <label data-bind="html : name"></label>&nbsp;
-                        <button data-bind="click : function() { $parent.joinGame($data); }">Jugar
-                            partida</button>
+                        <button data-bind="click : function() { $parent.joinGame($data); }">Jugar partida</button>
                     </div>
                     <!-- /ko -->
                 </div>
@@ -71,6 +70,19 @@
                                     <!-- /ko -->
                             <!-- /ko -->
                         <!-- /ko -->
+                        
+                        
+                        <!-- ko if : game == "CheckersMatch" -->
+                            <!-- ko with : board -->
+                                <!-- ko foreach : squares -->
+                                    <!-- ko foreach : $data -->
+                                        	<input data-bind="value : $data" type="text" size="1">
+                                        <!-- /ko -->
+                                        <br>
+                                    <!-- /ko -->
+                            <!-- /ko -->
+                        <!-- /ko -->
+                        
                         
                         <input data-bind="value : $parent.x" type="number" size="1" placeholder="X">
                         <input data-bind="value: $parent.y" type="number" size="1" placeholder="Y">

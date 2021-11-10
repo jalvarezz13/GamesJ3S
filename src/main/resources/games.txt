@@ -4,7 +4,7 @@
 		"clazz" : "edu.uclm.esi.tys2122.tictactoe.TictactoeGame"
 	},
 	{
-		"name"  : "Ajedrez",
-		"clazz" : "edu.uclm.esi.tys2122.newchess.ChessGame"
+		"name"  : "Las damas",
+		"clazz" : "edu.uclm.esi.tys2122.checkers.CheckersGame"
 	}
 ]

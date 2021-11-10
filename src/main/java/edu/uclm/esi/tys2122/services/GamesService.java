@@ -19,15 +19,16 @@ public class GamesService {
 	
 	public GamesService() throws Exception {
 		this.matches = new ConcurrentHashMap<>();
-		JSONArray jsa = Manager.get().readFileAsJSONArray("games.txt");
-		JSONObject jso;
+		JSONArray jsonJuegosLeidos = Manager.get().readFileAsJSONArray("games.txt");
+		JSONObject tempJuego;
 		String name, clazz;
 		Game game;
 		Manager.get().clearGames();
-		for (int i=0; i<jsa.length(); i++) {
-			jso = jsa.getJSONObject(i);
-			name = jso.getString("name");
-			clazz = jso.getString("clazz");
+		
+		for (int i=0; i<jsonJuegosLeidos.length(); i++) {
+			tempJuego = jsonJuegosLeidos.getJSONObject(i);
+			name = tempJuego.getString("name");
+			clazz = tempJuego.getString("clazz");
 			game = (Game) Class.forName(clazz).newInstance();
 			game.setName(name);
 			Manager.get().add(game);

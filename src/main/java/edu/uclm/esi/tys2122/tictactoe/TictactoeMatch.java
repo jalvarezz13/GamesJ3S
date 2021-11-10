@@ -3,6 +3,8 @@ package edu.uclm.esi.tys2122.tictactoe;
 import java.security.SecureRandom;
 
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import edu.uclm.esi.tys2122.model.Board;
 import edu.uclm.esi.tys2122.model.Match;

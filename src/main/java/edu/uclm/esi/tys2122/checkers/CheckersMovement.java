@@ -1,4 +1,4 @@
-package edu.uclm.esi.tys2122.newchess;
+package edu.uclm.esi.tys2122.checkers;
 
 import java.util.UUID;
 
@@ -9,7 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class ChessMovement {
+public class CheckersMovement {
 	@Id
 	@Column(length = 36)
 	private String id;
@@ -17,21 +17,21 @@ public class ChessMovement {
 	@Column(length = 10)
 	private String white, black;
 	@ManyToOne(cascade = CascadeType.ALL)
-	private ChessMatch chessMatch;
+	private CheckersMatch checkersMatch;
 	private String comment;
-	
-	public ChessMovement() {
-		this.id=UUID.randomUUID().toString();
+
+	public CheckersMovement() {
+		this.id = UUID.randomUUID().toString();
 	}
-	
+
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public Integer getPos() {
 		return pos;
 	}
@@ -56,18 +56,18 @@ public class ChessMovement {
 		this.black = black;
 	}
 
-	public void setChessMatch(ChessMatch chessMatch) {
-		this.chessMatch = chessMatch;
+	public void setChessMatch(CheckersMatch chessMatch) {
+		this.checkersMatch = chessMatch;
 	}
-	
-	public ChessMatch getChessMatch() {
-		return chessMatch;
+
+	public CheckersMatch getChessMatch() {
+		return checkersMatch;
 	}
 
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
-	
+
 	public String getComment() {
 		return comment;
 	}
