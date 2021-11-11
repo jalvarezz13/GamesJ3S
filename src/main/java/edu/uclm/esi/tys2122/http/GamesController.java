@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import org.json.JSONObject;
 
+import edu.uclm.esi.tys2122.dao.UserRepository;
 import edu.uclm.esi.tys2122.model.Game;
 import edu.uclm.esi.tys2122.model.Match;
 import edu.uclm.esi.tys2122.model.User;
@@ -31,6 +32,8 @@ public class GamesController extends CookiesController {
 	@Autowired
 	private GamesService gamesService;
 	
+	@Autowired
+	private UserRepository userRepo;
 	/* Routes */
 	
 	@GetMapping("/getGames")
@@ -41,12 +44,12 @@ public class GamesController extends CookiesController {
 	@GetMapping("/joinGame/{gameName}")
 	public Match joinGame(HttpSession session, @PathVariable String gameName) {
 		User user;
-		if (session.getAttribute("user")!=null) {
-			user = (User) session.getAttribute("user");
+		if (session.getAttribute("userId")!=null) {
+			user = (User) userRepo.findById(session.getAttribute("userId").toString()).get();
 		} else {
 			user = new User();
 			user.setName("anonimo" + new SecureRandom().nextInt(1000));
-			session.setAttribute("user", user);
+			session.setAttribute("userId", user.getId());
 		}
 		
 		Manager.get().add(session);

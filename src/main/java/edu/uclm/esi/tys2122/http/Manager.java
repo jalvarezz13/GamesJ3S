@@ -9,9 +9,11 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import edu.uclm.esi.tys2122.dao.UserRepository;
 import edu.uclm.esi.tys2122.model.Game;
 import edu.uclm.esi.tys2122.model.User;
 import edu.uclm.esi.tys2122.websockets.WrapperSession;
@@ -20,6 +22,9 @@ import edu.uclm.esi.tys2122.websockets.WrapperSession;
 public class Manager {
 	
 	/* Attributes */
+	
+	@Autowired
+	private UserRepository userRepo;
 	
 	private Vector<Game> games;
 	
@@ -76,11 +81,13 @@ public class Manager {
 
 	public void add(WrapperSession wrapperSession, String httpSessionId) {
 		HttpSession httpSession = this.httpSessions.get(httpSessionId);
-		User user = (User) httpSession.getAttribute("user");
+		String userId = httpSession.getAttribute("userId").toString();
+		User user = userRepo.findById(userId).get();
 		user.setSession(wrapperSession);
 		wrapperSession.setHttpSession(httpSession);
 		this.ajedrezSessionsPorHttp.put(httpSessionId, wrapperSession);
 		this.ajedrezSessionsPorWs.put(wrapperSession.getWsSession().getId(), wrapperSession);
+		
 	}
 	
 	/* Utilities */

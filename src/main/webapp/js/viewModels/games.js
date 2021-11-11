@@ -77,6 +77,7 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 			}
 			ws.onmessage = function(event){
 				let msg = JSON.parse(event.data);
+				//reload();
 			}
 		}
 		
