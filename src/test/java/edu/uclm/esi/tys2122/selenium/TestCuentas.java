@@ -20,6 +20,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import edu.uclm.esi.tys2122.dao.UserRepository;
 
+@SuppressWarnings("unused") //remember to delete this
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
 public class TestCuentas {
