@@ -53,6 +53,7 @@ public class WebSocketGenerico extends TextWebSocketHandler {
 		exception.printStackTrace();
 	}
 	
+	@SuppressWarnings("unused") //remember to delete this
 	private void send(WebSocketSession session, Object... typesAndValues) {
 		JSONObject jso = new JSONObject();
 		int i=0;
