@@ -8,6 +8,7 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 			self.games = ko.observableArray([]);
 			self.matches = ko.observableArray([]);
 			self.error = ko.observable(null);
+			self.tempName = ko.observable(null);
 			
 			self.x = ko.observable(null);
 			self.y = ko.observable(null);
@@ -40,8 +41,8 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 					self.games(response);
 				},
 				error : function(response) {
-					console.error(response.responseJSON.message);
-					self.error(response.responseJSON.message);
+					console.error(JSON.stringify(response));
+					self.error(response.responseJSON.errorMessage);
 				}
 			}
 			$.ajax(data);
@@ -63,21 +64,23 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 					console.log(JSON.stringify(response));
 				},
 				error: function (response){
-					console.error(response.responseJSON.message);
-					self.error(response.responseJSON.message)
+					console.error(JSON.stringify(response));
+					self.error(response.responseJSON.errorMessage)
 				}
 			}
 			$.ajax(data);
 		}
 		
 		conectarAWebSocket(){
+			let self = this;
 			let ws = new WebSocket("ws://localhost/wsGenerico");
 			ws.onopen = function(event){
 				alert("conexión establecida");
 			}
 			ws.onmessage = function(event){
 				let msg = JSON.parse(event.data);
-				//reload();
+				if(msg.type == "MATCH UPDATE")
+					self.reload(msg.matchId);
 			}
 		}
 		
@@ -86,15 +89,15 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 
 			let data = {
 				type : "get",
-				url : "/games/joinGame/" + game.name,
+				url : "/games/joinGame/" + game.name + "&" + self.tempName(),
 				success : function(response) {
 					self.matches.push(response);
 					self.conectarAWebSocket();
 					console.log(JSON.stringify(response));
 				},
 				error : function(response) {
-					console.error(response.responseJSON.message);
-					self.error(response.responseJSON.message);
+					console.error(JSON.stringify(response));
+					self.error(response.responseJSON.errorMessage);
 				}
 			};
 			$.ajax(data);
@@ -102,13 +105,14 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 
 		reload(match) {
 			let self = this;
+			let matchId = match.id ? match.id : match
 
 			let data = {
 				type : "get",
-				url : "/games/findMatch/" + match.id,
+				url : "/games/findMatch/" + matchId,
 				success : function(response) {
 					for (let i=0; i<self.matches().length; i++)
-						if (self.matches()[i].id==match.id){ 
+						if (self.matches()[i].id==matchId){ 
 							self.matches.splice(i, 1, response);
 							break;
 						}

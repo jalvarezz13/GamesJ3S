@@ -47,6 +47,8 @@ public class User {
 	private String picture;
 	
 	private Long confirmationDate;
+
+	private String temp;
 	
 	@Transient
 	private WrapperSession session;
@@ -55,6 +57,14 @@ public class User {
 	
 	public User() {
 		this.id = UUID.randomUUID().toString();
+	}
+	
+	public User(@NotBlank String name, @NotBlank String email, @NotBlank String pwd) {
+		this.id = UUID.randomUUID().toString();;
+		this.email = email;
+		this.name = name;
+		this.pwd = pwd;
+		this.temp = "YES";
 	}
 	
 	/* Functions */

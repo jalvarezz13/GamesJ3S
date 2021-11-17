@@ -47,6 +47,7 @@ public class TictactoeMatch extends Match {
 			this.playerWithTurn = this.getPlayerWithTurn()==this.getPlayers().get(0) ?
 				this.getPlayers().get(1) : this.getPlayers().get(0);
 		}
+		super.notifyOponents();
 	}
 
 	private boolean filled() {

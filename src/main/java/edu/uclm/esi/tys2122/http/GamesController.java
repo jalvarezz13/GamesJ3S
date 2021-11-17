@@ -21,43 +21,53 @@ import edu.uclm.esi.tys2122.model.Game;
 import edu.uclm.esi.tys2122.model.Match;
 import edu.uclm.esi.tys2122.model.User;
 import edu.uclm.esi.tys2122.services.GamesService;
-
+import edu.uclm.esi.tys2122.services.UserService;
+import edu.uclm.esi.tys2122.websockets.WrapperSession;
 
 @RestController
 @RequestMapping("games")
 public class GamesController extends CookiesController {
-	
+
 	/* Attributes */
-	
+
 	@Autowired
 	private GamesService gamesService;
 	
 	@Autowired
-	private UserRepository userRepo;
+	private UserService userService;
+
 	/* Routes */
-	
+
 	@GetMapping("/getGames")
 	public List<Game> getGames(HttpSession session) throws Exception {
 		return gamesService.getGames();
 	}
 
-	@GetMapping("/joinGame/{gameName}")
-	public Match joinGame(HttpSession session, @PathVariable String gameName) {
+	@GetMapping("/joinGame/{header}")
+	public Match joinGame(HttpSession session, @PathVariable String header) {
+		String gameName = header.split("&")[0];
+		String tempName = header.split("&")[1];
+		
 		User user;
-		if (session.getAttribute("userId")!=null) {
-			user = (User) userRepo.findById(session.getAttribute("userId").toString()).get();
+		if (session.getAttribute("user") != null) {
+			user = (User) session.getAttribute("user");
 		} else {
-			user = new User();
-			user.setName("anonimo" + new SecureRandom().nextInt(1000));
-			session.setAttribute("userId", user.getId());
+			if (tempName.equals("null"))
+				tempName = "anonimo" + new SecureRandom().nextInt(1000);
+			String tempEmail = tempName + "@" + tempName + ".es";
+			user = new User(tempName, tempEmail, tempName);
+			userService.save(user);
+			session.setAttribute("user", user);
 		}
+		
+
 		
 		Manager.get().add(session);
 
 		Game game = Manager.get().findGame(gameName);
-		if (game==null)
-			 throw new ResponseStatusException(HttpStatus.BAD_REQUEST ,"No se encuentra el juego " + gameName);
-		
+		if (game == null)
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se encuentra el juego " + gameName);
+
 		Match match = getMatch(game);
 		match.addPlayer(user);
 		if (match.isReady()) {
@@ -67,7 +77,7 @@ public class GamesController extends CookiesController {
 		gamesService.put(match);
 		return match;
 	}
-	
+
 	@PostMapping("/move")
 	public Match move(HttpSession session, @RequestBody Map<String, Object> movement) {
 		User user = (User) session.getAttribute("user");
@@ -77,16 +87,15 @@ public class GamesController extends CookiesController {
 			match.move(user.getId(), jso);
 			return match;
 		} catch (Exception e) {
-			 throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
 		}
-		//match.notifyNewState(user.getId());
 	}
-	
+
 	@GetMapping("/findMatch/{matchId}")
 	public Match findMatch(@PathVariable String matchId) {
 		return gamesService.getMatch(matchId);
 	}
-	
+
 	/* Functions */
 
 	private Match getMatch(Game game) {

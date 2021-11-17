@@ -1,6 +1,7 @@
 package edu.uclm.esi.tys2122.model;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -10,7 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
+
+import edu.uclm.esi.tys2122.websockets.WrapperSession;
 
 @Entity
 @Table(name = "partida")
@@ -68,6 +74,33 @@ public abstract class Match {
 				}
 		}
 	}
+
+	public void notifyOponents() {
+		for (User user : this.players) {
+			WrapperSession ws = user.getSession();
+			WebSocketSession wss = ws.getWsSession();
+			JSONObject jso = new JSONObject();
+			jso.put("type", "MATCH UPDATE");
+			jso.put("matchId", this.id);
+			byte[] payload = jso.toString().getBytes();
+			try {
+				wss.sendMessage(new TextMessage(payload));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+	}
+
+	/*
+	 * private JSONObject toJSON() { JSONObject jso = new JSONObject(); Class clazz
+	 * = this.getClass(); Field[] fields = clazz.getDeclaredFields(); for (int i=0;
+	 * i<fields.length; i++) { Field field = fields[i]; field.setAccessible(true);
+	 * if (field.getAnnotation(Transient.class)==null) { try {
+	 * jso.put(field.getName(), field.get(this)); } catch (Exception e) { // TODO
+	 * Auto-generated catch block e.printStackTrace(); } } } jso.put("board",
+	 * this.board.toString()); return jso; }
+	 */
 	
 	/* Abstract Functions */
 	

@@ -9,6 +9,10 @@
             <div class="oj-hybrid-padding">
                 <h1>Juegos disponibles</h1>
                 <div>
+                    <div class="oj-sm-12">
+                        <input type="text" placeholder="Nombre" data-bind="value : tempName" />
+                    </div>
+
                     <span data-bind="html : error" style="color: red"></span>
                     <!-- ko foreach : games -->
                     <div>
@@ -61,29 +65,29 @@
                         </div>
 
                         <!-- ko if : game == "TictactoeMatch" -->
-                            <!-- ko with : board -->
-                                <!-- ko foreach : squares -->
-                                    <!-- ko foreach : $data -->
-                                        	<input data-bind="value : $data" type="text" size="1">
-                                        <!-- /ko -->
-                                        <br>
-                                    <!-- /ko -->
-                            <!-- /ko -->
+                        <!-- ko with : board -->
+                        <!-- ko foreach : squares -->
+                        <!-- ko foreach : $data -->
+                        <input data-bind="value : $data" type="text" size="1">
                         <!-- /ko -->
-                        
-                        
+                        <br>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        <!-- /ko -->
+
+
                         <!-- ko if : game == "CheckersMatch" -->
-                            <!-- ko with : board -->
-                                <!-- ko foreach : squares -->
-                                    <!-- ko foreach : $data -->
-                                        	<input data-bind="value : $data" type="text" size="1">
-                                        <!-- /ko -->
-                                        <br>
-                                    <!-- /ko -->
-                            <!-- /ko -->
+                        <!-- ko with : board -->
+                        <!-- ko foreach : squares -->
+                        <!-- ko foreach : $data -->
+                        <input data-bind="value : $data" type="text" size="1">
                         <!-- /ko -->
-                        
-                        
+                        <br>
+                        <!-- /ko -->
+                        <!-- /ko -->
+                        <!-- /ko -->
+
+
                         <input data-bind="value : $parent.x" type="number" size="1" placeholder="X">
                         <input data-bind="value: $parent.y" type="number" size="1" placeholder="Y">
                         <button data-bind="click: function() { $parent.mover($data); }">Mover</button>

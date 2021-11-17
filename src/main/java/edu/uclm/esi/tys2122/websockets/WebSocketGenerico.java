@@ -34,8 +34,8 @@ public class WebSocketGenerico extends TextWebSocketHandler {
 				httpSessionId = token.substring(posIgual+1).trim();
 			}
 		}
-		WrapperSession ajedrezSession = new WrapperSession(wsSession);
-		Manager.get().add(ajedrezSession,httpSessionId);
+		WrapperSession matchSession = new WrapperSession(wsSession);
+		Manager.get().add(matchSession,httpSessionId);
 		
 		System.out.println(headers);
 	}
