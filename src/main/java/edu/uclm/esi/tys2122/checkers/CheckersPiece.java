@@ -7,7 +7,6 @@ public class CheckersPiece extends Piece {
 	private String color;
 	private String type;
 	private boolean alive;
-	private CheckersSquare square;
 	
 	/* Constructors */
 	
@@ -23,7 +22,6 @@ public class CheckersPiece extends Piece {
 		this.color = color;
 		this.type = "pawn";
 		this.alive = true;
-		this.square = square;
 	}
 	
 	/* Functions */
@@ -62,12 +60,4 @@ public class CheckersPiece extends Piece {
 		return alive;
 	}
 	
-	public CheckersSquare getSquare() {
-		return square;
-	}
-	
-	public void setSquare(CheckersSquare square) {
-		this.square = square;
-	}
-
 }

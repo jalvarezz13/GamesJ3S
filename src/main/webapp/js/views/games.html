@@ -77,14 +77,19 @@
 
 
                         <!-- ko if : game == "CheckersMatch" -->
-                        <!-- ko with : board -->
-                        <!-- ko foreach : squares -->
-                        <!-- ko foreach : $data -->
-                        <input data-bind="value : $data" type="text" size="1">
-                        <!-- /ko -->
-                        <br>
-                        <!-- /ko -->
-                        <!-- /ko -->
+	                        <!-- ko with : board -->
+		                        <!-- ko foreach : squares -->
+			                        <!-- ko foreach : $data -->
+			                         	<!-- ko if : $data.piece != null -->
+				                        	<input data-bind="value : $data.piece.id + $data.piece.color[0]" type="text" size="1">
+			                     		<!-- /ko -->
+			                     		<!-- ko if : $data.piece == null -->
+				                        	<input value=" " type="text" size="1">
+			                     		<!-- /ko -->
+			                        <!-- /ko -->
+		                        	<br>
+		                        <!-- /ko -->
+	                        <!-- /ko -->
                         <!-- /ko -->
 
 

@@ -119,8 +119,8 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 					console.log(JSON.stringify(response));
 				},
 				error : function(response) {
-					console.error(response.responseJSON.message);
-					self.error(response.responseJSON.message);
+					console.error(JSON.stringify(response));
+					self.error(response.responseJSON.errorMessage);
 				}
 			};
 			$.ajax(data);

@@ -2,37 +2,42 @@ package edu.uclm.esi.tys2122.checkers;
 
 import edu.uclm.esi.tys2122.model.Square;
 
-public class CheckersSquare extends Square{
-	private String id;
+public class CheckersSquare extends Square {
+	private int[] id = new int[2];
 	private String color;
-	private String type;
+	private boolean border, coronate;
 	private CheckersPiece piece;
-	
+
 	/* Constructors */
-	
+
 	public CheckersSquare() {
 		super();
-		
+		this.border = false;
+		this.coronate = false;
+		this.piece = null;
+
 	}
-	
-	public CheckersSquare(String id, String color, String type, CheckersPiece piece) {
+
+	public CheckersSquare(int[] id, String color, boolean border, boolean coronate, CheckersPiece piece) {
 		super();
 		this.id = id;
 		this.color = color;
-		this.type = type;
+		this.border = border;
+		this.coronate = coronate;
 		this.piece = piece;
 	}
-	
+
 	/* Functions */
 	
 	
-	
+
 	/* Getters And Setters */
-	public String getId() {
+
+	public int[] getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int[] id) {
 		this.id = id;
 	}
 
@@ -44,12 +49,20 @@ public class CheckersSquare extends Square{
 		this.color = color;
 	}
 
-	public String getType() {
-		return type;
+	public boolean isBorder() {
+		return border;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setBorder(boolean border) {
+		this.border = border;
+	}
+
+	public boolean isCoronate() {
+		return coronate;
+	}
+
+	public void setCoronate(boolean coronate) {
+		this.coronate = coronate;
 	}
 
 	public CheckersPiece getPiece() {
