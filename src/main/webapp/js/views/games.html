@@ -64,6 +64,8 @@
                             Acabó en empate: <span data-bind="html : draw"></span>
                         </div>
 
+                        <br>
+
                         <!-- ko if : game == "TictactoeMatch" -->
                         <!-- ko with : board -->
                         <!-- ko foreach : squares -->
@@ -75,23 +77,44 @@
                         <!-- /ko -->
                         <!-- /ko -->
 
-
                         <!-- ko if : game == "CheckersMatch" -->
-	                        <!-- ko with : board -->
-		                        <!-- ko foreach : squares -->
-			                        <!-- ko foreach : $data -->
-			                         	<!-- ko if : $data.piece != null -->
-				                        	<input data-bind="value : $data.piece.id + $data.piece.color[0]" type="text" size="1">
-			                     		<!-- /ko -->
-			                     		<!-- ko if : $data.piece == null -->
-				                        	<input value=" " type="text" size="1">
-			                     		<!-- /ko -->
-			                        <!-- /ko -->
-		                        	<br>
-		                        <!-- /ko -->
-	                        <!-- /ko -->
+                        <!-- ko with : board -->
+                        <table>
+                            <!-- ko foreach : squares -->
+                            <tr width="50" height="50">
+                                <!-- ko foreach : $data -->
+                                <!-- ko if : $data.color == "NEGRO" -->
+                                <td style="background-color: brown">
+                                    <!-- ko if : $data.piece != null -->
+                                    <!-- ko if : $data.piece.color == "NEGRO" -->
+                                    <img width="40" height="40" src="css/images/peonNegra.png">
+                                    <!-- /ko -->
+                                    <!-- ko if : $data.piece.color == "BLANCO" -->
+                                    <img width="40" height="40" src="css/images/peonBlanca.png">
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                </td>
+                                <!-- /ko -->
+                                <!-- ko if : $data.color == "BLANCO" -->
+                                <td style="background-color: white">
+                                    <!-- ko if : $data.piece != null -->
+                                    <!-- ko if : $data.piece.color == "NEGRO" -->
+                                    <img width="40" height="40" src="css/images/peonNegra.png">
+                                    <!-- /ko -->
+                                    <!-- ko if : $data.piece.color == "BLANCO" -->
+                                    <img width="40" height="40" src="css/images/peonBlanca.png">
+                                    <!-- /ko -->
+                                    <!-- /ko -->
+                                </td>
+                                <!-- /ko -->
+                                <!-- /ko -->
+                            </tr>
+                            <!-- /ko -->
+                        </table>
+                        <!-- /ko -->
                         <!-- /ko -->
 
+                        <br>
 
                         <input data-bind="value : $parent.x" type="number" size="1" placeholder="X">
                         <input data-bind="value: $parent.y" type="number" size="1" placeholder="Y">
