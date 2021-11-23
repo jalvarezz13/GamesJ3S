@@ -75,21 +75,25 @@ public abstract class Match {
 		}
 	}
 
-	public void notifyOponents() {
-		for (User user : this.players) {
-			WrapperSession ws = user.getSession();
-			WebSocketSession wss = ws.getWsSession();
-			JSONObject jso = new JSONObject();
-			jso.put("type", "MATCH UPDATE");
-			jso.put("matchId", this.id);
-			byte[] payload = jso.toString().getBytes();
-			try {
-				wss.sendMessage(new TextMessage(payload));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	public void notifyOponents(String type) {
+		try {
+			for (User user : this.players) {
+				WrapperSession ws = user.getSession();
+				WebSocketSession wss = ws.getWsSession();
+				JSONObject jso = new JSONObject();
+				jso.put("type", type);
+				jso.put("matchId", this.id);
+				byte[] payload = jso.toString().getBytes();
+				try {
+					wss.sendMessage(new TextMessage(payload));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		}	
+		} catch (Exception e) {
+			System.out.println("ERROR: " + e);
+		}
 	}
 
 	/*

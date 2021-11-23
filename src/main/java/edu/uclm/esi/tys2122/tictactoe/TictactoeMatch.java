@@ -47,7 +47,7 @@ public class TictactoeMatch extends Match {
 			this.playerWithTurn = this.getPlayerWithTurn()==this.getPlayers().get(0) ?
 				this.getPlayers().get(1) : this.getPlayers().get(0);
 		}
-		super.notifyOponents();
+		super.notifyOponents("MATCH UPDATE");
 	}
 
 	private boolean filled() {
@@ -63,8 +63,10 @@ public class TictactoeMatch extends Match {
 	@Override
 	protected void checkReady() {
 		this.ready = this.players.size()==2;
-		if (this.ready)
+		if (this.ready) {
 			this.playerWithTurn = new SecureRandom().nextBoolean() ? this.players.get(0) : this.players.get(1);
+			super.notifyOponents("MATCH READY");
+		}
 	}
 
 	private void checkWinner() {

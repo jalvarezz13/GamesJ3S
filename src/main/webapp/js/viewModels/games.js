@@ -75,11 +75,13 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 			let self = this;
 			let ws = new WebSocket("ws://localhost/wsGenerico");
 			ws.onopen = function(event){
-				alert("conexión establecida");
+				//alert("conexión establecida");
 			}
 			ws.onmessage = function(event){
 				let msg = JSON.parse(event.data);
 				if(msg.type == "MATCH UPDATE")
+					self.reload(msg.matchId);
+				if(msg.type == "MATCH READY")
 					self.reload(msg.matchId);
 			}
 		}
