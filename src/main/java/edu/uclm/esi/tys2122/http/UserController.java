@@ -63,14 +63,18 @@ public class UserController extends CookiesController {
 		if (pwd1.length()<4)
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: la contraseña debe tener al menos cuatro caracteres");
 		
-		User user = new User();
-		user.setName(userName);
-		user.setEmail(email);
-		user.setPwd(pwd1);
-		user.setPicture(picture);
-		
-		userService.save(user);
-		return "Te hemos enviado un correo para confirmar tu registro";
+		try {
+			User user = new User();
+			user.setName(userName);
+			user.setEmail(email);
+			user.setPwd(pwd1);
+			user.setPicture(picture);
+			
+			userService.save(user);
+			return "Registro completado exitosamente";
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: El usuario ya existe");
+		}
 	}
 	
 	@DeleteMapping("/remove/{userId}")

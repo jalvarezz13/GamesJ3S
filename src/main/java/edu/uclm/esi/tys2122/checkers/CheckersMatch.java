@@ -31,8 +31,10 @@ public class CheckersMatch extends Match {
 	@Override
 	protected void checkReady() {
 		this.ready = this.players.size() == 2;
-		if (this.ready)
+		if (this.ready) {
 			this.playerWithTurn = new SecureRandom().nextBoolean() ? this.players.get(0) : this.players.get(1);
+			super.notifyOponents("MATCH READY");
+		}
 	}
 
 	@Override
