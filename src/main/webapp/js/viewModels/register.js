@@ -21,6 +21,10 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     self.message = ko.observable();
     self.error = ko.observable();
 
+    goLogin = function() {
+      app.router.go({ path: "login" });
+    }
+
     self.setPicture = function (widget, event) {
       var file = event.target.files[0];
       var reader = new FileReader();

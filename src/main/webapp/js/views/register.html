@@ -1,28 +1,114 @@
-<div class="oj-hybrid-applayout-page">
-  <div class="oj-applayout-fixed-top">
-    <header role="banner" class="oj-hybrid-applayout-header">
-      <oj-module config="[[headerConfig]]"></oj-module>
-    </header>
-  </div>
-  <!-- This is where your main page content will be loaded -->
-  <div class="oj-applayout-content">
-    <div role="main" class="oj-hybrid-applayout-content">
-      <div class="oj-hybrid-padding">
-        <h1>Creación de cuenta</h1>
-        <div>
-          <input type="text" placeholder="Nombre de usuario" data-bind="value : userName" />
-          <input type="email" placeholder="Correo electrónico" data-bind="value : email" />
-          <input type="password" placeholder="Contraseña" data-bind="value : pwd1" />
-          <input type="password" placeholder="Repite contraseña" data-bind="value : pwd2" />
-          <input type="file" size="50" data-bind="event : {change : setPicture }" /><br />
-          <!-- ko if : picture -->
-          <img data-bind="attr: { src : picture}" width="100" height="100" />
-          <!-- /ko -->
-          <button id="btnCrearCuenta" data-bind="click : register">Crear cuenta</button>
-          <div class="oj-sm-12" data-bind="html : message" style="color: blue"></div>
-          <div class="oj-sm-12" data-bind="html : error" style="color: red"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/template/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/fonts/iconic/css/material-design-iconic-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/template/vendor/animate/animate.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="css/template/vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/template/vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/template/vendor/select2/select2.min.css">
+<!--===============================================================================================-->	
+	<link rel="stylesheet" type="text/css" href="css/template/vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/template/util.css">
+	<link rel="stylesheet" type="text/css" href="css/template/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url('css/images/fondoLogin.jpg');">
+			<div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+				<form class="login100-form validate-form">
+					<span class="login100-form-title p-b-49">
+						Crear Cuenta
+					</span>
+
+          <!--Nombre de usuario-->
+					<div class="wrap-input100 validate-input m-b-23" data-bind="value : userName" data-validate = "Campo obligatorio">
+						<span class="label-input100">Nombre de usuario</span>
+						<input class="input100" data-bind="value : userName" type="text" name="username" placeholder="Usuario...">
+						<span class="focus-input100" data-symbol="&#xf206;"></span>
+					</div>
+          
+          <!--Correo electrónico-->
+          <div class="wrap-input100 validate-input m-b-23" data-bind="value : email" data-validate = "Campo obligatorio">
+						<span class="label-input100">Correo electrónico</span>
+						<input class="input100" data-bind="value : userName" type="text" name="username" placeholder="Usuario...">
+						<span class="focus-input100" data-symbol="&#xf206;"></span>
+					</div>
+
+          <!--Contraseña-->
+					<div class="wrap-input100 validate-input m-b-23" data-bind="value : pwd1" data-validate="Campo obligatorio">
+						<span class="label-input100">Contraseña</span>
+						<input class="input100" type="password" data-bind="value : pwd" name="pass" placeholder="Contraseña...">
+						<span class="focus-input100" data-symbol="&#xf190;"></span>
+					</div>
+
+          <!--Repite Contraseña-->
+					<div class="wrap-input100 validate-input m-b-40" data-bind="value : pwd2" data-validate="Campo obligatorio">
+						<span class="label-input100">Repite contraseña</span>
+						<input class="input100" type="password" data-bind="value : pwd" name="pass" placeholder="Contraseña...">
+						<span class="focus-input100" data-symbol="&#xf190;"></span>
+					</div>
+					
+					<div class="oj-sm-12" data-bind="html : message" style="color: blue"></div>
+					<div class="oj-sm-12" data-bind="html : error" style="color: red"></div>
+
+					
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button class="login100-form-btn" data-bind="click : register">
+								Crear cuenta
+							</button>
+						</div>
+					</div>
+
+					<div class="flex-col-c p-t-50">
+						<span class="txt1 p-b-17">
+							¿Ya tienes una cuenta?
+						</span>
+
+						<a href="#" data-bind="click : goLogin" class="txt2">
+							Inicia sesión
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+
+	<div id="dropDownSelect1"></div>
+	
+<!--===============================================================================================-->
+	<script src="css/template/vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="css/template/vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="css/template/vendor/bootstrap/js/popper.js"></script>
+	<script src="css/template/vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="css/template/vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="css/template/vendor/daterangepicker/moment.min.js"></script>
+	<script src="css/template/vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="css/template/vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="css/template/js/main.js"></script>
+
+</body>
+</html>
