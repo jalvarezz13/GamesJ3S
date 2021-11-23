@@ -17,9 +17,9 @@ Final Project for Techonolgies And Web Systems - Escuela Superior de Informátic
 * <img src="https://media.discordapp.net/attachments/487685117414735872/908489846698422293/xinpelo.png" width="60" height="60" align="center"/> Juan Muñoz Calvo : Juan.Munoz7@alu.uclm.es
 
 ## :books: More about the project :books:
-[juegosTSW](https://github.com/jalvarezz13/juegosTSW) is a games web application where you can actually play Tic Tac Toe and Checkers
+[juegosTSW](https://github.com/jalvarezz13/juegosTSW) is a games web application where you can actually play Tic Tac Toe and Checkers.
 
-If you want to know more about how juegosTSW works internally go to the official [Wiki](https://github.com/jalvarezz13/juegosTSW/wiki)
+If you want to know more about how juegosTSW works internally go to the official [Wiki](https://github.com/jalvarezz13/juegosTSW/wiki).
 
 ## :raising_hand: Contact us :raising_hand:
 Feel free to send us an email if you have any question about the project.
