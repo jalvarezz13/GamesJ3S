@@ -21,9 +21,9 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     self.message = ko.observable();
     self.error = ko.observable();
 
-    goLogin = function() {
+    self.goLogin = function () {
       app.router.go({ path: "login" });
-    }
+    };
 
     self.setPicture = function (widget, event) {
       var file = event.target.files[0];
@@ -53,7 +53,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         },
         error: function (response) {
           self.message("");
-          self.error(response.responseJSON.errorMessage);
+          self.error("Error en el inicio de sesion");
         },
       };
       $.ajax(data);
