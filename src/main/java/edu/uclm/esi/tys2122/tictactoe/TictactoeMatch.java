@@ -65,7 +65,7 @@ public class TictactoeMatch extends Match {
 		this.ready = this.players.size()==2;
 		if (this.ready) {
 			this.playerWithTurn = new SecureRandom().nextBoolean() ? this.players.get(0) : this.players.get(1);
-			super.notifyOponents("MATCH READY");
+			super.notifyOponents("MATCH READY", this.players.get(1));
 		}
 	}
 

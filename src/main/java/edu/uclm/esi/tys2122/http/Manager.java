@@ -22,7 +22,10 @@ import edu.uclm.esi.tys2122.websockets.WrapperSession;
 public class Manager {
 
 	/* Attributes */
-	
+
+	@Autowired
+	private UserRepository userRepo;
+
 	private Vector<Game> games;
 
 	private JSONObject configuration;
@@ -42,10 +45,29 @@ public class Manager {
 		this.matchSessionsByWs = new ConcurrentHashMap<>();
 		try {
 			loadParameters();
+			deleteTemporalUsers();
 		} catch (Exception e) {
 			System.err.println("Error al leer el fichero parametros.txt: " + e.getMessage());
 			System.exit(-1);
 		}
+	}
+
+	private void deleteTemporalUsers() {
+		Runnable r = new Runnable() {
+
+			@Override
+			public void run() {
+				while (true) {
+					userRepo.deleteTemporalUserDB();
+					try {
+						Thread.sleep(24 * 60 * 60 * 1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+		new Thread(r).start();
 	}
 
 	/* Singleton */

@@ -59,7 +59,7 @@ a:focus {
 
 a:hover {
   text-decoration: none;
-  color: #a64bf4;
+  color: #909090;
 }
 
 /*---------------------------------------------*/
@@ -182,8 +182,15 @@ iframe {
   font-family: Poppins-Regular;
   font-size: 14px;
   line-height: 1.5;
-  color: #909090;
+  color: #a64bf4;
   text-transform: uppercase;
+}
+
+.txt3 {
+  font-family: Poppins-Regular;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #a64bf4;
 }
 
 .bg1 {

@@ -21,52 +21,52 @@ import edu.uclm.esi.tys2122.websockets.WrapperSession;
 @Entity
 @Table(name = "partida")
 public abstract class Match {
-	
+
 	/* Attributes */
-	
+
 	@Id
 	@Column(length = 36)
 	private String id;
-	
+
 	@Transient
 	private Board board;
-	
+
 	@Transient
 	protected Vector<User> players;
-	
+
 	@Transient
-	protected User playerWithTurn; 
-	
+	protected User playerWithTurn;
+
 	@Transient
 	protected boolean ready;
-	
+
 	/* Constructors */
-	
+
 	public Match() {
 		this.id = UUID.randomUUID().toString();
 		this.players = new Vector<>();
 		this.board = newBoard();
 	}
-	
+
 	/* Functions */
-	
+
 	public void addPlayer(User user) {
 		// We still add the same player two times
 		this.players.add(user);
 		checkReady();
 	}
-	
+
 	public boolean isReady() {
 		return ready;
 	}
-	
+
 	public void notifyNewState(String userId) {
 		JSONObject jso = new JSONObject();
 		jso.put("type", "BOARD");
 		// jso.put("board", this.board.toJSON());
-		
+
 		for (User player : this.players) {
-			if(!player.getId().equals(userId))
+			if (!player.getId().equals(userId))
 				try {
 					player.sendMessage(jso);
 				} catch (IOException e) {
@@ -75,25 +75,39 @@ public abstract class Match {
 		}
 	}
 
-	public void notifyOponents(String type) {
-		try {
-			for (User user : this.players) {
-				WrapperSession ws = user.getSession();
-				WebSocketSession wss = ws.getWsSession();
-				JSONObject jso = new JSONObject();
-				jso.put("type", type);
-				jso.put("matchId", this.id);
-				byte[] payload = jso.toString().getBytes();
-				try {
-					wss.sendMessage(new TextMessage(payload));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+	public void notifyOponents(String type, User... users) {
+		JSONObject jso = new JSONObject();
+		jso.put("type", type);
+		jso.put("matchId", this.id);
+		byte[] payload = jso.toString().getBytes();
+		TextMessage msg = new TextMessage(payload);
+
+		for (User user : this.players) {
+			if (isUser(user, users))
+				continue;
+			Runnable r = new Runnable() {
+				@Override
+				public void run() {
+					WrapperSession ws = user.getSession();
+					WebSocketSession wss = ws.getWsSession();
+					try {
+						wss.sendMessage(msg);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		} catch (Exception e) {
-			System.out.println("ERROR: " + e);
+
+			};
+			new Thread(r).start();
 		}
+	}
+
+	private boolean isUser(User user, User[] users) {
+		for (int i = 0; i < users.length; i++) {
+			if (user == users[i])
+				return true;
+		}
+		return false;
 	}
 
 	/*
@@ -105,17 +119,17 @@ public abstract class Match {
 	 * Auto-generated catch block e.printStackTrace(); } } } jso.put("board",
 	 * this.board.toString()); return jso; }
 	 */
-	
+
 	/* Abstract Functions */
-	
+
 	protected abstract void checkReady();
-	
+
 	protected abstract Board newBoard();
-	
+
 	public abstract void move(String userId, JSONObject jso) throws Exception;
-	
+
 	/* Getters And Setters */
-	
+
 	public String getGame() {
 		return this.getClass().getSimpleName();
 	}
@@ -132,15 +146,15 @@ public abstract class Match {
 	public Vector<User> getPlayers() {
 		return players;
 	}
-	
+
 	public void setPlayers(Vector<User> players) {
 		this.players = players;
 	}
-	
+
 	public User getPlayerWithTurn() {
 		return playerWithTurn;
 	}
-	
+
 	public void setPlayerWithTurn(User playerWithTurn) {
 		this.playerWithTurn = playerWithTurn;
 	}
@@ -148,11 +162,11 @@ public abstract class Match {
 	public Board getBoard() {
 		return board;
 	}
-	
+
 	public void setBoard(Board board) {
 		this.board = board;
 	}
-	
+
 	public void setReady(boolean ready) {
 		this.ready = ready;
 	}

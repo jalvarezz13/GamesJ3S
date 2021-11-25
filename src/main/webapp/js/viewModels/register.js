@@ -53,7 +53,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         },
         error: function (response) {
           self.message("");
-          self.error("Error en el inicio de sesion");
+          self.error(response.responseJSON.message);
         },
       };
       $.ajax(data);
