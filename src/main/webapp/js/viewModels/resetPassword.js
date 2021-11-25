@@ -1,10 +1,15 @@
-define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery"], function (ko, app, moduleUtils, accUtils, $) {
-  class LoginViewModel {
+define([
+  "knockout",
+  "appController",
+  "ojs/ojmodule-element-utils",
+  "accUtils",
+  "jquery",
+], function (ko, app, moduleUtils, accUtils, $) {
+  class ResetPasswordViewModel {
     constructor() {
       var self = this;
 
-      self.userName = ko.observable("pepe");
-      self.pwd = ko.observable("pepe123");
+      self.email = ko.observable("pepe@pepe.com");
       self.message = ko.observable();
       self.error = ko.observable();
 
@@ -25,37 +30,34 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         });
     }
 
-    login() {
+    goLogin() {
+      app.router.go({ path: "login" });
+    }
+
+    resetPassword() {
       var self = this;
       var info = {
-        name: this.userName(),
-        pwd: this.pwd(),
+        email: this.email(),
       };
       var data = {
         data: JSON.stringify(info),
-        url: "user/login",
+        url: "user/resetPassword",
         type: "post",
         contentType: "application/json",
         success: function (response) {
-          app.router.go({ path: "games" });
+          self.message(response);
+          self.error("");
         },
         error: function (response) {
-          self.error(response.res);
+          self.message("");
+          self.error(response.responseJSON.message);
         },
       };
       $.ajax(data);
     }
 
-    resetPassword() {
-      app.router.go({ path: "resetPassword" });
-    }
-
-    register() {
-      app.router.go({ path: "register" });
-    }
-
     connected() {
-      accUtils.announce("Login page loaded.");
+      accUtils.announce("Reset password page loaded.");
       // document.title = "Login";
     }
 
@@ -68,5 +70,5 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     }
   }
 
-  return LoginViewModel;
+  return ResetPasswordViewModel;
 });

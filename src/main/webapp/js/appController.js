@@ -35,7 +35,9 @@ define([
     self.manner = ko.observable("polite");
     self.message = ko.observable();
 
-    document.getElementById("globalBody").addEventListener("announce", announcementHandler, false);
+    document
+      .getElementById("globalBody")
+      .addEventListener("announce", announcementHandler, false);
 
     function announcementHandler(event) {
       setTimeout(function () {
@@ -47,12 +49,48 @@ define([
     // Save the theme so we can perform platform specific navigational animations
     var platform = ThemeUtils.getThemeTargetPlatform();
 
+    var navDataMenu = [
+      { path: "", redirect: "login" },
+      {
+        path: "login",
+        detail: { label: "Iniciar Sesión", iconClass: "oj-ux-ico-avatar" },
+      },
+      {
+        path: "register",
+        detail: { label: "Crear Cuenta", iconClass: "oj-ux-ico-log-in" },
+      },
+      {
+        path: "games",
+        detail: { label: "Juegos", iconClass: "oj-ux-ico-game-controller" },
+      },
+      {
+        path: "about",
+        detail: { label: "Sobre Nosotros", iconClass: "oj-ux-ico-information" },
+      },
+    ];
+
     var navData = [
       { path: "", redirect: "login" },
-      { path: "login", detail: { label: "Iniciar Sesión", iconClass: "oj-ux-ico-avatar" } },
-      { path: "register", detail: { label: "Crear Cuenta", iconClass: "oj-ux-ico-log-in" } },
-      { path: "games", detail: { label: "Juegos", iconClass: "oj-ux-ico-game-controller" } },
-      { path: "about", detail: { label: "Sobre Nosotros", iconClass: "oj-ux-ico-information" } },
+      {
+        path: "login",
+        detail: { label: "Iniciar Sesión", iconClass: "oj-ux-ico-avatar" },
+      },
+      {
+        path: "register",
+        detail: { label: "Crear Cuenta", iconClass: "oj-ux-ico-log-in" },
+      },
+      {
+        path: "games",
+        detail: { label: "Juegos", iconClass: "oj-ux-ico-game-controller" },
+      },
+      {
+        path: "about",
+        detail: { label: "Sobre Nosotros", iconClass: "oj-ux-ico-information" },
+      },
+      {
+        path: "resetPassword",
+        detail: { label: "Recuperar contraseña", iconClass: "oj-ux-ico-log-in" },
+      },
     ];
     // Router setup
     var router = new CoreRouter(navData, {
@@ -75,7 +113,9 @@ define([
 
     // Setup the navDataProvider with the routes, excluding the first redirected
     // route.
-    this.navDataProvider = new ArrayDataProvider(navData.slice(1), { keyAttributes: "path" });
+    this.navDataProvider = new ArrayDataProvider(navDataMenu.slice(1), {
+      keyAttributes: "path",
+    });
 
     // Used by modules to get the current page title and adjust padding
     self.getHeaderModel = function () {
@@ -92,9 +132,15 @@ define([
     // can also adjust content paddings with css classes if the fixed region height is not changing between
     // views.
     self.adjustContentPadding = function () {
-      var topElem = document.getElementsByClassName("oj-applayout-fixed-top")[0];
-      var contentElem = document.getElementsByClassName("oj-applayout-content")[0];
-      var bottomElem = document.getElementsByClassName("oj-applayout-fixed-bottom")[0];
+      var topElem = document.getElementsByClassName(
+        "oj-applayout-fixed-top"
+      )[0];
+      var contentElem = document.getElementsByClassName(
+        "oj-applayout-content"
+      )[0];
+      var bottomElem = document.getElementsByClassName(
+        "oj-applayout-fixed-bottom"
+      )[0];
 
       if (topElem) {
         contentElem.style.paddingTop = topElem.offsetHeight + "px";

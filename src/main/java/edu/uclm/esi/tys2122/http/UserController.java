@@ -21,32 +21,47 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import edu.uclm.esi.tys2122.model.Email;
 import edu.uclm.esi.tys2122.model.User;
 import edu.uclm.esi.tys2122.services.UserService;
 
 @RestController
 @RequestMapping("user")
 public class UserController extends CookiesController {
-	
+
 	/* Attributes */
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	/* Routes */
-	
+
 	@PostMapping(value = "/login")
 	public void login(HttpServletRequest request, HttpServletResponse response, @RequestBody Map<String, Object> credenciales) {
 		JSONObject jso = new JSONObject(credenciales);
 		String name = jso.getString("name");
 		String pwd = jso.getString("pwd");
 		String ip = request.getRemoteAddr();
-		
+
 		User user = userService.doLogin(name, pwd, ip);
-		
+
 		Cookie cookie = readOrCreateCookie(request, response);
 		userService.insertLogin(user, ip, cookie);
 		request.getSession().setAttribute("user", user);
+	}
+
+	@PostMapping(value = "/resetPassword")
+	public String resetPassword(HttpServletRequest request, HttpServletResponse response, @RequestBody Map<String, Object> credenciales) {
+		JSONObject jso = new JSONObject(credenciales);
+		String email = jso.getString("email");
+
+		if (userService.findUserByEmail(email)) {
+			Email auxEmail = new Email();
+			auxEmail.send(email, "Recuperación de contraseña", "Para recuperar tu contraseña pulsa aquí: https://www.chollometro.com/");
+		} else {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No existe ningún usuario con ese correo");
+		}
+		return "Te hemos enviado un mensaje para recuperar tu contraseña";
 	}
 
 	@PutMapping("/register")
@@ -57,41 +72,42 @@ public class UserController extends CookiesController {
 		String email = jso.optString("email");
 		String pwd1 = jso.optString("pwd1");
 		String pwd2 = jso.optString("pwd2");
-		String picture = jso.optString("picture");		
+		String picture = jso.optString("picture");
 		if (!pwd1.equals(pwd2))
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: las contraseñas no coinciden");
-		if (pwd1.length()<4)
+		if (pwd1.length() < 4)
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: la contraseña debe tener al menos cuatro caracteres");
-		
+
 		try {
 			User user = new User();
 			user.setName(userName);
 			user.setEmail(email);
 			user.setPwd(pwd1);
 			user.setPicture(picture);
-			
+
 			userService.save(user);
 			return "Registro completado exitosamente";
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: El usuario ya existe");
 		}
 	}
-	
+
 	@DeleteMapping("/remove/{userId}")
 	public void remove(@PathVariable String userId) {
-		System.out.println("Borrar el usuario con id " + userId);		
+		System.out.println("Borrar el usuario con id " + userId);
 	}
-	
+
 	@GetMapping("/validateAccount/{tokenId}")
 	public void validateAccount(HttpServletRequest request, HttpServletResponse response, @PathVariable String tokenId) {
 		userService.validateToken(tokenId);
-		// Ir a la base de datos, buscar el token con ese tokenId en la tabla, ver que no ha caducado
+		// Ir a la base de datos, buscar el token con ese tokenId en la tabla, ver que
+		// no ha caducado
 		// y actualizar la confirmationDate del user
 		System.out.println(tokenId);
 		try {
 			response.sendRedirect(Manager.get().getConfiguration().getString("home"));
 		} catch (IOException e) {
-			
+
 		}
 	}
 

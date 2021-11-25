@@ -68,6 +68,13 @@ public class UserService {
 	public User findUser(String userId) {
 		return this.connectedUsers.get(userId);
 	}
+	
+	public boolean findUserByEmail(String email) {
+		User user = userRepo.findByEmail(email);
+		if (user==null)
+			return false;
+		return true;
+	}
 
 	public void validateToken(String tokenId) {
 		Optional<Token> optToken = tokenRepo.findById(tokenId);
