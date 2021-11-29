@@ -12,6 +12,9 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 			
 			self.x = ko.observable(null);
 			self.y = ko.observable(null);
+
+			self.pieces = ko.observableArray(["hola","adios","F"]);
+			self.chosenPiece = ko.observableArray(["hola"]);
 						
 			// Header Config
 			self.headerConfig = ko.observable({
@@ -96,6 +99,7 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 					self.matches.push(response);
 					self.conectarAWebSocket();
 					console.log(JSON.stringify(response));
+					//self.updateAlivePieces();
 				},
 				error : function(response) {
 					console.error(JSON.stringify(response));
@@ -126,6 +130,28 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 				}
 			};
 			$.ajax(data);
+		}
+
+		updateAlivePieces(matchId) {
+			let self = this;
+
+			let data = {
+				type : "get",
+				url : "/games/updateAlivePieces/" + matchId,
+				success : function(response) {
+					self.pieces.push(response);
+					console.log(JSON.stringify(response));
+				},
+				error : function(response) {
+					console.error(JSON.stringify(response));
+					self.error(response.responseJSON.errorMessage);
+				}
+			};
+			$.ajax(data);
+		}
+
+		showPiece(event){
+			alert(event.chosenPiece());
 		}
 
 		disconnected() {

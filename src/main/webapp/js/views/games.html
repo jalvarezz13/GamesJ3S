@@ -125,13 +125,15 @@
               <!-- /ko -->
               <!-- /ko -->
 
-              <br />
+              <br/>
 
               <input data-bind="value : $parent.x" type="number" size="1" placeholder="X" />
               <input data-bind="value: $parent.y" type="number" size="1" placeholder="Y" />
               <button class="button-games" data-bind="click: function() { $parent.mover($data); }">Mover</button>
               <button class="button-games" data-bind="click : function() { $parent.reload($data); }">Recargar
                 partida</button>
+              <br/>
+              <select data-bind="options: $parent.pieces, selectedOptions:$parent.chosenPiece, event:{ change: $parent.showPiece}"></select>
             </li>
             <!-- /ko -->
           </ol>
