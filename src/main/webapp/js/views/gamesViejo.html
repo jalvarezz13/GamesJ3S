@@ -1,0 +1,118 @@
+<div class="oj-hybrid-applayout-page" style="background-image: url('css/images/fondoPrincipal.jpg')">
+  <div class="oj-applayout-fixed-top">
+    <header role="banner" class="oj-hybrid-applayout-header">
+      <oj-module config="[[headerConfig]]"></oj-module>
+    </header>
+  </div>
+  <div class="oj-applayout-content">
+    <div role="main" class="oj-hybrid-applayout-content">
+      <div class="oj-hybrid-padding">
+        <h1>Juegos disponibles</h1>
+        <div>
+          <div class="oj-sm-12">
+            <input type="text" placeholder="Nombre" data-bind="value : tempName" />
+          </div>
+
+          <span data-bind="html : error" style="color: red"></span>
+          <!-- ko foreach : games -->
+          <div>
+            <label data-bind="html : name"></label>&nbsp;
+            <button data-bind="click : function() { $parent.joinGame($data); }">Jugar partida</button>
+          </div>
+          <!-- /ko -->
+        </div>
+
+        <ol>
+          <!-- ko foreach : matches -->
+          <li>
+            <div>Id: <label data-bind="html : id"></label></div>
+
+            <div>Preparada: <span data-bind="html : ready"></span></div>
+            <div>Jugador 1: <span data-bind="html : players[0].name"></span></div>
+
+            <div>
+              Jugador 2:
+              <!-- ko if : players[1] -->
+              <span data-bind="html : players[1].name"></span>
+              <!-- /ko -->
+              <!-- ko ifnot : players[1] -->
+              Esperando
+              <!-- /ko -->
+            </div>
+
+            <div>
+              Jugador con el turno:
+              <!-- ko if : playerWithTurn -->
+              <span data-bind="html : playerWithTurn.name"></span>
+              <!-- /ko -->
+            </div>
+
+            <div>Ganador: <span data-bind="html : winner"></span></div>
+            <div>Perdedor: <span data-bind="html : looser"></span></div>
+
+            <div>Acabó en empate: <span data-bind="html : draw"></span></div>
+
+            <br />
+
+            <!-- ko if : game == "TictactoeMatch" -->
+            <!-- ko with : board -->
+            <!-- ko foreach : squares -->
+            <!-- ko foreach : $data -->
+            <input data-bind="value : $data" type="text" size="1" />
+            <!-- /ko -->
+            <br />
+            <!-- /ko -->
+            <!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko if : game == "CheckersMatch" -->
+            <!-- ko with : board -->
+            <table>
+              <!-- ko foreach : squares -->
+              <tr width="50" height="50">
+                <!-- ko foreach : $data -->
+                <!-- ko if : $data.color == "NEGRO" -->
+                <td style="background-color: brown">
+                  <!-- ko if : $data.piece != null -->
+                  <!-- ko if : $data.piece.color == "NEGRO" -->
+                  <img width="40" height="40" src="css/images/peonNegra.png" />
+                  <!-- /ko -->
+                  <!-- ko if : $data.piece.color == "BLANCO" -->
+                  <img width="40" height="40" src="css/images/peonBlanca.png" />
+                  <!-- /ko -->
+                  <!-- /ko -->
+                </td>
+                <!-- /ko -->
+                <!-- ko if : $data.color == "BLANCO" -->
+                <td style="background-color: white">
+                  <!-- ko if : $data.piece != null -->
+                  <!-- ko if : $data.piece.color == "NEGRO" -->
+                  <img width="40" height="40" src="css/images/peonNegra.png" />
+                  <!-- /ko -->
+                  <!-- ko if : $data.piece.color == "BLANCO" -->
+                  <img width="40" height="40" src="css/images/peonBlanca.png" />
+                  <!-- /ko -->
+                  <!-- /ko -->
+                </td>
+                <!-- /ko -->
+                <!-- /ko -->
+              </tr>
+              <!-- /ko -->
+            </table>
+            <!-- /ko -->
+            <!-- /ko -->
+
+            <br />
+
+            <input data-bind="value : $parent.x" type="number" size="1" placeholder="X" />
+            <input data-bind="value: $parent.y" type="number" size="1" placeholder="Y" />
+            <button data-bind="click: function() { $parent.mover($data); }">Mover</button>
+            <br />
+            <button data-bind="click : function() { $parent.reload($data); }">Recargar partida</button>
+          </li>
+          <!-- /ko -->
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>

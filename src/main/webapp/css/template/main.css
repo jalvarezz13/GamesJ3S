@@ -513,3 +513,39 @@ iframe {
     padding-right: 15px;
   }
 }
+
+/*//////////////////////////////////////////////////////////////////
+[ Custom CSS ]*/
+
+.wrap-games {
+  width: fit-content;
+  background: #232e33;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.label-games {
+  display: flex;
+  margin-bottom: 0;
+}
+
+.ol-games {
+  color: white;
+}
+
+.button-games {
+  background: white;
+  color: black;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.match-style {
+  border-bottom-style: solid;
+  border-bottom-width: 5px;
+  padding-bottom: 20px;
+  border-color: #a64bf4;
+}
+
+.grid-games-buttons {
+}
