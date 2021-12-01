@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import org.json.JSONObject;
 
+import edu.uclm.esi.tys2122.checkers.CheckersMatch;
 import edu.uclm.esi.tys2122.checkers.CheckersPiece;
 import edu.uclm.esi.tys2122.dao.UserRepository;
 import edu.uclm.esi.tys2122.model.Game;
@@ -61,8 +62,6 @@ public class GamesController extends CookiesController {
 			session.setAttribute("user", user);
 		}
 		
-
-		
 		Manager.get().add(session);
 
 		Game game = Manager.get().findGame(gameName);
@@ -98,12 +97,10 @@ public class GamesController extends CookiesController {
 	}
 	
 	@GetMapping("/updateAlivePieces/{matchId}")
-	public CheckersPiece updateAlivePieces(@PathVariable String matchId) {
-		Match match = gamesService.getMatch(matchId);
-		CheckersPiece checkersPiece = new CheckersPiece();
-		
-		return checkersPiece;
-		
+	public CheckersPiece[] updateAlivePieces(@PathVariable String matchId,HttpSession session ) {
+		User user = (User) session.getAttribute("user");
+		CheckersMatch match = (CheckersMatch) gamesService.getMatch(matchId);
+		return match.getAlivePieces(user.getId());
 	}
 
 	/* Functions */

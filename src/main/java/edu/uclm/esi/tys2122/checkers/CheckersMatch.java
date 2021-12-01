@@ -1,6 +1,7 @@
 package edu.uclm.esi.tys2122.checkers;
 
 import java.security.SecureRandom;
+import java.util.Vector;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
@@ -40,6 +41,26 @@ public class CheckersMatch extends Match {
 	@Override
 	public void move(String userId, JSONObject jsoMovimiento) throws Exception {
 
+	}
+	
+	public CheckersPiece[] getAlivePieces(String userId) {
+		
+		String playerColor = this.players.get(0).getId() == userId ? "BLANCO" : "NEGRO";
+		CheckersBoard board = (CheckersBoard) this.getBoard();
+		CheckersSquare[][] squares = board.getSquares();
+		CheckersPiece [] alivePieces = new CheckersPiece[12];
+		int pieceCounter = 0;
+		for (int i = 0 ; i < squares.length ; i++) {
+			for (int j=0; j < squares[0].length; j ++) {
+				if(squares[i][j].getPiece() != null && squares[i][j].getPiece().isAlive() && squares[i][j].getPiece().getColor() == playerColor) {
+					alivePieces[pieceCounter] = squares[i][j].getPiece();
+					pieceCounter++;
+				}
+			}
+		}
+		
+		return alivePieces;
+		
 	}
 	
 	/* Getters And Setters */
