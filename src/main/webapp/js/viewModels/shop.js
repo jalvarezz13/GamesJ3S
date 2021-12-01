@@ -1,10 +1,10 @@
 define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery"], function (ko, app, moduleUtils, accUtils, $) {
-  class LoginViewModel {
+  class ShopViewModel {
     constructor() {
       var self = this;
 
-      self.userName = ko.observable("pepe");
-      self.pwd = ko.observable("pepe123");
+      self.products = ko.observable([]);
+
       self.message = ko.observable();
       self.error = ko.observable();
 
@@ -23,48 +23,25 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
             viewModel: app.getHeaderModel(),
           });
         });
-
-      $.ajax({
-        url: "user/checkCookie",
-        type: "get",
-        success: function (response) {
-          app.router.go({ path: response });
-        },
-      });
-    }
-
-    login() {
-      var self = this;
-      var info = {
-        name: this.userName(),
-        pwd: this.pwd(),
-      };
-      var data = {
-        data: JSON.stringify(info),
-        url: "user/login",
-        type: "post",
-        contentType: "application/json",
-        success: function (response) {
-          app.router.go({ path: "games" });
-        },
-        error: function (response) {
-          self.error(response.res);
-        },
-      };
-      $.ajax(data);
-    }
-
-    resetPassword() {
-      app.router.go({ path: "resetPassword" });
-    }
-
-    register() {
-      app.router.go({ path: "register" });
     }
 
     connected() {
-      accUtils.announce("Login page loaded.");
+      accUtils.announce("Shop page loaded.");
       // document.title = "Login";
+      var self = this;
+      var data = {
+        url: "shop/getProducts",
+        type: "get",
+        contentType: "application/json",
+        success: function (response) {
+          self.products(response);
+          console.log(response);
+        },
+        error: function (response) {
+          self.error(response.responseJSON.errorMessage);
+        },
+      };
+      $.ajax(data);
     }
 
     disconnected() {
@@ -76,5 +53,5 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     }
   }
 
-  return LoginViewModel;
+  return ShopViewModel;
 });

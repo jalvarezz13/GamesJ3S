@@ -19,28 +19,28 @@ import edu.uclm.esi.tys2122.model.User;
 
 @Service
 public class UserService {
-	
+
 	/* Attributes */
-	
+
 	@Autowired
 	private LoginRepository loginDAO;
-	
+
 	@Autowired
 	private UserRepository userRepo;
-	
+
 	@Autowired
 	private TokenRepository tokenRepo;
-	
+
 	private ConcurrentHashMap<String, User> connectedUsers;
-	
+
 	/* Constructors */
-	
+
 	public UserService() {
 		this.connectedUsers = new ConcurrentHashMap<>();
 	}
-	
+
 	/* Functions */
-	
+
 	public void insertLogin(User user, String ip, Cookie cookie) {
 		Login login = new Login();
 		login.setEmail(user.getEmail());
@@ -52,10 +52,17 @@ public class UserService {
 
 	public User doLogin(String name, String pwd, String ip) {
 		User user = userRepo.findByNameAndPwd(name, pwd);
-		if (user==null)
+		if (user == null)
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Credenciales no válidas o cuenta no validada");
-		
+
 		this.connectedUsers.put(user.getId(), user);
+		return user;
+	}
+
+	public User doLogin(String cookieValue) {
+		User user = userRepo.findByCookie(cookieValue);
+		if (user == null)
+			return null;
 		return user;
 	}
 
@@ -64,14 +71,14 @@ public class UserService {
 		Token token = new Token(user.getEmail());
 		tokenRepo.save(token);
 	}
-	
+
 	public User findUser(String userId) {
 		return this.connectedUsers.get(userId);
 	}
-	
+
 	public boolean findUserByEmail(String email) {
 		User user = userRepo.findByEmail(email);
-		if (user==null)
+		if (user == null)
 			return false;
 		return true;
 	}
@@ -82,15 +89,17 @@ public class UserService {
 			Token token = optToken.get();
 			long date = token.getDate();
 			long now = System.currentTimeMillis();
-			if (now>date+24*60*60*1000)
+			if (now > date + 24 * 60 * 60 * 1000)
 				throw new ResponseStatusException(HttpStatus.GONE, "Token caducado");
 			String email = token.getEmail();
 			User user = userRepo.findByEmail(email);
-			if (user!=null) {
+			if (user != null) {
 				user.setConfirmationDate(now);
 				userRepo.save(user);
-			} else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado");
-		} else throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Token " + tokenId + " no encontrado");
+			} else
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado");
+		} else
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Token " + tokenId + " no encontrado");
 	}
 
 }

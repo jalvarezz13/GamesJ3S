@@ -150,8 +150,9 @@ define([ 'knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils',
 			$.ajax(data);
 		}
 
-		showPiece(event){
-			alert(event.chosenPiece());
+		showPiece(){
+			let self = this
+			alert(self.chosenPiece())
 		}
 
 		disconnected() {

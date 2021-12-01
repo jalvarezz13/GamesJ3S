@@ -12,9 +12,14 @@ import edu.uclm.esi.tys2122.model.User;
 public interface UserRepository extends JpaRepository<User, String> {
 
 	public User findByNameAndPwd(String name, String pwd);
+
 	public Optional<User> findByName(String name);
+
 	public User findByEmail(String email);
+
+	public User findByCookie(String cookieValue);
 
 	@Query(value = "DELETE FROM user WHERE temp='YES'", nativeQuery = true)
 	public void deleteTemporalUserDB();
+	
 }

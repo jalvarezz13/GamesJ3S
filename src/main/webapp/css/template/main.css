@@ -549,3 +549,9 @@ iframe {
 
 .grid-games-buttons {
 }
+
+.products {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}

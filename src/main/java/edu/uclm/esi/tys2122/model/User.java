@@ -21,64 +21,65 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import edu.uclm.esi.tys2122.websockets.WrapperSession;
 
 @Entity
-@Table(indexes = {
-	@Index(unique = true, columnList = "email"),
-	@Index(unique = true, columnList = "name"),
-})
+@Table(indexes = { @Index(unique = true, columnList = "email"), @Index(unique = true, columnList = "name"), })
 public class User {
-	
+
 	/* Attributes */
-	
+
 	@Id
 	@Column(length = 36)
 	private String id;
-	
-	@NotBlank
+
+	@NotBlank(message = "El correo electrónico no puede estar vacio.")
 	@Column(length = 100)
 	private String email;
-	
-	@NotBlank
+
+	@NotBlank(message = "El nombre de usuario no puede estar vacío.")
 	@Column(length = 40)
 	private String name;
-	
-	@NotBlank
+
+	@NotBlank(message = "La contraseña no puede estar vacía.")
 	private String pwd;
-	
+
+	@Column(length = 36)
+	private String cookie;
+
 	private String picture;
-	
+
 	private Long confirmationDate;
 
 	private String temp;
-	
+
 	@Transient
 	private WrapperSession session;
-	
+
 	/* Constructors */
-	
+
 	public User() {
 		this.id = UUID.randomUUID().toString();
 	}
-	
+
 	public User(@NotBlank String name, @NotBlank String email, @NotBlank String pwd) {
-		this.id = UUID.randomUUID().toString();;
+		this.id = UUID.randomUUID().toString();
+		;
 		this.email = email;
 		this.name = name;
 		this.pwd = pwd;
 		this.temp = "YES";
 	}
-	
+
 	/* Functions */
-	
+
 	public void setPicture(byte[] picture) {
 		byte[] b64 = Base64.getEncoder().encode(picture);
-		this.picture = new String(b64);	
+		this.picture = new String(b64);
 	}
-	
+
 	public void sendMessage(JSONObject jso) throws IOException {
 		WebSocketSession wsSession = this.session.getWsSession();
 		wsSession.sendMessage(new TextMessage(jso.toString()));
 	}
-	
+
 	/* Getters And Setters */
 
 	public String getId() {
@@ -114,11 +115,12 @@ public class User {
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
-
+	
+	@JsonIgnore
 	public String getPicture() {
 		return picture;
 	}
-	
+
 	public void setPicture(String picture) {
 		this.picture = picture;
 	}
@@ -127,11 +129,20 @@ public class User {
 	public Long getConfirmationDate() {
 		return confirmationDate;
 	}
-	
+
 	public void setConfirmationDate(Long confirmationDate) {
 		this.confirmationDate = confirmationDate;
 	}
-	
+
+	@JsonIgnore
+	public String getCookie() {
+		return cookie;
+	}
+
+	public void setCookie(String cookie) {
+		this.cookie = cookie;
+	}
+
 	@JsonIgnore
 	public WrapperSession getSession() {
 		return session;
@@ -140,5 +151,5 @@ public class User {
 	public void setSession(WrapperSession session) {
 		this.session = session;
 	}
-	
+
 }

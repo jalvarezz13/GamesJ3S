@@ -133,7 +133,7 @@
               <button class="button-games" data-bind="click : function() { $parent.reload($data); }">Recargar
                 partida</button>
               <br/>
-              <select data-bind="options: $parent.pieces, selectedOptions:$parent.chosenPiece, event:{ change: $parent.showPiece}"></select>
+              <select data-bind="options: $parent.pieces, selectedOptions:$parent.chosenPiece, event:{ change: function() { $parent.showPiece()} }"></select>
             </li>
             <!-- /ko -->
           </ol>

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import edu.uclm.esi.tys2122.dao.UserRepository;
 import edu.uclm.esi.tys2122.model.Email;
 import edu.uclm.esi.tys2122.model.User;
 import edu.uclm.esi.tys2122.services.UserService;
@@ -34,7 +35,31 @@ public class UserController extends CookiesController {
 	@Autowired
 	private UserService userService;
 
+	@Autowired
+	private UserRepository userRepo;
+
 	/* Routes */
+
+	@GetMapping(value = "/checkCookie")
+	public String checkCookie(HttpServletRequest request, HttpServletResponse response) {
+		Cookie cookie = super.findCookie(request.getCookies());
+		if (cookie != null) {
+//			super.incrementarContador(request, response);
+			User user = userService.doLogin(cookie.getValue());
+			if (user != null) {
+				userService.insertLogin(user, request.getRemoteAddr(), cookie);
+				request.getSession().setAttribute("user", user);
+				return "games";
+//				try {
+//					response.sendRedirect("http://localhost/?ojr=games");
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+			}
+		}
+		return null;
+	}
 
 	@PostMapping(value = "/login")
 	public void login(HttpServletRequest request, HttpServletResponse response, @RequestBody Map<String, Object> credenciales) {
@@ -46,6 +71,8 @@ public class UserController extends CookiesController {
 		User user = userService.doLogin(name, pwd, ip);
 
 		Cookie cookie = readOrCreateCookie(request, response);
+		user.setCookie(cookie.getValue());
+		userRepo.save(user);
 		userService.insertLogin(user, ip, cookie);
 		request.getSession().setAttribute("user", user);
 	}

@@ -64,6 +64,10 @@ define([
         detail: { label: "Juegos", iconClass: "oj-ux-ico-game-controller" },
       },
       {
+        path: "shop",
+        detail: { label: "Tienda", iconClass: "oj-ux-ico-cart-empty" },
+      },
+      {
         path: "about",
         detail: { label: "Sobre Nosotros", iconClass: "oj-ux-ico-information" },
       },
@@ -82,6 +86,10 @@ define([
       {
         path: "games",
         detail: { label: "Juegos", iconClass: "oj-ux-ico-game-controller" },
+      },
+      {
+        path: "shop",
+        detail: { label: "Tienda", iconClass: "oj-ux-ico-cart-empty" },
       },
       {
         path: "about",
