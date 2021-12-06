@@ -1,5 +1,12 @@
 package edu.uclm.esi.tys2122.http;
 
+import java.security.SecureRandom;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,21 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.servlet.http.HttpSession;
-import java.security.SecureRandom;
-import java.util.List;
-import java.util.Map;
-import org.json.JSONObject;
-
+import edu.uclm.esi.tys2122.checkers.CheckersBoard;
 import edu.uclm.esi.tys2122.checkers.CheckersMatch;
 import edu.uclm.esi.tys2122.checkers.CheckersPiece;
-import edu.uclm.esi.tys2122.dao.UserRepository;
 import edu.uclm.esi.tys2122.model.Game;
 import edu.uclm.esi.tys2122.model.Match;
 import edu.uclm.esi.tys2122.model.User;
 import edu.uclm.esi.tys2122.services.GamesService;
 import edu.uclm.esi.tys2122.services.UserService;
-import edu.uclm.esi.tys2122.websockets.WrapperSession;
 
 @RestController
 @RequestMapping("games")
@@ -34,7 +34,7 @@ public class GamesController extends CookiesController {
 
 	@Autowired
 	private GamesService gamesService;
-	
+
 	@Autowired
 	private UserService userService;
 
@@ -49,7 +49,7 @@ public class GamesController extends CookiesController {
 	public Match joinGame(HttpSession session, @PathVariable String header) {
 		String gameName = header.split("&")[0];
 		String tempName = header.split("&")[1];
-		
+
 		User user;
 		if (session.getAttribute("user") != null) {
 			user = (User) session.getAttribute("user");
@@ -61,7 +61,7 @@ public class GamesController extends CookiesController {
 			userService.save(user);
 			session.setAttribute("user", user);
 		}
-		
+
 		Manager.get().add(session);
 
 		Game game = Manager.get().findGame(gameName);
@@ -95,12 +95,31 @@ public class GamesController extends CookiesController {
 	public Match findMatch(@PathVariable String matchId) {
 		return gamesService.getMatch(matchId);
 	}
-	
+
 	@GetMapping("/updateAlivePieces/{matchId}")
-	public CheckersPiece[] updateAlivePieces(@PathVariable String matchId,HttpSession session ) {
+	public CheckersPiece[] updateAlivePieces(@PathVariable String matchId, HttpSession session) {
 		User user = (User) session.getAttribute("user");
 		CheckersMatch match = (CheckersMatch) gamesService.getMatch(matchId);
 		return match.getAlivePieces(user.getId());
+	}
+
+	@PostMapping("/showPossibleMovements")
+	public Match showPossibleMovements(@RequestBody Map<String, Object> pieceInfo) {
+		JSONObject jso = new JSONObject(pieceInfo);
+		CheckersMatch match = (CheckersMatch) gamesService.getMatch(jso.getString("matchId"));
+		CheckersBoard boardUpdate = match.getPossibleMovements((String) jso.get("pieceId"), (String) jso.get("pieceColor"));
+
+		CheckersMatch auxMatch = new CheckersMatch();
+		auxMatch.setId(match.getId());
+		auxMatch.setBoard(boardUpdate);
+		auxMatch.setPlayers(match.getPlayers());
+		auxMatch.setPlayerWithTurn(match.getPlayerWithTurn());
+		auxMatch.setReady(match.isReady());
+		auxMatch.setWinner(match.getWinner());
+		auxMatch.setLooser(match.getLooser());
+		auxMatch.setDraw(match.isDraw());
+
+		return auxMatch;
 	}
 
 	/* Functions */

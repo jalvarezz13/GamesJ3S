@@ -150,13 +150,39 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       //   Mirar que pasa si se juegan varios juegos a ver si se rellena dos veces las piezas o se sobreescribe
     }
 
-    showPiece() {
+    showPossibleMovements(match) {
       let self = this;
-      alert(self.chosenPiece());
+      if (self.chosenPiece() != "Seleccione...") {
+        let info = {
+          matchId: match.id,
+          pieceId: self.chosenPiece().toString().split(" ")[0],
+          pieceColor: self.chosenPiece().toString().split(" ")[1],
+        };
+        let data = {
+          type: "post",
+          url: "/games/showPossibleMovements",
+          data: JSON.stringify(info),
+          contentType: "application/json",
+          success: function (response) {
+            for (let i = 0; i < self.matches().length; i++)
+              if (self.matches()[i].id == match.id) {
+                self.matches.splice(i, 1, response);
+                break;
+              }
+            console.log(JSON.stringify(response));
+          },
+          error: function (response) {
+            console.error(JSON.stringify(response));
+            self.error(response.responseJSON.errorMessage);
+          },
+        };
+        $.ajax(data);
+      }
     }
 
     parsePieces(response) {
       let alivePieces = [];
+      alivePieces.push(`Seleccione...`);
       response.map((Piece) => {
         let { id, color } = Piece;
         alivePieces.push(`${id} ${color}`);

@@ -24,7 +24,7 @@ public class CheckersBoard extends Board {
 				int[] id = { i, j };
 				this.squares[i][j].setId(id);
 
-				if (i%2 == 0) {
+				if (i % 2 == 0) {
 					this.squares[i][j].setColor(squareColorPair);
 					squareColorPair = squareColorPair == "NEGRO" ? "BLANCO" : "NEGRO";
 				} else {
@@ -32,9 +32,20 @@ public class CheckersBoard extends Board {
 					squareColorOdd = squareColorOdd == "NEGRO" ? "BLANCO" : "NEGRO";
 				}
 
+				if (i == 0) {
+					this.squares[i][j].setUpperBorder(true);
+				}
 
-				if (i == 0 || i == squares.length - 1 || j == 0 || j == squares.length - 1) {
-					this.squares[i][j].setBorder(true);
+				if (i == squares.length - 1) {
+					this.squares[i][j].setBottomBorder(true);
+				}
+				
+				if (j == 0) {
+					this.squares[i][j].setLeftBorder(true);
+				}
+				
+				if (j == squares.length - 1) {
+					this.squares[i][j].setRightBorder(true);
 				}
 
 				if (i == 0 || i == squares.length - 1) {
@@ -45,10 +56,10 @@ public class CheckersBoard extends Board {
 					CheckersPiece auxPiece = new CheckersPiece();
 					auxPiece.setColor(pieceColor);
 					pieceColor = counter == 12 ? "NEGRO" : pieceColor;
-										
+
 					auxPiece.setId(counter);
-					counter = counter < 12 ? counter+1 : 1;
-					
+					counter = counter < 12 ? counter + 1 : 1;
+
 					this.squares[i][j].setPiece(auxPiece);
 				}
 			}
