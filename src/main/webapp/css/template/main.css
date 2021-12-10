@@ -555,3 +555,37 @@ iframe {
   flex-direction: column;
   text-align: center;
 }
+
+.ButtonContainer .DirectionButton {
+  width: 50px;
+  height: 50px;
+}
+
+.ButtonContainer .DirectionButtonLeftUp .fa-arrow-circle-o-left {
+  font-size: 50px;
+  color: white;
+  transform: rotate(45deg);
+}
+
+.ButtonContainer .DirectionButtonRigthUp .fa-arrow-circle-o-left {
+  font-size: 50px;
+  color: white;
+  transform: rotate(135deg);
+}
+
+.ButtonContainer .DirectionButtonRigthDown .fa-arrow-circle-o-left {
+  font-size: 50px;
+  color: white;
+  transform: rotate(-45deg);
+}
+
+.ButtonContainer .DirectionButtonLeftDown .fa-arrow-circle-o-left {
+  font-size: 50px;
+  color: white;
+  transform: rotate(-135deg);
+}
+
+.ButtonContainer .DirectionButtonRefresh .fa-refresh {
+  font-size: 45px;
+  color: white;
+}

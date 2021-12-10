@@ -41,7 +41,7 @@
 
             <ol class="ol-games">
               <!-- ko if: matches().length > 0 -->
-              <span class="login100-form-title p-t-40 p-b-20"> Partidas </span>
+              <span class="login100-form-title p-t-40px p-b-20"> Partidas </span>
               <!-- /ko -->
               <!-- ko foreach : matches -->
               <li class="match-style m-b-20">
@@ -82,65 +82,93 @@
                 <br />
                 <!-- /ko -->
                 <!-- /ko -->
+                <br />
+                <input data-bind="value : $parent.x" type="number" size="1" placeholder="X" />
+                <input data-bind="value: $parent.y" type="number" size="1" placeholder="Y" />
+                <button class="button-games" data-bind="click: function() { $parent.mover($data); }">Mover</button>
+                <button class="button-games" data-bind="click : function() { $parent.reload($data); }">Recargar partida</button>
                 <!-- /ko -->
 
                 <!-- ko if : game == "CheckersMatch" -->
                 <!-- ko with : board -->
                 <table>
                   <!-- ko foreach : squares -->
-                  <tr width="50" height="50">
+                  <tr width="50px" height="50px">
                     <!-- ko foreach : $data -->
-                      <!-- ko if : $data.color == "NEGRO" -->
-                        <td style="background-color: brown">
-                          <!-- ko if : $data.piece != null -->
-                          <!-- ko if : $data.piece.color == "NEGRO" -->
-                          <img width="40" height="40" src="css/images/peonNegra.png" />
-                          <!-- /ko -->
-                          <!-- ko if : $data.piece.color == "BLANCO" -->
-                          <img width="40" height="40" src="css/images/peonBlanca.png" />
-                          <!-- /ko -->
-                          <!-- /ko -->
-                        </td>
+                    <!-- ko if : $data.color == "NEGRO" -->
+                    <td style="background-color: brown">
+                      <!-- ko if : $data.piece != null -->
+                      <!-- ko if : $data.piece.color == "NEGRO" -->
+                      <img width="40px" height="40px" src="css/images/peonNegra.png" />
                       <!-- /ko -->
-                      <!-- ko if : $data.color == "BLANCO" -->
-                        <td style="background-color: white">
-                          <!-- ko if : $data.piece != null -->
-                          <!-- ko if : $data.piece.color == "NEGRO" -->
-                          <img width="40" height="40" src="css/images/peonNegra.png" />
-                          <!-- /ko -->
-                          <!-- ko if : $data.piece.color == "BLANCO" -->
-                          <img width="40" height="40" src="css/images/peonBlanca.png" />
-                          <!-- /ko -->
-                          <!-- /ko -->
-                        </td>
+                      <!-- ko if : $data.piece.color == "BLANCO" -->
+                      <img width="40px" height="40px" src="css/images/peonBlanca.png" />
                       <!-- /ko -->
-                      <!-- ko if : $data.color == "VERDE" -->
-                        <td style="background-color: lightgreen !important">
-                          <!-- ko if : $data.piece != null -->
-                          <!-- ko if : $data.piece.color == "NEGRO" -->
-                          <img width="40" height="40" src="css/images/peonNegra.png" />
-                          <!-- /ko -->
-                          <!-- ko if : $data.piece.color == "BLANCO" -->
-                          <img width="40" height="40" src="css/images/peonBlanca.png" />
-                          <!-- /ko -->
-                          <!-- /ko -->
-                        </td>
                       <!-- /ko -->
+                    </td>
+                    <!-- /ko -->
+                    <!-- ko if : $data.color == "BLANCO" -->
+                    <td style="background-color: white">
+                      <!-- ko if : $data.piece != null -->
+                      <!-- ko if : $data.piece.color == "NEGRO" -->
+                      <img width="40px" height="40px" src="css/images/peonNegra.png" />
+                      <!-- /ko -->
+                      <!-- ko if : $data.piece.color == "BLANCO" -->
+                      <img width="40px" height="40px" src="css/images/peonBlanca.png" />
+                      <!-- /ko -->
+                      <!-- /ko -->
+                    </td>
+                    <!-- /ko -->
+                    <!-- ko if : $data.color == "VERDE" -->
+                    <td style="background-color: lightgreen !important">
+                      <!-- ko if : $data.piece != null -->
+                      <!-- ko if : $data.piece.color == "NEGRO" -->
+                      <img width="40px" height="40px" src="css/images/peonNegra.png" />
+                      <!-- /ko -->
+                      <!-- ko if : $data.piece.color == "BLANCO" -->
+                      <img width="40px" height="40px" src="css/images/peonBlanca.png" />
+                      <!-- /ko -->
+                      <!-- /ko -->
+                    </td>
+                    <!-- /ko -->
                     <!-- /ko -->
                   </tr>
                   <!-- /ko -->
                 </table>
                 <!-- /ko -->
+
+                <div class="ButtonContainer">
+                  <select
+                    data-bind="options: $parent.pieces, selectedOptions:$parent.chosenPiece, event:{ change: function() { $parent.showPossibleMovements($data)} }"
+                  ></select>
+
+                  <button data-bind="click: function() { $parent.mover($data); }" class="DirectionButtonLeftUp">
+                    <i class="fa fa-arrow-circle-o-left"></i>
+                  </button>
+
+                  <button data-bind="click: function() { $parent.mover($data); }" class="DirectionButtonRigthUp">
+                    <i class="fa fa-arrow-circle-o-left"></i>
+                  </button>
+
+                  <button data-bind="click: function() { $parent.mover($data); }" class="DirectionButtonRigthDown">
+                    <i class="fa fa-arrow-circle-o-left"></i>
+                  </button>
+
+                  <button data-bind="click: function() { $parent.mover($data); }" class="DirectionButtonLeftDown">
+                    <i class="fa fa-arrow-circle-o-left"></i>
+                  </button>
+
+                  <button data-bind="click : function() { $parent.reload($data); }" class="DirectionButtonRefresh">
+                    <i class="fa fa-refresh"></i>
+                  </button>
+                </div>
+
                 <!-- /ko -->
 
                 <br />
 
-                <input data-bind="value : $parent.x" type="number" size="1" placeholder="X" />
-                <input data-bind="value: $parent.y" type="number" size="1" placeholder="Y" />
-                <button class="button-games" data-bind="click: function() { $parent.mover($data); }">Mover</button>
-                <button class="button-games" data-bind="click : function() { $parent.reload($data); }">Recargar partida</button>
                 <br />
-                <select data-bind="options: $parent.pieces, selectedOptions:$parent.chosenPiece, event:{ change: function() { $parent.showPossibleMovements($data)} }"></select>
+
                 <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : $parent.error" style="color: red"></div>
               </li>
               <!-- /ko -->

@@ -8,9 +8,6 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       self.error = ko.observable(null);
       self.tempName = ko.observable(null);
 
-      self.x = ko.observable(null);
-      self.y = ko.observable(null);
-
       self.pieces = ko.observableArray([]);
       self.chosenPiece = ko.observableArray([]);
 
@@ -51,7 +48,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       $.ajax(data);
     }
 
-    mover(match) {
+    mover(match, movement) {
       let self = this;
       let info = {
         x: this.x(),
