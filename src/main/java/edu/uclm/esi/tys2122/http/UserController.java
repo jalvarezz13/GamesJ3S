@@ -64,6 +64,20 @@ public class UserController extends CookiesController {
 	@PostMapping(value = "/login")
 	public void login(HttpServletRequest request, HttpServletResponse response, @RequestBody Map<String, Object> credenciales) {
 		JSONObject jso = new JSONObject(credenciales);
+		if (jso.optString("type").length() > 0) {
+			googleLogin(request, response, jso);
+		} else {
+			classicLogin(request, response, jso);
+		}
+
+	}
+
+	private void googleLogin(HttpServletRequest request, HttpServletResponse response, JSONObject jso) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void classicLogin(HttpServletRequest request, HttpServletResponse response, JSONObject jso) {
 		String name = jso.getString("name");
 		String pwd = jso.getString("pwd");
 		String ip = request.getRemoteAddr();

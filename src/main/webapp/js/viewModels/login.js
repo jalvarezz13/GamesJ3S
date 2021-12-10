@@ -33,12 +33,22 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       });
     }
 
-    login() {
+    login(googleUser) {
       var self = this;
-      var info = {
-        name: this.userName(),
-        pwd: this.pwd(),
-      };
+      var info;
+      if (googleUser) {
+        info = {
+          name = googleUser.getBasicProfile.getName(),
+          email = googleUser.getBasicProfile.getEmail(),
+          id = googleUser.getBasicProfile.getId(),
+          type = google,
+        }
+      } else {
+        info = {
+          name: this.userName(),
+          pwd: this.pwd(),
+        };
+      }
       var data = {
         data: JSON.stringify(info),
         url: "user/login",
@@ -65,6 +75,25 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     connected() {
       accUtils.announce("Login page loaded.");
       // document.title = "Login";
+
+      let divGoogle = document.createElement("div");
+      divGoogle.setAttribute("id", "my-signin2");
+      document.getElementById("zonaGoogle").appendChild(divGoogle);
+      gapi.signin2.render("my-signin2", {
+        scope: "profile email",
+        width: 150,
+        height: 50,
+        longtitle: false,
+        theme: "dark",
+        onsuccess: function (googleUser) {
+          localStorage.login3rd = true;
+          self.login(googleUser)
+        },
+        onfailure: function (error) {
+          alert(error);
+          console.log(error);
+        },
+      });
     }
 
     disconnected() {

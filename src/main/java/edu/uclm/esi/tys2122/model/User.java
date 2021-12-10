@@ -50,6 +50,7 @@ public class User {
 
 	private String temp;
 
+	private String type;
 	@Transient
 	private WrapperSession session;
 
@@ -151,5 +152,15 @@ public class User {
 	public void setSession(WrapperSession session) {
 		this.session = session;
 	}
+	
+	@JsonIgnore
+	public String getType() {
+		return type;
+	}
 
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	
 }

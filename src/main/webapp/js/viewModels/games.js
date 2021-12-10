@@ -50,11 +50,22 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
 
     mover(match, movement) {
       let self = this;
-      let info = {
-        x: this.x(),
-        y: this.y(),
-        matchId: match.id,
-      };
+      let info;
+
+      if (match.game == "TictactoeMatch") {
+        info = {
+          x: this.x(),
+          y: this.y(),
+          matchId: match.id,
+        };
+      } else {
+        info = {
+          pieceId: self.chosenPiece().toString().split(" ")[0],
+          pieceColor: self.chosenPiece().toString().split(" ")[1],
+          movement: movement,
+          matchId: match.id,
+        };
+      }
       let data = {
         type: "post",
         url: "/games/move",
