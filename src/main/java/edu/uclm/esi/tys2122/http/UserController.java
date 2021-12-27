@@ -2,6 +2,7 @@ package edu.uclm.esi.tys2122.http;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -92,17 +93,46 @@ public class UserController extends CookiesController {
 	}
 
 	@PostMapping(value = "/resetPassword")
-	public String resetPassword(HttpServletRequest request, HttpServletResponse response, @RequestBody Map<String, Object> credenciales) {
+	public String resetPassword(HttpServletRequest request, @RequestBody Map<String, Object> credenciales) {
+		sendEmail(credenciales, "recovery");
+		return "Te hemos enviado un mensaje para recuperar tu contraseña";
+	}
+	
+	@PostMapping(value = "/changePassword")
+	public String resetPasswordToken(HttpServletRequest request, @RequestBody Map<String, Object> credenciales) {
+		
+		JSONObject jso = new JSONObject(credenciales);
+		String token = jso.getString("token");
+		String newPass = jso.getString("newPass");
+		String newPass2 = jso.getString("newPass2");
+		
+		System.out.println(token);
+		System.out.println(newPass);
+		System.out.println(newPass2);
+		return "Se ha recuperado tu contraseña satisfactoria";
+	}
+
+	private void sendEmail(Map<String, Object> credenciales, String type) {
+		JSONObject applicationData = Manager.get().getConfiguration();
+		JSONObject emailDefaultData = Manager.get().getConfiguration().getJSONObject("email");
+		
 		JSONObject jso = new JSONObject(credenciales);
 		String email = jso.getString("email");
 
 		if (userService.findUserByEmail(email)) {
 			Email auxEmail = new Email();
-			auxEmail.send(email, "Recuperación de contraseña", "Para recuperar tu contraseña pulsa aquí: https://www.chollometro.com/");
+			switch(type) {
+			case "register":
+				auxEmail.send(email, (String) emailDefaultData.get("registerMsgTopic"),(String)  emailDefaultData.get("registerMsgContent"));
+				break;
+			case "recovery":
+				String auxToken = UUID.randomUUID().toString();
+				auxEmail.send(email, (String) emailDefaultData.get("recoveryMsgTopic"),(String)  emailDefaultData.get("recoveryMsgContent")+ (String) applicationData.get("home")+ "/" +(String) applicationData.get("changePassword")+"/?token="+auxToken);
+				break;
+			}
 		} else {
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No existe ningún usuario con ese correo");
 		}
-		return "Te hemos enviado un mensaje para recuperar tu contraseña";
 	}
 
 	@PutMapping("/register")
@@ -127,6 +157,9 @@ public class UserController extends CookiesController {
 			user.setPicture(picture);
 
 			userService.save(user);
+			
+			sendEmail(credenciales, "register");
+			
 			return "Registro completado exitosamente";
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: El usuario ya existe");

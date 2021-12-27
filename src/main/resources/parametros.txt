@@ -1,15 +1,23 @@
 {
 	"home" : "http://localhost",
 	"login" : "?ojr=login",
-	
+	"register":"?ojr=register",
+	"resetPassword":"?ojr=resetPassword",
+	"changePassword":"?ojr=changePassword",
+	"games":"?ojr=games",
+	"about":"?ojr=about",
 	"email" : {
 		"host" : "smtp.gmail.com",
 		"startTTLS" : "true",
 		"port" : "587",
-		"sender" : "usuario@gmail.com",
-		"serverUser" : "usuario@gmail.com",
+		"sender" : "juegostysw@gmail.com",
+		"serverUser" : "juegostysw@gmail.com",
 		"auth" : "true",
-		"pwd" : "******",
-		"fallback" : "false"
-	}	
+		"pwd" : "juegostsw",
+		"fallback" : "true",
+		"registerMsgTopic": "Registro de cuenta",
+		"registerMsgContent" : "Tu cuenta se ha creado correctamente en JuegosTYSW",
+		"recoveryMsgTopic": "Recuperación de contraseña",
+		"recoveryMsgContent" : "Para recuperar tu contraseña pulsa aquí: "
+	},	
 }

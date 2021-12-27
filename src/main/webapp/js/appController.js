@@ -35,9 +35,7 @@ define([
     self.manner = ko.observable("polite");
     self.message = ko.observable();
 
-    document
-      .getElementById("globalBody")
-      .addEventListener("announce", announcementHandler, false);
+    document.getElementById("globalBody").addEventListener("announce", announcementHandler, false);
 
     function announcementHandler(event) {
       setTimeout(function () {
@@ -84,13 +82,16 @@ define([
         detail: { label: "Juegos", iconClass: "oj-ux-ico-game-controller" },
       },
       {
-      {
         path: "about",
         detail: { label: "Sobre Nosotros", iconClass: "oj-ux-ico-information" },
       },
       {
         path: "resetPassword",
         detail: { label: "Recuperar contraseña", iconClass: "oj-ux-ico-log-in" },
+      },
+      {
+        path: "changePassword",
+        detail: { label: "Cambiar contraseña", iconClass: "oj-ux-ico-log-in" },
       },
     ];
     // Router setup
@@ -133,15 +134,9 @@ define([
     // can also adjust content paddings with css classes if the fixed region height is not changing between
     // views.
     self.adjustContentPadding = function () {
-      var topElem = document.getElementsByClassName(
-        "oj-applayout-fixed-top"
-      )[0];
-      var contentElem = document.getElementsByClassName(
-        "oj-applayout-content"
-      )[0];
-      var bottomElem = document.getElementsByClassName(
-        "oj-applayout-fixed-bottom"
-      )[0];
+      var topElem = document.getElementsByClassName("oj-applayout-fixed-top")[0];
+      var contentElem = document.getElementsByClassName("oj-applayout-content")[0];
+      var bottomElem = document.getElementsByClassName("oj-applayout-fixed-bottom")[0];
 
       if (topElem) {
         contentElem.style.paddingTop = topElem.offsetHeight + "px";
