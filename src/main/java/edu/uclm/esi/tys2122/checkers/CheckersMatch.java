@@ -21,6 +21,7 @@ public class CheckersMatch extends Match {
 	@OneToOne
 	private User looser;
 	private boolean draw;
+	private boolean[] possibleMovements = { false, false, false, false }; // TODO
 
 	/* Functions */
 
@@ -33,16 +34,26 @@ public class CheckersMatch extends Match {
 	protected void checkReady() {
 		this.ready = this.players.size() == 2;
 		if (this.ready) {
-			this.playerWithTurn = new SecureRandom().nextBoolean() ? this.players.get(0) : this.players.get(1);
+			this.playerWithTurn = this.players.get(0);
 			super.notifyOponents("MATCH READY");
 		}
 	}
 
 	@Override
 	public void move(String userId, JSONObject movementData) throws Exception {
-		CheckersSquare actualSquare = getSquareByPiece(movementData.getString("pieceId"), movementData.getString("pieceColor"));
-		int[] nextSquare = calculateNextSquare(actualSquare.getId(), movementData.getString("pieceColor"), movementData.getString("movement"));
+		if (!this.getPlayerWithTurn().getId().equals(userId))
+			throw new Exception("No es tu turno");
+
+		CheckersSquare actualSquare = getSquareByPiece(movementData.getString("pieceId"),
+				movementData.getString("pieceColor"));
+		int[] nextSquare = calculateNextSquare(actualSquare.getId(), movementData.getString("pieceColor"),
+				movementData.getString("movement"));
 		changeMatch(actualSquare.getId(), nextSquare);
+
+		this.playerWithTurn = this.getPlayerWithTurn() == this.getPlayers().get(0) ? this.getPlayers().get(1)
+				: this.getPlayers().get(0);
+		super.notifyOponents("MATCH UPDATE");
+		;
 	}
 
 	private void changeMatch(int[] actualSquare, int[] nextSquare) {
@@ -57,21 +68,21 @@ public class CheckersMatch extends Match {
 		int[] nextSquare = new int[2];
 		if (pieceColor.equals("BLANCO")) {
 			switch (movement) {
-			case "leftUp":
-				nextSquare[0] = actualSquare[0] + 1;
-				nextSquare[1] = actualSquare[1] + 1;
-			case "rightUp":
-				nextSquare[0] = actualSquare[0] + 1;
-				nextSquare[1] = actualSquare[1] - 1;
+				case "leftUp":
+					nextSquare[0] = actualSquare[0] + 1;
+					nextSquare[1] = actualSquare[1] + 1;
+				case "rightUp":
+					nextSquare[0] = actualSquare[0] + 1;
+					nextSquare[1] = actualSquare[1] - 1;
 			}
 		} else {
 			switch (movement) {
-			case "leftUp":
-				nextSquare[0] = actualSquare[0] - 1;
-				nextSquare[1] = actualSquare[1] - 1;
-			case "rightUp":
-				nextSquare[0] = actualSquare[0] - 1;
-				nextSquare[1] = actualSquare[1] + 1;
+				case "leftUp":
+					nextSquare[0] = actualSquare[0] - 1;
+					nextSquare[1] = actualSquare[1] - 1;
+				case "rightUp":
+					nextSquare[0] = actualSquare[0] - 1;
+					nextSquare[1] = actualSquare[1] + 1;
 			}
 		}
 		return nextSquare;
@@ -86,7 +97,8 @@ public class CheckersMatch extends Match {
 		int pieceCounter = 0;
 		for (int i = 0; i < squares.length; i++) {
 			for (int j = 0; j < squares[0].length; j++) {
-				if (squares[i][j].getPiece() != null && squares[i][j].getPiece().isAlive() && squares[i][j].getPiece().getColor().equals(playerColor)) {
+				if (squares[i][j].getPiece() != null && squares[i][j].getPiece().isAlive()
+						&& squares[i][j].getPiece().getColor().equals(playerColor)) {
 					alivePieces[pieceCounter] = squares[i][j].getPiece();
 					pieceCounter++;
 				}
@@ -102,7 +114,8 @@ public class CheckersMatch extends Match {
 		CheckersSquare[][] squares = board.getSquares();
 		for (int i = 0; i < squares.length; i++) {
 			for (int j = 0; j < squares[0].length; j++) {
-				if (squares[i][j].getPiece() != null && squares[i][j].getPiece().getId() == Integer.parseInt(pieceId) && squares[i][j].getPiece().getColor().equals(pieceColor)) {
+				if (squares[i][j].getPiece() != null && squares[i][j].getPiece().getId() == Integer.parseInt(pieceId)
+						&& squares[i][j].getPiece().getColor().equals(pieceColor)) {
 					return squares[i][j];
 				}
 			}
@@ -125,9 +138,13 @@ public class CheckersMatch extends Match {
 				CheckersSquare auxSquare;
 				int[] auxId = { i, j };
 				if (isTarget(targetSquares, auxId) && squares[i][j].getPiece() == null) {
-					auxSquare = new CheckersSquare(squares[i][j].getId(), "VERDE", squares[i][j].isUpperBorder(), squares[i][j].isLeftBorder(), squares[i][j].isRightBorder(), squares[i][j].isBottomBorder(), squares[i][j].isCoronate(), squares[i][j].getPiece());
+					auxSquare = new CheckersSquare(squares[i][j].getId(), "VERDE", squares[i][j].isUpperBorder(),
+							squares[i][j].isLeftBorder(), squares[i][j].isRightBorder(), squares[i][j].isBottomBorder(),
+							squares[i][j].isCoronate(), squares[i][j].getPiece());
 				} else {
-					auxSquare = new CheckersSquare(squares[i][j].getId(), squares[i][j].getColor(), squares[i][j].isUpperBorder(), squares[i][j].isLeftBorder(), squares[i][j].isRightBorder(), squares[i][j].isBottomBorder(), squares[i][j].isCoronate(), squares[i][j].getPiece());
+					auxSquare = new CheckersSquare(squares[i][j].getId(), squares[i][j].getColor(),
+							squares[i][j].isUpperBorder(), squares[i][j].isLeftBorder(), squares[i][j].isRightBorder(),
+							squares[i][j].isBottomBorder(), squares[i][j].isCoronate(), squares[i][j].getPiece());
 				}
 				auxSquares[i][j] = auxSquare;
 			}
@@ -168,6 +185,14 @@ public class CheckersMatch extends Match {
 
 	public void setDraw(boolean draw) {
 		this.draw = draw;
+	}
+
+	public boolean[] getPossibleMovements() {
+		return possibleMovements;
+	}
+
+	public void setPossibleMovements(boolean[] possibleMovements) {
+		this.possibleMovements = possibleMovements;
 	}
 
 }

@@ -8,6 +8,8 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       self.message = ko.observable();
       self.error = ko.observable();
 
+      self.googleUser = undefined;
+
       // Header Config
       self.headerConfig = ko.observable({
         view: [],
@@ -33,16 +35,16 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       });
     }
 
-    login(googleUser) {
+    login() {
       var self = this;
       var info;
-      if (googleUser) {
+      if (self.googleUser) {
         info = {
-          name = googleUser.getBasicProfile.getName(),
-          email = googleUser.getBasicProfile.getEmail(),
-          id = googleUser.getBasicProfile.getId(),
-          type = google,
-        }
+          name: self.googleUser.getBasicProfile.getName(),
+          email: self.googleUser.getBasicProfile.getEmail(),
+          id: self.googleUser.getBasicProfile.getId(),
+          type: "google",
+        };
       } else {
         info = {
           name: this.userName(),
@@ -85,13 +87,15 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         height: 50,
         longtitle: false,
         theme: "dark",
-        onsuccess: function (googleUser) {
+        onsuccess: function (response) {
+          self.googleUser = response;
           localStorage.login3rd = true;
-          self.login(googleUser)
+          self.login();
         },
         onfailure: function (error) {
           alert(error);
           console.log(error);
+          self.googleUser = undefined;
         },
       });
     }
