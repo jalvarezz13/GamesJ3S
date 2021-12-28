@@ -63,7 +63,8 @@ public class UserController extends CookiesController {
 	}
 
 	@PostMapping(value = "/login")
-	public void login(HttpServletRequest request, HttpServletResponse response, @RequestBody Map<String, Object> credenciales) {
+	public void login(HttpServletRequest request, HttpServletResponse response,
+			@RequestBody Map<String, Object> credenciales) {
 		JSONObject jso = new JSONObject(credenciales);
 		if (jso.optString("type").length() > 0) {
 			googleLogin(request, response, jso);
@@ -75,7 +76,7 @@ public class UserController extends CookiesController {
 
 	private void googleLogin(HttpServletRequest request, HttpServletResponse response, JSONObject jso) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private void classicLogin(HttpServletRequest request, HttpServletResponse response, JSONObject jso) {
@@ -97,42 +98,43 @@ public class UserController extends CookiesController {
 		sendEmail(credenciales, "recovery");
 		return "Te hemos enviado un mensaje para recuperar tu contraseña";
 	}
-	
+
 	@PostMapping(value = "/changePassword")
 	public String resetPasswordToken(HttpServletRequest request, @RequestBody Map<String, Object> credenciales) {
 		try {
-				JSONObject jso = new JSONObject(credenciales);
-				String token = jso.getString("token");
-				String newPass = jso.getString("newPass");
-				String newPass2 = jso.getString("newPass2");
-				
-				if(!newPass.equals(newPass2))
-					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");					
-						
-		}catch(Exception e) {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ambos campos son obligatorios");
-		}			
-		
+			JSONObject jso = new JSONObject(credenciales);
+			String token = jso.getString("token");
+			String newPass = jso.getString("newPass");
+			String newPass2 = jso.getString("newPass2");
+
+			if (!newPass.equals(newPass2))
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
+
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ambos campos son obligatorios");
+		}
+
 		return "Se ha recuperado tu contraseña satisfactoria";
 	}
 
 	private void sendEmail(Map<String, Object> credenciales, String type) {
 		JSONObject applicationData = Manager.get().getConfiguration();
 		JSONObject emailDefaultData = Manager.get().getConfiguration().getJSONObject("email");
-		
+
 		JSONObject jso = new JSONObject(credenciales);
 		String email = jso.getString("email");
 
 		if (userService.findUserByEmail(email)) {
 			Email auxEmail = new Email();
-			switch(type) {
+			switch (type) {
 			case "register":
-				auxEmail.send(email, (String) emailDefaultData.get("registerMsgTopic"),(String)  emailDefaultData.get("registerMsgContent"));
+				auxEmail.send(email, (String) emailDefaultData.get("registerMsgTopic"),
+						(String) emailDefaultData.get("registerMsgContent"));
 				break;
 			case "recovery":
 				String auxToken = UUID.randomUUID().toString();
-				auxEmail.send(email, (String) emailDefaultData.get("recoveryMsgTopic"),(String)  emailDefaultData.get("recoveryMsgContent")+ (String) applicationData.get("home")+ "/" +(String) applicationData.get("changePassword")+"/"+auxToken);
-				System.out.println(auxToken + " " + email);
+				auxEmail.send(email, (String) emailDefaultData.get("recoveryMsgTopic"),
+						(String) emailDefaultData.get("recoveryMsgContent") + (String) applicationData.get("home") + "/" + (String) applicationData.get("changePassword") + "/" + auxToken);
 				userRepo.setTokenByEmail(auxToken, email);
 				break;
 			}
@@ -153,7 +155,8 @@ public class UserController extends CookiesController {
 		if (!pwd1.equals(pwd2))
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: las contraseñas no coinciden");
 		if (pwd1.length() < 4)
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: la contraseña debe tener al menos cuatro caracteres");
+			throw new ResponseStatusException(HttpStatus.CONFLICT,
+					"Error: la contraseña debe tener al menos cuatro caracteres");
 
 		try {
 			User user = new User();
@@ -162,9 +165,9 @@ public class UserController extends CookiesController {
 			user.setPwd(pwd1);
 
 			userService.save(user);
-			
+
 			sendEmail(credenciales, "register");
-			
+
 			return "Registro completado exitosamente";
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: El usuario ya existe");
@@ -177,7 +180,8 @@ public class UserController extends CookiesController {
 	}
 
 	@GetMapping("/validateAccount/{tokenId}")
-	public void validateAccount(HttpServletRequest request, HttpServletResponse response, @PathVariable String tokenId) {
+	public void validateAccount(HttpServletRequest request, HttpServletResponse response,
+			@PathVariable String tokenId) {
 		userService.validateToken(tokenId);
 		// Ir a la base de datos, buscar el token con ese tokenId en la tabla, ver que
 		// no ha caducado
