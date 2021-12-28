@@ -44,13 +44,12 @@ public class User {
 	@Column(length = 36)
 	private String cookie;
 
-	private String picture;
-
-	private Long confirmationDate;
-
 	private String temp;
 
 	private String type;
+	
+	private String token;	
+
 	@Transient
 	private WrapperSession session;
 
@@ -70,11 +69,6 @@ public class User {
 	}
 
 	/* Functions */
-
-	public void setPicture(byte[] picture) {
-		byte[] b64 = Base64.getEncoder().encode(picture);
-		this.picture = new String(b64);
-	}
 
 	public void sendMessage(JSONObject jso) throws IOException {
 		WebSocketSession wsSession = this.session.getWsSession();
@@ -118,23 +112,14 @@ public class User {
 	}
 	
 	@JsonIgnore
-	public String getPicture() {
-		return picture;
+	public String getToken() {
+		return token;
 	}
 
-	public void setPicture(String picture) {
-		this.picture = picture;
+	public void setToken(String token) {
+		this.token = token;
 	}
-
-	@JsonIgnore
-	public Long getConfirmationDate() {
-		return confirmationDate;
-	}
-
-	public void setConfirmationDate(Long confirmationDate) {
-		this.confirmationDate = confirmationDate;
-	}
-
+	
 	@JsonIgnore
 	public String getCookie() {
 		return cookie;

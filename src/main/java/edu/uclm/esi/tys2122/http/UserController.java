@@ -100,15 +100,19 @@ public class UserController extends CookiesController {
 	
 	@PostMapping(value = "/changePassword")
 	public String resetPasswordToken(HttpServletRequest request, @RequestBody Map<String, Object> credenciales) {
+		try {
+				JSONObject jso = new JSONObject(credenciales);
+				String token = jso.getString("token");
+				String newPass = jso.getString("newPass");
+				String newPass2 = jso.getString("newPass2");
+				
+				if(!newPass.equals(newPass2))
+					throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");					
+						
+		}catch(Exception e) {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ambos campos son obligatorios");
+		}			
 		
-		JSONObject jso = new JSONObject(credenciales);
-		String token = jso.getString("token");
-		String newPass = jso.getString("newPass");
-		String newPass2 = jso.getString("newPass2");
-		
-		System.out.println(token);
-		System.out.println(newPass);
-		System.out.println(newPass2);
 		return "Se ha recuperado tu contraseña satisfactoria";
 	}
 
@@ -127,7 +131,9 @@ public class UserController extends CookiesController {
 				break;
 			case "recovery":
 				String auxToken = UUID.randomUUID().toString();
-				auxEmail.send(email, (String) emailDefaultData.get("recoveryMsgTopic"),(String)  emailDefaultData.get("recoveryMsgContent")+ (String) applicationData.get("home")+ "/" +(String) applicationData.get("changePassword")+"/?token="+auxToken);
+				auxEmail.send(email, (String) emailDefaultData.get("recoveryMsgTopic"),(String)  emailDefaultData.get("recoveryMsgContent")+ (String) applicationData.get("home")+ "/" +(String) applicationData.get("changePassword")+"/"+auxToken);
+				System.out.println(auxToken + " " + email);
+				userRepo.setTokenByEmail(auxToken, email);
 				break;
 			}
 		} else {
@@ -154,7 +160,6 @@ public class UserController extends CookiesController {
 			user.setName(userName);
 			user.setEmail(email);
 			user.setPwd(pwd1);
-			user.setPicture(picture);
 
 			userService.save(user);
 			

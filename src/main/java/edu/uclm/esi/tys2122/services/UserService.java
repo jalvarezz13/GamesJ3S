@@ -94,7 +94,6 @@ public class UserService {
 			String email = token.getEmail();
 			User user = userRepo.findByEmail(email);
 			if (user != null) {
-				user.setConfirmationDate(now);
 				userRepo.save(user);
 			} else
 				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado");

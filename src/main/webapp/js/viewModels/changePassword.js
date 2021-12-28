@@ -22,8 +22,8 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
             view: view,
             viewModel: app.getHeaderModel(),
           });
-        });
-    }
+        });   
+      }
 
     goLogin() {
       app.router.go({ path: "login" });
@@ -31,10 +31,11 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
 
     changePassword() {
       var self = this;
+      let {href} = window.location
       var info = {
-        newPass: self.newPass,
-        newPass2: self.newPass2,
-        token: window.location.split("/").at(-1),
+        newPass: self.newPass(),
+        newPass2: self.newPass2(),
+        token: href.split("/").at(-1),
       };
       var data = {
         data: JSON.stringify(info),
@@ -67,5 +68,5 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     }
   }
 
-  return ResetPasswordViewModel;
+  return ChangePasswordViewModel;
 });
