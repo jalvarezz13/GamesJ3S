@@ -4,10 +4,13 @@ define([
   "ojs/ojmodule-element-utils",
   "accUtils",
   "jquery",
-], function (ko, app, moduleUtils, accUtils, $) {
+  "utils/routes"
+], function (ko, app, moduleUtils, accUtils, $, routesFile) {
   class ResetPasswordViewModel {
     constructor() {
       var self = this;
+
+      self.routes = routesFile.getRoutes();
 
       self.email = ko.observable("pepe@pepe.com");
       self.message = ko.observable();
@@ -41,7 +44,7 @@ define([
       };
       var data = {
         data: JSON.stringify(info),
-        url: "user/resetPassword",
+        url: self.routes.resetPassword,
         type: "post",
         contentType: "application/json",
         success: function (response) {

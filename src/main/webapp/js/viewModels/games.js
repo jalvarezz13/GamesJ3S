@@ -1,7 +1,9 @@
-define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery"], function (ko, app, moduleUtils, accUtils, $) {
+define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery", "utils/routes"], function (ko, app, moduleUtils, accUtils, $, routesFile) {
   class MenuViewModel {
     constructor() {
       let self = this;
+
+      self.routes = routesFile.getRoutes();
 
       self.games = ko.observableArray([]);
       self.matches = ko.observableArray([]);
@@ -28,7 +30,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         });
     }
 
-    connected() {
+    connected() {      
       accUtils.announce("Juegos.");
       document.title = "Juegos";
 
@@ -36,7 +38,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
 
       let data = {
         type: "get",
-        url: "/games/getGames",
+        url: self.routes.getGames,
         success: function (response) {
           self.games(response);
         },
@@ -45,7 +47,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           self.error(response.responseJSON.errorMessage);
         },
       };
-      $.ajax(data);
+      $.ajax(data);      
     }
 
     mover(match, movement) {
@@ -68,7 +70,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       }
       let data = {
         type: "post",
-        url: "/games/move",
+        url: self.routes.move,
         data: JSON.stringify(info),
         contentType: "application/json",
         success: function (response) {
@@ -84,7 +86,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
 
     conectarAWebSocket() {
       let self = this;
-      let ws = new WebSocket("ws://localhost/wsGenerico");
+      let ws = new WebSocket(`ws://${window.location.origin.split("//")[1]}/${self.routes.webSocket}`);
       ws.onopen = function (event) {
         //alert("conexión establecida");
       };
@@ -100,7 +102,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
 
       let data = {
         type: "get",
-        url: "/games/joinGame/" + game.name + "&" + self.tempName(),
+        url: self.routes.joinGame + game.name + "&" + self.tempName(),
         success: function (response) {
           self.matches.push(response);
           self.conectarAWebSocket();
@@ -123,7 +125,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
 
       let data = {
         type: "get",
-        url: "/games/findMatch/" + matchId,
+        url: self.routes.findMatch + matchId,
         success: function (response) {
           for (let i = 0; i < self.matches().length; i++)
             if (self.matches()[i].id == matchId) {
@@ -145,7 +147,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
 
       let data = {
         type: "get",
-        url: "/games/updateAlivePieces/" + matchId,
+        url: self.routes.updateAlivePieces + matchId,
         success: function (response) {
           self.pieces(self.parsePieces(response));
         },
@@ -168,7 +170,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         };
         let data = {
           type: "post",
-          url: "/games/showPossibleMovements",
+          url: self.routes.showPossibleMovements,
           data: JSON.stringify(info),
           contentType: "application/json",
           success: function (response) {

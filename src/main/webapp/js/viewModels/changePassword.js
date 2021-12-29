@@ -1,8 +1,10 @@
-define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery"], function (ko, app, moduleUtils, accUtils, $) {
+define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery", "utils/routes"], function (ko, app, moduleUtils, accUtils, $, routesFile) {
   class ChangePasswordViewModel {
     constructor() {
       var self = this;
 
+      self.routes = routesFile.getRoutes();
+      
       self.newPass = ko.observable();
       self.newPass2 = ko.observable();
       self.message = ko.observable();
@@ -39,7 +41,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       };
       var data = {
         data: JSON.stringify(info),
-        url: `user/changePassword`,
+        url: self.routes.changePassword,
         type: "post",
         contentType: "application/json",
         success: function (response) {
