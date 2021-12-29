@@ -109,6 +109,13 @@ public class UserController extends CookiesController {
 
 			if (!newPass.equals(newPass2))
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
+			
+			User user = userRepo.findByToken(token);
+			if (user != null) {
+				userRepo.updatePwdById(newPass, user.getId());
+			} else {
+				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No hay solicitud de cambio de contraseña para esta cuenta");
+			}
 
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Ambos campos son obligatorios");
