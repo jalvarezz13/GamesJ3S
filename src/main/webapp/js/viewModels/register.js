@@ -8,9 +8,11 @@
 /*
  * Your dashboard ViewModel code goes here
  */
-define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery"], function (ko, app, moduleUtils, accUtils, $) {
+define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery", "utils/routes"], function (ko, app, moduleUtils, accUtils, $, routesFile) {
   function RegisterViewModel() {
     var self = this;
+
+    self.routes = routesFile.getRoutes();
 
     self.userName = ko.observable("pepe");
     self.email = ko.observable("pepe@pepe.com");
@@ -44,7 +46,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       };
       var data = {
         data: JSON.stringify(info),
-        url: "user/register",
+        url: self.routes.register,
         type: "put",
         contentType: "application/json",
         success: function (response) {

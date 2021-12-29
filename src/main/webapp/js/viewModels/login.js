@@ -1,7 +1,9 @@
-define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery"], function (ko, app, moduleUtils, accUtils, $) {
+define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery", "utils/routes"], function (ko, app, moduleUtils, accUtils, $, routesFile) {
   class LoginViewModel {
     constructor() {
       var self = this;
+
+      self.routes = routesFile.getRoutes();
 
       self.userName = ko.observable("pepe");
       self.pwd = ko.observable("pepe123");
@@ -40,9 +42,9 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       var info;
       if (self.googleUser) {
         info = {
-          name: self.googleUser.getBasicProfile.getName(),
-          email: self.googleUser.getBasicProfile.getEmail(),
-          id: self.googleUser.getBasicProfile.getId(),
+          name: self.googleUser.getBasicProfile().getName(),
+          email: self.googleUser.getBasicProfile().getEmail(),
+          id: self.googleUser.getBasicProfile().getId(),
           type: "google",
         };
       } else {
@@ -53,7 +55,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       }
       var data = {
         data: JSON.stringify(info),
-        url: "user/login",
+        url: self.routes.login,
         type: "post",
         contentType: "application/json",
         success: function (response) {
@@ -78,6 +80,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       accUtils.announce("Login page loaded.");
       // document.title = "Login";
 
+      var self = this;
       let divGoogle = document.createElement("div");
       divGoogle.setAttribute("id", "my-signin2");
       document.getElementById("zonaGoogle").appendChild(divGoogle);
