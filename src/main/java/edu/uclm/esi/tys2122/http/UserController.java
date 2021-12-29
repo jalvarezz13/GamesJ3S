@@ -175,6 +175,8 @@ public class UserController extends CookiesController {
 		if (pwd1.length() < 4)
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: la contraseña debe tener al menos cuatro caracteres");
 
+		pwd1 = org.apache.commons.codec.digest.DigestUtils.sha512Hex(pwd1);
+		
 		try {
 			User user = new User();
 			user.setName(userName);

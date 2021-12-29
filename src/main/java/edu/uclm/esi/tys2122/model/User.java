@@ -61,7 +61,7 @@ public class User {
 		this.id = UUID.randomUUID().toString();
 		this.email = email;
 		this.name = name;
-		this.pwd = UUID.randomUUID().toString();
+		this.pwd = org.apache.commons.codec.digest.DigestUtils.sha512Hex(UUID.randomUUID().toString());
 		this.type = "temporal";
 	}
 
@@ -70,7 +70,7 @@ public class User {
 		this.id = id;
 		this.email = email;
 		this.name = name;
-		this.pwd = UUID.randomUUID().toString();
+		this.pwd = org.apache.commons.codec.digest.DigestUtils.sha512Hex(UUID.randomUUID().toString());
 		this.type = "google";
 	}
 

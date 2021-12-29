@@ -51,7 +51,9 @@ public class UserService {
 	}
 
 	public User doLogin(String name, String pwd, String ip) {
+		pwd = org.apache.commons.codec.digest.DigestUtils.sha512Hex(pwd);
 		User user = userRepo.findByNameAndPwd(name, pwd);
+
 		if (user == null)
 			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Credenciales no válidas o cuenta no validada");
 
