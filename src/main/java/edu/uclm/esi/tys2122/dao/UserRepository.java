@@ -21,7 +21,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 
 	public User findByName(String name);
 
-
 	public User findByEmail(String email);
 
 	public User findByCookie(String cookieValue);
@@ -40,4 +39,9 @@ public interface UserRepository extends JpaRepository<User, String> {
 	@Modifying
 	@Query(value = "UPDATE user SET pwd= :pwd WHERE id= :id", nativeQuery = true)
 	public void updatePwdById(@Param("pwd") String pwd, @Param("id") String id);
+	
+	@Transactional
+	@Modifying
+	@Query(value = "UPDATE user SET token= null WHERE id= :id", nativeQuery = true)
+	public void deleteTokenAfterUse(@Param("id") String id);
 }

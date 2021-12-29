@@ -124,6 +124,7 @@ public class UserController extends CookiesController {
 			User user = userRepo.findByToken(token);
 			if (user != null) {
 				userRepo.updatePwdById(newPass, user.getId());
+				userRepo.deleteTokenAfterUse(user.getId());
 			} else {
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No hay solicitud de cambio de contraseña para esta cuenta");
 			}
