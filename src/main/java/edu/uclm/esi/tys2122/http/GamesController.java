@@ -57,7 +57,7 @@ public class GamesController extends CookiesController {
 			if (tempName.equals("null"))
 				tempName = "anonimo" + new SecureRandom().nextInt(1000);
 			String tempEmail = tempName + "@" + tempName + ".es";
-			user = new User(tempName, tempEmail, tempName);
+			user = new User(tempName, tempEmail);
 			userService.save(user);
 			session.setAttribute("user", user);
 		}

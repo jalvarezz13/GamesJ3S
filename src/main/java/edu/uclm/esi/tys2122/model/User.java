@@ -25,7 +25,6 @@ import edu.uclm.esi.tys2122.websockets.WrapperSession;
 public class User {
 
 	/* Attributes */
-
 	@Id
 	@Column(length = 36)
 	private String id;
@@ -44,8 +43,6 @@ public class User {
 	@Column(length = 36)
 	private String cookie;
 
-	private String temp;
-
 	private String type;
 	
 	private String token;	
@@ -59,13 +56,22 @@ public class User {
 		this.id = UUID.randomUUID().toString();
 	}
 
-	public User(@NotBlank String name, @NotBlank String email, @NotBlank String pwd) {
+	// temporal constructor
+	public User(@NotBlank String name, @NotBlank String email) {
 		this.id = UUID.randomUUID().toString();
-		;
 		this.email = email;
 		this.name = name;
-		this.pwd = pwd;
-		this.temp = "YES";
+		this.pwd = UUID.randomUUID().toString();
+		this.type = "temporal";
+	}
+
+	// google constructor
+	public User(@NotBlank String id, @NotBlank String name, @NotBlank String email) {
+		this.id = id;
+		this.email = email;
+		this.name = name;
+		this.pwd = UUID.randomUUID().toString();
+		this.type = "google";
 	}
 
 	/* Functions */

@@ -2,6 +2,7 @@ package edu.uclm.esi.tys2122.http;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -45,28 +46,20 @@ public class UserController extends CookiesController {
 	public String checkCookie(HttpServletRequest request, HttpServletResponse response) {
 		Cookie cookie = super.findCookie(request.getCookies());
 		if (cookie != null) {
-//			super.incrementarContador(request, response);
 			User user = userService.doLogin(cookie.getValue());
 			if (user != null) {
 				userService.insertLogin(user, request.getRemoteAddr(), cookie);
 				request.getSession().setAttribute("user", user);
 				return "games";
-//				try {
-//					response.sendRedirect("http://localhost/?ojr=games");
-//				} catch (IOException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
 			}
 		}
 		return null;
 	}
 
 	@PostMapping(value = "/login")
-	public void login(HttpServletRequest request, HttpServletResponse response,
-			@RequestBody Map<String, Object> credenciales) {
+	public void login(HttpServletRequest request, HttpServletResponse response, @RequestBody Map<String, Object> credenciales) {
 		JSONObject jso = new JSONObject(credenciales);
-		if (jso.optString("type").length() > 0) {
+		if (jso.optString("type").equals("google")) {
 			googleLogin(request, response, jso);
 		} else {
 			classicLogin(request, response, jso);
@@ -75,17 +68,35 @@ public class UserController extends CookiesController {
 	}
 
 	private void googleLogin(HttpServletRequest request, HttpServletResponse response, JSONObject jso) {
-		// TODO Auto-generated method stub
+		String name = jso.getString("name");
+		String email = jso.getString("email");
+		String id = jso.getString("id");
+		String ip = request.getRemoteAddr();
 
+		Optional<User> userDB = userRepo.findById(id);
+		if (userDB.isPresent()) {
+			User user = userDB.get();
+			doLogin(request, response, ip, user);
+		} else {
+			User userByEmail = userRepo.findByEmail(email);
+			if (userByEmail != null) {
+				doLogin(request, response, ip, userByEmail);
+			} else {
+				User newUser = new User(id, name, email);
+				doLogin(request, response, ip, newUser);
+			}
+		}
 	}
 
 	private void classicLogin(HttpServletRequest request, HttpServletResponse response, JSONObject jso) {
 		String name = jso.getString("name");
 		String pwd = jso.getString("pwd");
 		String ip = request.getRemoteAddr();
-
 		User user = userService.doLogin(name, pwd, ip);
+		doLogin(request, response, ip, user);
+	}
 
+	private void doLogin(HttpServletRequest request, HttpServletResponse response, String ip, User user) {
 		Cookie cookie = readOrCreateCookie(request, response);
 		user.setCookie(cookie.getValue());
 		userRepo.save(user);
@@ -109,7 +120,7 @@ public class UserController extends CookiesController {
 
 			if (!newPass.equals(newPass2))
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
-			
+
 			User user = userRepo.findByToken(token);
 			if (user != null) {
 				userRepo.updatePwdById(newPass, user.getId());
@@ -135,13 +146,11 @@ public class UserController extends CookiesController {
 			Email auxEmail = new Email();
 			switch (type) {
 			case "register":
-				auxEmail.send(email, (String) emailDefaultData.get("registerMsgTopic"),
-						(String) emailDefaultData.get("registerMsgContent"));
+				auxEmail.send(email, (String) emailDefaultData.get("registerMsgTopic"), (String) emailDefaultData.get("registerMsgContent"));
 				break;
 			case "recovery":
 				String auxToken = UUID.randomUUID().toString();
-				auxEmail.send(email, (String) emailDefaultData.get("recoveryMsgTopic"),
-						(String) emailDefaultData.get("recoveryMsgContent") + (String) applicationData.get("home") + "/" + (String) applicationData.get("changePassword") + "/" + auxToken);
+				auxEmail.send(email, (String) emailDefaultData.get("recoveryMsgTopic"), (String) emailDefaultData.get("recoveryMsgContent") + (String) applicationData.get("home") + "/" + (String) applicationData.get("changePassword") + "/" + auxToken);
 				userRepo.setTokenByEmail(auxToken, email);
 				break;
 			}
@@ -158,18 +167,19 @@ public class UserController extends CookiesController {
 		String email = jso.optString("email");
 		String pwd1 = jso.optString("pwd1");
 		String pwd2 = jso.optString("pwd2");
-		String picture = jso.optString("picture");
+		String type = "normal";
+
 		if (!pwd1.equals(pwd2))
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: las contraseñas no coinciden");
 		if (pwd1.length() < 4)
-			throw new ResponseStatusException(HttpStatus.CONFLICT,
-					"Error: la contraseña debe tener al menos cuatro caracteres");
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: la contraseña debe tener al menos cuatro caracteres");
 
 		try {
 			User user = new User();
 			user.setName(userName);
 			user.setEmail(email);
 			user.setPwd(pwd1);
+			user.setType(type);
 
 			userService.save(user);
 
@@ -187,10 +197,9 @@ public class UserController extends CookiesController {
 	}
 
 	@GetMapping("/validateAccount/{tokenId}")
-	public void validateAccount(HttpServletRequest request, HttpServletResponse response,
-			@PathVariable String tokenId) {
+	public void validateAccount(HttpServletRequest request, HttpServletResponse response, @PathVariable String tokenId) {
 		userService.validateToken(tokenId);
-		// Ir a la base de datos, buscar el token con ese tokenId en la tabla, ver que
+		// TOPO Ir a la base de datos, buscar el token con ese tokenId en la tabla, ver que
 		// no ha caducado
 		// y actualizar la confirmationDate del user
 		System.out.println(tokenId);
