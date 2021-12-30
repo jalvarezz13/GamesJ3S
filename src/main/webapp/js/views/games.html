@@ -22,12 +22,14 @@
           <form class="login100-form validate-form">
             <span class="login100-form-title p-b-20"> Juegos </span>
 
+            <!-- Guest name -->
             <div class="wrap-input100 m-b-23">
               <span class="label-input100">Nombre de usuario (opcional)</span>
               <input class="input100" data-bind="value : tempName" type="text" name="username" placeholder="Usuario..." />
               <span class="focus-input100" data-symbol="&#xf206;"></span>
             </div>
 
+            <!-- Game Buttons -->
             <!-- ko foreach : games -->
             <div class="container-login100-form-btn p-t-5 p-b-5">
               <div class="wrap-login100-form-btn">
@@ -39,7 +41,7 @@
             </div>
             <!-- /ko -->
 
-            <ol class="ol-games">
+            <ol class="ol-games m-t-50">
               <!-- ko if: matches().length > 0 -->
               <span class="login100-form-title p-t-40px p-b-20"> Partidas </span>
               <!-- /ko -->
@@ -90,6 +92,57 @@
                 <!-- /ko -->
 
                 <!-- ko if : game == "CheckersMatch" -->
+
+                <!-- ko if : $parent.playerColor() == "BLANCO"  -->
+                <!-- ko with : board -->
+                <table class="tableroRotate">
+                  <!-- ko foreach : squares -->
+                  <tr width="50px" height="50px">
+                    <!-- ko foreach : $data -->
+                    <!-- ko if : $data.color == "NEGRO" -->
+                    <td style="background-color: brown">
+                      <!-- ko if : $data.piece != null -->
+                      <!-- ko if : $data.piece.color == "NEGRO" -->
+                      <img width="40px" height="40px" src="css/images/peonNegra.png" />
+                      <!-- /ko -->
+                      <!-- ko if : $data.piece.color == "BLANCO" -->
+                      <img width="40px" height="40px" src="css/images/peonBlanca.png" />
+                      <!-- /ko -->
+                      <!-- /ko -->
+                    </td>
+                    <!-- /ko -->
+                    <!-- ko if : $data.color == "BLANCO" -->
+                    <td style="background-color: white">
+                      <!-- ko if : $data.piece != null -->
+                      <!-- ko if : $data.piece.color == "NEGRO" -->
+                      <img width="40px" height="40px" src="css/images/peonNegra.png" />
+                      <!-- /ko -->
+                      <!-- ko if : $data.piece.color == "BLANCO" -->
+                      <img width="40px" height="40px" src="css/images/peonBlanca.png" />
+                      <!-- /ko -->
+                      <!-- /ko -->
+                    </td>
+                    <!-- /ko -->
+                    <!-- ko if : $data.color == "VERDE" -->
+                    <td style="background-color: lightgreen !important">
+                      <!-- ko if : $data.piece != null -->
+                      <!-- ko if : $data.piece.color == "NEGRO" -->
+                      <img width="40px" height="40px" src="css/images/peonNegra.png" />
+                      <!-- /ko -->
+                      <!-- ko if : $data.piece.color == "BLANCO" -->
+                      <img width="40px" height="40px" src="css/images/peonBlanca.png" />
+                      <!-- /ko -->
+                      <!-- /ko -->
+                    </td>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                  </tr>
+                  <!-- /ko -->
+                </table>
+                <!-- /ko -->
+                <!-- /ko -->
+
+                <!-- ko if : $parent.playerColor() == "NEGRO"  -->
                 <!-- ko with : board -->
                 <table>
                   <!-- ko foreach : squares -->
@@ -135,6 +188,7 @@
                   </tr>
                   <!-- /ko -->
                 </table>
+                <!-- /ko -->
                 <!-- /ko -->
 
                 <div class="ButtonContainer">

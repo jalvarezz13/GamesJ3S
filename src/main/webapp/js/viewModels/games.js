@@ -1,8 +1,14 @@
-define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery", "utils/routes"], function (ko, app, moduleUtils, accUtils, $, routesFile) {
+define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "jquery", "utils/routes"], function (
+  ko,
+  app,
+  moduleUtils,
+  accUtils,
+  $,
+  routesFile
+) {
   class MenuViewModel {
     constructor() {
       let self = this;
-
       self.routes = routesFile.getRoutes();
 
       self.games = ko.observableArray([]);
@@ -12,6 +18,8 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
 
       self.pieces = ko.observableArray([]);
       self.chosenPiece = ko.observableArray([]);
+
+      self.playerColor = ko.observable("BLANCO");
 
       // Header Config
       self.headerConfig = ko.observable({
@@ -30,7 +38,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         });
     }
 
-    connected() {      
+    connected() {
       accUtils.announce("Juegos.");
       document.title = "Juegos";
 
@@ -47,7 +55,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           self.error(response.responseJSON.errorMessage);
         },
       };
-      $.ajax(data);      
+      $.ajax(data);
     }
 
     mover(match, movement) {
@@ -191,11 +199,13 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     }
 
     parsePieces(response) {
+      let self = this;
       let alivePieces = [];
       alivePieces.push(`Seleccione...`);
       response.map((Piece) => {
         let { id, color } = Piece;
         alivePieces.push(`${id} ${color}`);
+        self.playerColor(color);
       });
       return alivePieces;
     }
