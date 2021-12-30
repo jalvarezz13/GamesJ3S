@@ -38,7 +38,7 @@ public class CheckersSquare extends Square {
 	}
 
 	/* Functions */
-	
+
 	@JsonIgnore
 	public Vector<int[]> getPossibleMovements() {
 		Vector<int[]> auxPossibles = new Vector<int[]>();

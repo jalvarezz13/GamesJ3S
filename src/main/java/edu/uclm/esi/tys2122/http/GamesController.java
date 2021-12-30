@@ -107,18 +107,15 @@ public class GamesController extends CookiesController {
 	public Match showPossibleMovements(@RequestBody Map<String, Object> pieceInfo) {
 		JSONObject jso = new JSONObject(pieceInfo);
 		CheckersMatch match = (CheckersMatch) gamesService.getMatch(jso.getString("matchId"));
-		CheckersBoard boardUpdate = match.getPossibleMovements((String) jso.get("pieceId"), (String) jso.get("pieceColor"));
-
-		CheckersMatch auxMatch = new CheckersMatch();
+		CheckersMatch auxMatch = match.getPossibleMovements((String) jso.get("pieceId"), (String) jso.get("pieceColor"));
 		auxMatch.setId(match.getId());
-		auxMatch.setBoard(boardUpdate);
 		auxMatch.setPlayers(match.getPlayers());
 		auxMatch.setPlayerWithTurn(match.getPlayerWithTurn());
 		auxMatch.setReady(match.isReady());
 		auxMatch.setWinner(match.getWinner());
 		auxMatch.setLooser(match.getLooser());
 		auxMatch.setDraw(match.isDraw());
-
+		
 		return auxMatch;
 	}
 
