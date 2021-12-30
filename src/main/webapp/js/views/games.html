@@ -196,21 +196,29 @@
                     data-bind="options: $parent.pieces, selectedOptions:$parent.chosenPiece, event:{ change: function() { $parent.showPossibleMovements($data)} }"
                   ></select>
 
+                  <!-- ko if : possibleMovements[0] == true -->
                   <button data-bind="click: function() { $parent.mover($data, 'leftUp'); }" class="DirectionButtonLeftUp">
                     <i class="fa fa-arrow-circle-o-left"></i>
                   </button>
+                  <!-- /ko -->
 
+                  <!-- ko if : possibleMovements[1] == true -->
                   <button data-bind="click: function() { $parent.mover($data, 'rightUp'); }" class="DirectionButtonRigthUp">
                     <i class="fa fa-arrow-circle-o-left"></i>
                   </button>
+                  <!-- /ko -->
 
-                  <!-- <button data-bind="click: function() { $parent.mover($data, 'rightDown'); }" class="DirectionButtonRigthDown">
+                  <!-- ko if : possibleMovements[2] == true -->
+                  <button data-bind="click: function() { $parent.mover($data, 'rightDown'); }" class="DirectionButtonRigthDown">
                     <i class="fa fa-arrow-circle-o-left"></i>
                   </button>
+                  <!-- /ko -->
 
+                  <!-- ko if : possibleMovements[3] == true -->
                   <button data-bind="click: function() { $parent.mover($data, 'leftDown'); }" class="DirectionButtonLeftDown">
                     <i class="fa fa-arrow-circle-o-left"></i>
-                  </button> -->
+                  </button>
+                  <!-- /ko -->
 
                   <button data-bind="click : function() { $parent.reload($data); }" class="DirectionButtonRefresh">
                     <i class="fa fa-refresh"></i>

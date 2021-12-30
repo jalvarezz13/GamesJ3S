@@ -198,19 +198,4 @@ public class UserController extends CookiesController {
 	public void remove(@PathVariable String userId) {
 		System.out.println("Borrar el usuario con id " + userId);
 	}
-
-	@GetMapping("/validateAccount/{tokenId}")
-	public void validateAccount(HttpServletRequest request, HttpServletResponse response, @PathVariable String tokenId) {
-		userService.validateToken(tokenId);
-		// TOPO Ir a la base de datos, buscar el token con ese tokenId en la tabla, ver que
-		// no ha caducado
-		// y actualizar la confirmationDate del user
-		System.out.println(tokenId);
-		try {
-			response.sendRedirect(Manager.get().getConfiguration().getString("home"));
-		} catch (IOException e) {
-
-		}
-	}
-
 }
