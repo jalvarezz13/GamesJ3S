@@ -55,7 +55,7 @@ public class CheckersPiece extends Piece {
 	public String getType() {
 		return type;
 	}
-	
+		
 	public boolean isAlive() {
 		return alive;
 	}

@@ -39,43 +39,6 @@ public class CheckersSquare extends Square {
 
 	/* Functions */
 
-	@JsonIgnore
-	public Vector<int[]> getPossibleMovements() {
-		Vector<int[]> auxPossibles = new Vector<int[]>();
-		if (piece.getType() == "pawn") {
-			if (piece.getColor().equals("BLANCO")) {
-				if (leftBorder) {
-					int[] auxId = { this.getId()[0] + 1, this.getId()[1] + 1 };
-					auxPossibles.add(auxId);
-				} else if (rightBorder) {
-					int[] auxId = { this.getId()[0] + 1, this.getId()[1] - 1 };
-					auxPossibles.add(auxId);
-				} else {
-					int[] auxId1 = { this.getId()[0] + 1, this.getId()[1] - 1 };
-					auxPossibles.add(auxId1);
-					int[] auxId2 = { this.getId()[0] + 1, this.getId()[1] + 1 };
-					auxPossibles.add(auxId2);
-				}
-			} else {
-				if (leftBorder) {
-					int[] auxId = { this.getId()[0] - 1, this.getId()[1] + 1 };
-					auxPossibles.add(auxId);
-				} else if (rightBorder) {
-					int[] auxId = { this.getId()[0] - 1, this.getId()[1] - 1 };
-					auxPossibles.add(auxId);
-				} else {
-					int[] auxId1 = { this.getId()[0] - 1, this.getId()[1] - 1 };
-					auxPossibles.add(auxId1);
-					int[] auxId2 = { this.getId()[0] - 1, this.getId()[1] + 1 };
-					auxPossibles.add(auxId2);
-				}
-			}
-		} else {
-			// TODO
-		}
-		return auxPossibles;
-	}
-
 	/* Getters And Setters */
 
 	public int[] getId() {
@@ -126,6 +89,10 @@ public class CheckersSquare extends Square {
 		this.bottomBorder = bottomBorder;
 	}
 
+	public boolean isBorder() {
+		return upperBorder || leftBorder || rightBorder || bottomBorder;
+	}
+	
 	public boolean isCoronate() {
 		return coronate;
 	}

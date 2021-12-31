@@ -46,6 +46,18 @@ public class CheckersMatch extends Match {
 
 		CheckersSquare actualSquare = getSquareByPiece(movementData.getString("pieceId"), movementData.getString("pieceColor"));
 		int[] nextSquare = calculateNextSquare(actualSquare.getId(), movementData.getString("pieceColor"), movementData.getString("movement"));
+
+		// DO QUEEN
+		CheckersBoard board = (CheckersBoard) this.getBoard();
+		CheckersSquare[][] squares = board.getSquares();
+		if (movementData.getString("pieceColor").equals("BLANCO")) {
+			if (squares[nextSquare[0]][nextSquare[1]].isBottomBorder())
+				actualSquare.getPiece().promote();
+		} else {
+			if (squares[nextSquare[0]][nextSquare[1]].isUpperBorder())
+				actualSquare.getPiece().promote();
+		}
+
 		changeMatch(actualSquare.getId(), nextSquare);
 
 		this.playerWithTurn = this.getPlayerWithTurn() == this.getPlayers().get(0) ? this.getPlayers().get(1) : this.getPlayers().get(0);
@@ -72,18 +84,38 @@ public class CheckersMatch extends Match {
 			case "leftUp":
 				nextSquare[0] = actualSquare[0] + 1;
 				nextSquare[1] = actualSquare[1] + 1;
+				break;
 			case "rightUp":
 				nextSquare[0] = actualSquare[0] + 1;
 				nextSquare[1] = actualSquare[1] - 1;
+				break;
+			case "rightDown":
+				nextSquare[0] = actualSquare[0] - 1;
+				nextSquare[1] = actualSquare[1] - 1;
+				break;
+			case "leftDown":
+				nextSquare[0] = actualSquare[0] - 1;
+				nextSquare[1] = actualSquare[1] + 1;
+				break;
 			}
 		} else {
 			switch (movement) {
 			case "leftUp":
 				nextSquare[0] = actualSquare[0] - 1;
 				nextSquare[1] = actualSquare[1] - 1;
+				break;
 			case "rightUp":
 				nextSquare[0] = actualSquare[0] - 1;
 				nextSquare[1] = actualSquare[1] + 1;
+				break;
+			case "rightDown":
+				nextSquare[0] = actualSquare[0] + 1;
+				nextSquare[1] = actualSquare[1] + 1;
+				break;
+			case "leftDown":
+				nextSquare[0] = actualSquare[0] + 1;
+				nextSquare[1] = actualSquare[1] - 1;
+				break;
 			}
 		}
 		return nextSquare;
@@ -124,7 +156,7 @@ public class CheckersMatch extends Match {
 
 	public CheckersMatch getPossibleMovements(String pieceId, String pieceColor) {
 		CheckersSquare pieceSquare = getSquareByPiece(pieceId, pieceColor);
-		Vector<int[]> targetSquares = pieceSquare.getPossibleMovements();
+		Vector<int[]> targetSquares = getNextMovements(pieceSquare);
 
 		boolean[] nextMovements = calculatePossibleMovements(pieceSquare.getId(), targetSquares, pieceColor);
 
@@ -156,23 +188,105 @@ public class CheckersMatch extends Match {
 		return auxMatch;
 	}
 
+	private Vector<int[]> getNextMovements(CheckersSquare actualSquare) {
+		CheckersPiece piece = actualSquare.getPiece();
+		CheckersBoard board = (CheckersBoard) this.getBoard();
+		CheckersSquare[][] squares = board.getSquares();
+
+		Vector<int[]> auxPossibles = new Vector<int[]>();
+		if (piece.getType() == "pawn") { // PAWN
+			if (piece.getColor().equals("BLANCO")) { // BLANCO
+				if (!actualSquare.isRightBorder()) { // leftUp?
+					CheckersSquare leftUpSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] + 1];
+					if (leftUpSquare.getPiece() == null) {
+						auxPossibles.add(leftUpSquare.getId());
+					} else {
+						if (leftUpSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
+							if (!leftUpSquare.isBorder()) {
+								CheckersSquare nextLeftUpSquare = squares[leftUpSquare.getId()[0] + 1][leftUpSquare.getId()[1] + 1];
+								if (nextLeftUpSquare.getPiece() == null) {
+									auxPossibles.add(nextLeftUpSquare.getId());
+								}
+							}
+						}
+					}
+				}
+				if (!actualSquare.isLeftBorder()) { // rightUp?
+					CheckersSquare rightUpSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] - 1];
+					if (rightUpSquare.getPiece() == null) {
+						auxPossibles.add(rightUpSquare.getId());
+					} else {
+						if (rightUpSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
+							if (!rightUpSquare.isBorder()) {
+								CheckersSquare nextRightUpSquare = squares[rightUpSquare.getId()[0] + 1][rightUpSquare.getId()[1] - 1];
+								if (nextRightUpSquare.getPiece() == null) {
+									auxPossibles.add(nextRightUpSquare.getId());
+								}
+							}
+						}
+					}
+				}
+			} else { // NEGRO
+				if (!actualSquare.isRightBorder()) { // rightUp?
+					CheckersSquare rightUpSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] + 1];
+					if (rightUpSquare.getPiece() == null) {
+						auxPossibles.add(rightUpSquare.getId());
+					} else {
+						if (rightUpSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
+							if (!rightUpSquare.isBorder()) {
+								CheckersSquare nextRightUpSquare = squares[rightUpSquare.getId()[0] - 1][rightUpSquare.getId()[1] + 1];
+								if (nextRightUpSquare.getPiece() == null) {
+									auxPossibles.add(nextRightUpSquare.getId());
+								}
+							}
+						}
+					}
+				}
+				if (!actualSquare.isLeftBorder()) { // leftUp?
+					CheckersSquare leftUpSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] - 1];
+					if (leftUpSquare.getPiece() == null) {
+						auxPossibles.add(leftUpSquare.getId());
+					} else {
+						if (leftUpSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
+							if (!leftUpSquare.isBorder()) {
+								CheckersSquare nextLeftUpSquare = squares[leftUpSquare.getId()[0] - 1][leftUpSquare.getId()[1] - 1];
+								if (nextLeftUpSquare.getPiece() == null) {
+									auxPossibles.add(nextLeftUpSquare.getId());
+								}
+							}
+						}
+					}
+				}
+			}
+		} else { // CHECKER
+			// TODO
+		}
+		return auxPossibles;
+	}
+
 	private boolean[] calculatePossibleMovements(int[] actualSquare, Vector<int[]> nextSquares, String pieceColor) {
 		boolean nextMovements[] = { false, false, false, false };
 		for (int i = 0; i < nextSquares.size(); i++) {
-			if (nextSquares.get(i)[0] > actualSquare[0] && nextSquares.get(i)[1] > actualSquare[1]) {
-				nextMovements[0] = true;
-			} else if (nextSquares.get(i)[0] > actualSquare[0] && nextSquares.get(i)[1] < actualSquare[1]) {
-				nextMovements[1] = true;
-			} else if (nextSquares.get(i)[0] < actualSquare[0] && nextSquares.get(i)[1] < actualSquare[1]) {
-				nextMovements[2] = true;
-			} else if (nextSquares.get(i)[0] < actualSquare[0] && nextSquares.get(i)[1] > actualSquare[1]) {
-				nextMovements[3] = true;
-			}
-		}
-
-		if (pieceColor == "NEGRO") {
-			for (int i=0; i<nextMovements.length; i++) {
-				nextMovements[i] = !nextMovements[i];
+			if (pieceColor.equals("BLANCO")) {
+				if (nextSquares.get(i)[0] > actualSquare[0] && nextSquares.get(i)[1] > actualSquare[1]) {
+					nextMovements[0] = true;
+				} else if (nextSquares.get(i)[0] > actualSquare[0] && nextSquares.get(i)[1] < actualSquare[1]) {
+					nextMovements[1] = true;
+				} else if (nextSquares.get(i)[0] < actualSquare[0] && nextSquares.get(i)[1] < actualSquare[1]) {
+					nextMovements[2] = true;
+				} else if (nextSquares.get(i)[0] < actualSquare[0] && nextSquares.get(i)[1] > actualSquare[1]) {
+					nextMovements[3] = true;
+				}
+			} else {
+				if (nextSquares.get(i)[0] < actualSquare[0] && nextSquares.get(i)[1] < actualSquare[1]) {
+					nextMovements[0] = true;
+				} else if (nextSquares.get(i)[0] < actualSquare[0] && nextSquares.get(i)[1] > actualSquare[1]) {
+					nextMovements[1] = true;
+				} else if (nextSquares.get(i)[0] > actualSquare[0] && nextSquares.get(i)[1] > actualSquare[1]) {
+					nextMovements[2] = true;
+				} else if (nextSquares.get(i)[0] > actualSquare[0] && nextSquares.get(i)[1] < actualSquare[1]) {
+					nextMovements[3] = true;
+				}
 			}
 		}
 
