@@ -62,6 +62,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     mover(match, movement) {
       let self = this;
       let info;
+      const [movementX, movementY] = self.getSquareByDirection(match.possibleMovementsXY, movement)
 
       if (match.game == "TictactoeMatch") {
         info = {
@@ -73,7 +74,8 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         info = {
           pieceId: self.chosenPiece().toString().split(" ")[0],
           pieceColor: self.chosenPiece().toString().split(" ")[1],
-          movement: movement,
+          movementX: movementX.toString(),
+          movementY: movementY.toString(),
           matchId: match.id,
         };
       }
@@ -83,6 +85,8 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         data: JSON.stringify(info),
         contentType: "application/json",
         success: function (response) {
+          // Select apunta a Seleccione...
+          self.chosenPiece(["Seleccione..."])
           console.log(JSON.stringify(response));
           self.gameError("");
         },
@@ -190,7 +194,6 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
                 self.matches.splice(i, 1, response);
                 break;
               }
-
             // Comprueba si es posible mover, si no se puede, imprime eso
             var token = true;
             for (let i = 0; i < self.matches().length; i++) if (response.possibleMovementsXY[i] != null) token = false;
@@ -217,6 +220,20 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         self.playerColor(color);
       });
       return alivePieces;
+    }
+
+    // TODO: Repasar logica al igual que en backend
+    getSquareByDirection(squares, movement) {
+      switch (movement) {
+        case "leftUp":
+          return squares[0];
+        case "rightUp":
+          return squares[1];
+        case "rightDown":
+          return squares[2];
+        case "leftDown":
+          return squares[3];
+      }
     }
 
     disconnected() {
