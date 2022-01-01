@@ -23,11 +23,13 @@
             <span class="login100-form-title p-b-20"> Juegos </span>
 
             <!-- Guest name -->
+            <!-- ko if: matches().length == 0 -->
             <div class="wrap-input100 m-b-23">
               <span class="label-input100">Nombre de usuario (opcional)</span>
               <input class="input100" data-bind="value : tempName" type="text" name="username" placeholder="Usuario..." />
               <span class="focus-input100" data-symbol="&#xf206;"></span>
             </div>
+            <!-- /ko -->
 
             <!-- Game Buttons -->
             <!-- ko foreach : games -->
@@ -225,13 +227,9 @@
                   </button>
                 </div>
 
+                <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : $parent.gameError" style="color: red"></div>
+
                 <!-- /ko -->
-
-                <br />
-
-                <br />
-
-                <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : $parent.error" style="color: red"></div>
               </li>
               <!-- /ko -->
             </ol>
