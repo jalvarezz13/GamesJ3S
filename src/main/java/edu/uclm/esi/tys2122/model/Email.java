@@ -19,49 +19,49 @@ public class Email {
 
 	public void send(String destinatario, String subject, String body) {
 		JSONObject emailDefaultData = (JSONObject) Manager.get().getConfiguration().getJSONObject("email");
-		
-		String smtpHost= (String) emailDefaultData.get("host");
-		String startTTLS=(String) emailDefaultData.get("startTTLS");
-		String port=(String) emailDefaultData.get("port");
-		String sender=(String) emailDefaultData.get("sender");
-		String serverUser=(String) emailDefaultData.get("serverUser");
-		String userAutentication= (String) emailDefaultData.get("auth");
-		String pwd=(String) emailDefaultData.get("pwd");				// PONER LA CONTRASEÑA
-		String fallback=(String) emailDefaultData.get("fallback");
-		
-		properties.put("mail.smtp.host", smtpHost);  
-        properties.put("mail.smtp.starttls.enable", startTTLS);  
-        properties.put("mail.smtp.port", port);  
-        properties.put("mail.smtp.mail.sender", sender);  
-        properties.put("mail.smtp.user", serverUser);  
-        properties.put("mail.smtp.auth", userAutentication);
-        properties.put("mail.smtp.socketFactory.port", port);
-        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-        properties.put("mail.smtp.socketFactory.fallback", fallback);
-        
-        Runnable r = new Runnable() {
+
+		String smtpHost = (String) emailDefaultData.get("host");
+		String startTTLS = (String) emailDefaultData.get("startTTLS");
+		String port = (String) emailDefaultData.get("port");
+		String sender = (String) emailDefaultData.get("sender");
+		String serverUser = (String) emailDefaultData.get("serverUser");
+		String userAutentication = (String) emailDefaultData.get("auth");
+		String pwd = (String) emailDefaultData.get("pwd"); // PONER LA CONTRASEÑA
+		String fallback = (String) emailDefaultData.get("fallback");
+
+		properties.put("mail.smtp.host", smtpHost);
+		properties.put("mail.smtp.starttls.enable", startTTLS);
+		properties.put("mail.smtp.port", port);
+		properties.put("mail.smtp.mail.sender", sender);
+		properties.put("mail.smtp.user", serverUser);
+		properties.put("mail.smtp.auth", userAutentication);
+		properties.put("mail.smtp.socketFactory.port", port);
+		properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		properties.put("mail.smtp.socketFactory.fallback", fallback);
+
+		Runnable r = new Runnable() {
 			@Override
 			public void run() {
-		        Authenticator auth = new AutentificadorSMTP(sender, pwd);
-		        Session session = Session.getInstance(properties, auth);
+				Authenticator auth = new AutentificadorSMTP(sender, pwd);
+				Session session = Session.getInstance(properties, auth);
 
-		        MimeMessage msg = new MimeMessage(session);
-		        try {
-			        msg.setSubject(subject);
-			        msg.setText(body);
-			        msg.setFrom(new InternetAddress(sender));
-			        msg.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
-			        Transport.send(msg);
-		        } catch (Exception e) {
+				MimeMessage msg = new MimeMessage(session);
+				try {
+					msg.setSubject(subject);
+					msg.setText(body);
+					msg.setFrom(new InternetAddress(sender));
+					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
+					Transport.send(msg);
+				} catch (Exception e) {
 					System.err.println(e);
 				}
 			}
 		};
 		new Thread(r).start();
 	}
-	
+
 	private class AutentificadorSMTP extends javax.mail.Authenticator {
-        private String sender;
+		private String sender;
 		private String pwd;
 
 		public AutentificadorSMTP(String sender, String pwd) {
@@ -70,10 +70,10 @@ public class Email {
 		}
 
 		public PasswordAuthentication getPasswordAuthentication() {
-            return new PasswordAuthentication(sender, pwd);
-        }
-    }
-	
+			return new PasswordAuthentication(sender, pwd);
+		}
+	}
+
 //	public static void main(String[] args) throws Exception {
 //		Email sender=new Email();
 //		sender.send("juegostysw@gmail.com", "Recuperación de contraseña", "Para recuperar tu contraseña pulsa aquí: https://www.chollometro.com/");

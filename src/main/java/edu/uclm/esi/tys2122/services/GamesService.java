@@ -14,13 +14,13 @@ import edu.uclm.esi.tys2122.model.Match;
 
 @Service
 public class GamesService {
-	
+
 	/* Attributes */
-	
+
 	private ConcurrentHashMap<String, Match> matches;
-	
+
 	/* Constructors */
-	
+
 	public GamesService() throws Exception {
 		this.matches = new ConcurrentHashMap<>();
 		JSONArray jsonReadGame = Manager.get().readFileAsJSONArray("games.txt");
@@ -28,7 +28,7 @@ public class GamesService {
 		String name, clazz;
 		Game game;
 		Manager.get().clearGames();
-		for (int i=0; i<jsonReadGame.length(); i++) {
+		for (int i = 0; i < jsonReadGame.length(); i++) {
 			tempGame = jsonReadGame.getJSONObject(i);
 			name = tempGame.getString("name");
 			clazz = tempGame.getString("clazz");
@@ -37,13 +37,13 @@ public class GamesService {
 			Manager.get().add(game);
 		}
 	}
-	
+
 	/* Functions */
-	
+
 	public Match newMatch(Class<? extends Match> clazz) throws InstantiationException, IllegalAccessException {
 		return clazz.newInstance();
 	}
-	
+
 	public Match getMatch(String matchId) {
 		return this.matches.get(matchId);
 	}

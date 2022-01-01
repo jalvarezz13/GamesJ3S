@@ -8,29 +8,29 @@ import javax.persistence.Id;
 
 @Entity
 public class Token {
-	
+
 	/* Attributes */
-	
+
 	@Id
 	@Column(length = 36)
 	private String id;
 	private String email;
 	private long date;
-	
+
 	/* Constructors */
-	
+
 	public Token() {
-		
+
 	}
 
 	public Token(String email) {
 		this.id = UUID.randomUUID().toString();
 		this.email = email;
-		this.date = System.currentTimeMillis();		
+		this.date = System.currentTimeMillis();
 	}
 
 	/* Getters And Setters */
-	
+
 	public String getId() {
 		return id;
 	}

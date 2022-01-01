@@ -16,52 +16,52 @@ import edu.uclm.esi.tys2122.http.Manager;
 
 @Component
 public class WebSocketGenerico extends TextWebSocketHandler {
-	
+
 	@Override
 	public void afterConnectionEstablished(WebSocketSession wsSession) throws Exception {
-		wsSession.setBinaryMessageSizeLimit(1000*1024*1024);
+		wsSession.setBinaryMessageSizeLimit(1000 * 1024 * 1024);
 		System.out.println(wsSession.getId());
-		
+
 		HttpHeaders headers = wsSession.getHandshakeHeaders();
 		List<String> cookies = headers.get("cookie");
 		String cookie = cookies.get(0);
 		String[] tokens = cookie.split(";");
 		String httpSessionId = null;
-		
+
 		for (String token : tokens) {
 			if (token.contains("JSESSIONID")) {
 				int posIgual = token.indexOf('=');
-				httpSessionId = token.substring(posIgual+1).trim();
+				httpSessionId = token.substring(posIgual + 1).trim();
 			}
 		}
 		WrapperSession matchSession = new WrapperSession(wsSession);
-		Manager.get().add(matchSession,httpSessionId);
-		
+		Manager.get().add(matchSession, httpSessionId);
+
 		System.out.println(headers);
 	}
 
 	@Override
 	protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
-		session.setBinaryMessageSizeLimit(1000*1024*1024);
-		
+		session.setBinaryMessageSizeLimit(1000 * 1024 * 1024);
+
 		byte[] payload = message.getPayload().array();
 		System.out.println("La sesión " + session.getId() + " manda un binario de " + payload.length + " bytes");
 	}
-	
+
 	@Override
 	public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
 		exception.printStackTrace();
 	}
-	
-	@SuppressWarnings("unused") //remember to delete this
+
+	@SuppressWarnings("unused") // remember to delete this
 	private void send(WebSocketSession session, Object... typesAndValues) {
 		JSONObject jso = new JSONObject();
-		int i=0;
-		while (i<typesAndValues.length) {
-			jso.put(typesAndValues[i].toString(), typesAndValues[i+1]);
-			i+=2;
+		int i = 0;
+		while (i < typesAndValues.length) {
+			jso.put(typesAndValues[i].toString(), typesAndValues[i + 1]);
+			i += 2;
 		}
-		WebSocketMessage<?> wsMessage=new TextMessage(jso.toString());
+		WebSocketMessage<?> wsMessage = new TextMessage(jso.toString());
 		try {
 			session.sendMessage(wsMessage);
 		} catch (IOException e) {

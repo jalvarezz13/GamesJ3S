@@ -8,9 +8,9 @@ import javax.persistence.Id;
 
 @Entity
 public class Login {
-	
+
 	/* Attributes */
-	
+
 	@Id
 	@Column(length = 36)
 	private String id;
@@ -18,15 +18,15 @@ public class Login {
 	private String cookieValue;
 	private String ip;
 	private long date;
-	
+
 	/* Constructors */
-	
+
 	public Login() {
 		this.id = UUID.randomUUID().toString();
 	}
 
 	/* Getters And Setters */
-	
+
 	public String getId() {
 		return id;
 	}

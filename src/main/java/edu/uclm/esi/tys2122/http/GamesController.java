@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import edu.uclm.esi.tys2122.checkers.CheckersBoard;
 import edu.uclm.esi.tys2122.checkers.CheckersMatch;
 import edu.uclm.esi.tys2122.checkers.CheckersPiece;
 import edu.uclm.esi.tys2122.model.Game;
@@ -115,7 +114,7 @@ public class GamesController extends CookiesController {
 		auxMatch.setWinner(match.getWinner());
 		auxMatch.setLooser(match.getLooser());
 		auxMatch.setDraw(match.isDraw());
-		
+
 		return auxMatch;
 	}
 

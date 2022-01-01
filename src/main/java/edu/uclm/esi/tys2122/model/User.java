@@ -1,7 +1,6 @@
 package edu.uclm.esi.tys2122.model;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -44,8 +43,8 @@ public class User {
 	private String cookie;
 
 	private String type;
-	
-	private String token;	
+
+	private String token;
 
 	@Transient
 	private WrapperSession session;
@@ -116,7 +115,7 @@ public class User {
 	public void setPwd(String pwd) {
 		this.pwd = pwd;
 	}
-	
+
 	@JsonIgnore
 	public String getToken() {
 		return token;
@@ -125,7 +124,7 @@ public class User {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	
+
 	@JsonIgnore
 	public String getCookie() {
 		return cookie;
@@ -143,7 +142,7 @@ public class User {
 	public void setSession(WrapperSession session) {
 		this.session = session;
 	}
-	
+
 	@JsonIgnore
 	public String getType() {
 		return type;
@@ -153,5 +152,4 @@ public class User {
 		this.type = type;
 	}
 
-	
 }

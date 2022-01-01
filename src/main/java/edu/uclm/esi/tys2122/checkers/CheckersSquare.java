@@ -1,9 +1,5 @@
 package edu.uclm.esi.tys2122.checkers;
 
-import java.util.Vector;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import edu.uclm.esi.tys2122.model.Square;
 
 public class CheckersSquare extends Square {

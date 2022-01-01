@@ -11,9 +11,6 @@ import org.springframework.web.socket.server.support.HttpSessionHandshakeInterce
 public class WebSocketGenericoConfigurer implements WebSocketConfigurer {
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.
-			addHandler(new WebSocketGenerico(), "/wsGenerico").
-			setAllowedOrigins("*").
-			addInterceptors(new HttpSessionHandshakeInterceptor());
+		registry.addHandler(new WebSocketGenerico(), "/wsGenerico").setAllowedOrigins("*").addInterceptors(new HttpSessionHandshakeInterceptor());
 	}
 }

@@ -1,6 +1,5 @@
 package edu.uclm.esi.tys2122.http;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -176,7 +175,7 @@ public class UserController extends CookiesController {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: la contraseña debe tener al menos cuatro caracteres");
 
 		pwd1 = org.apache.commons.codec.digest.DigestUtils.sha512Hex(pwd1);
-		
+
 		try {
 			User user = new User();
 			user.setName(userName);

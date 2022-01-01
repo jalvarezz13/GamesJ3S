@@ -1,7 +1,6 @@
 package edu.uclm.esi.tys2122.model;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.util.UUID;
 import java.util.Vector;
 
@@ -11,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
