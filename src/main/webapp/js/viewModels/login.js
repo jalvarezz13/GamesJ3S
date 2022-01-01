@@ -62,7 +62,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           app.router.go({ path: "games" });
         },
         error: function (response) {
-          self.error(response.res);
+          self.error(response.responseJSON.message);
         },
       };
       $.ajax(data);

@@ -13,7 +13,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
 
       self.games = ko.observableArray([]);
       self.matches = ko.observableArray([]);
-      self.error = ko.observable(null);
+      self.gameError = ko.observable(null);
       self.tempName = ko.observable(null);
 
       self.pieces = ko.observableArray([]);
@@ -49,10 +49,11 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         url: self.routes.getGames,
         success: function (response) {
           self.games(response);
+          self.gameError("");
         },
         error: function (response) {
           console.error(JSON.stringify(response));
-          self.error(response.responseJSON.errorMessage);
+          self.gameError(response.responseJSON.message);
         },
       };
       $.ajax(data);
@@ -83,10 +84,11 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         contentType: "application/json",
         success: function (response) {
           console.log(JSON.stringify(response));
+          self.gameError("");
         },
         error: function (response) {
           console.error(JSON.stringify(response));
-          self.error(response.responseJSON.errorMessage);
+          self.gameError(response.responseJSON.message);
         },
       };
       $.ajax(data);
@@ -118,10 +120,11 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
             self.updateAlivePieces(response.id);
           }
           console.log(JSON.stringify(response));
+          self.gameError("");
         },
         error: function (response) {
           console.error(JSON.stringify(response));
-          self.error(response.responseJSON.errorMessage);
+          self.gameError(response.responseJSON.message);
         },
       };
       $.ajax(data);
@@ -141,10 +144,11 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
               break;
             }
           console.log(JSON.stringify(response));
+          self.gameError("");
         },
         error: function (response) {
           console.error(JSON.stringify(response));
-          self.error(response.responseJSON.errorMessage);
+          self.gameError(response.responseJSON.message);
         },
       };
       $.ajax(data);
@@ -158,14 +162,13 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         url: self.routes.updateAlivePieces + matchId,
         success: function (response) {
           self.pieces(self.parsePieces(response));
+          self.gameError("");
         },
         error: function (response) {
-          self.error(response.responseJSON.errormessage);
+          self.gameError(response.responseJSON.message);
         },
       };
       $.ajax(data);
-
-      //   Mirar que pasa si se juegan varios juegos a ver si se rellena dos veces las piezas o se sobreescribe
     }
 
     showPossibleMovements(match) {
@@ -187,11 +190,17 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
                 self.matches.splice(i, 1, response);
                 break;
               }
+
+            // Comprueba si es posible mover, si no se puede, imprime eso
+            var token = true;
+            for (let i = 0; i < self.matches().length; i++) if (response.possibleMovementsXY[i] != null) token = false;
             console.log(JSON.stringify(response));
+            if (token == true) self.gameError("No se puede mover esta ficha");
+            else self.gameError("");
           },
           error: function (response) {
             console.error(JSON.stringify(response));
-            self.error(response.responseJSON.errorMessage);
+            self.gameError(response.responseJSON.message);
           },
         };
         $.ajax(data);
