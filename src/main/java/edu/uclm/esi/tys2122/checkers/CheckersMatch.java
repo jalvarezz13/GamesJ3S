@@ -202,7 +202,7 @@ public class CheckersMatch extends Match {
 			for (int j = 0; j < squares[0].length; j++) {
 				CheckersSquare auxSquare;
 				int[] auxId = { i, j };
-				if (isTarget(targetSquares, auxId) && squares[i][j].getPiece() == null) {
+				if (isTarget(targetSquares, auxId) && (squares[i][j].getPiece() == null || !squares[i][j].getPiece().isAlive())) {
 					auxSquare = new CheckersSquare(squares[i][j].getId(), "VERDE", squares[i][j].isUpperBorder(),
 							squares[i][j].isLeftBorder(), squares[i][j].isRightBorder(), squares[i][j].isBottomBorder(),
 							squares[i][j].isCoronate(), squares[i][j].getPiece());
@@ -238,7 +238,7 @@ public class CheckersMatch extends Match {
 			if (piece.getColor().equals("BLANCO")) { // BLANCO
 				if (!actualSquare.isRightBorder()) { // leftUp?
 					CheckersSquare leftUpSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] + 1];
-					if (leftUpSquare.getPiece() == null) {
+					if (leftUpSquare.getPiece() == null || !leftUpSquare.getPiece().isAlive()) {
 						auxPossibles[0] = leftUpSquare.getId();
 					} else {
 						if (leftUpSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
@@ -254,7 +254,7 @@ public class CheckersMatch extends Match {
 				}
 				if (!actualSquare.isLeftBorder()) { // rightUp?
 					CheckersSquare rightUpSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] - 1];
-					if (rightUpSquare.getPiece() == null) {
+					if (rightUpSquare.getPiece() == null || !rightUpSquare.getPiece().isAlive()) {
 						auxPossibles[1] = rightUpSquare.getId();
 					} else {
 						if (rightUpSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
@@ -271,7 +271,7 @@ public class CheckersMatch extends Match {
 			} else { // NEGRO
 				if (!actualSquare.isLeftBorder()) { // leftUp?
 					CheckersSquare leftUpSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] - 1];
-					if (leftUpSquare.getPiece() == null) {
+					if (leftUpSquare.getPiece() == null || !leftUpSquare.getPiece().isAlive()) {
 						auxPossibles[0] = leftUpSquare.getId();
 					} else {
 						if (leftUpSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
@@ -287,7 +287,7 @@ public class CheckersMatch extends Match {
 				}
 				if (!actualSquare.isRightBorder()) { // rightUp?
 					CheckersSquare rightUpSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] + 1];
-					if (rightUpSquare.getPiece() == null) {
+					if (rightUpSquare.getPiece() == null || !rightUpSquare.getPiece().isAlive()) {
 						auxPossibles[1] = rightUpSquare.getId();
 					} else {
 						if (rightUpSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
