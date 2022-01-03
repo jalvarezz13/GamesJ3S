@@ -2,6 +2,7 @@
 .classpath
 .project
 .factorypath
+/images/
 org.eclipse.jdt.apt.core.prefs
 org.eclipse.jdt.core.prefs
 /.apt_generated/
