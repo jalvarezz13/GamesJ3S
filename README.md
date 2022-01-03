@@ -1,25 +1,51 @@
  <img src="https://media.discordapp.net/attachments/487685117414735872/908488203609198623/palanca-de-mando.png?width=480&height=480" width="" height="90" align = "left">
 
-# JuegosTSW
+# GamesJ3S
+## Contenido
+Descripción del proyecto
 
-<br>
+## Como usar
+Contiene todo el código y los recursos multimedia para la correcta ejecución de la aplicación. Para ello:
+  1. Clona el repositorio con 
+```
+git clone https://github.com/jalvarezz13/GamesJ3S
+```
+  2. Ejecuta la Lanzadera.java
+  3. Abre en tu navegador: http://localhost
 
-Final Project for Techonolgies And Web Systems - Escuela Superior de Informática - Ciudad Real
+## Capturas
+<div align="center">
+<h2>Login</h2>
+<img src="https://github.com/jalvarezz13/GamesJ3S/blob/master/images/login.png" width="60%" height="">
+</div>
+<div align="center">
+  <h2>Registro</h2>
+  <img src="https://github.com/jalvarezz13/GamesJ3S/blob/master/images/register.png" width="60%" height="">
+</div>
+<div align="center">
+  <h2>Juegos</h2>
+  <img src="https://github.com/jalvarezz13/GamesJ3S/blob/master/images/games.png" width="60%" height="">
+</div>
 
-## :man_technologist: Developers :man_technologist:
+## Tecnologías
+### Frontend
+![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+![Bootstrap](https://img.shields.io/badge/bootstrap-%23563D7C.svg?style=for-the-badge&logo=bootstrap&logoColor=white)
+![Oracle](https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white)
+### Backend
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=java&logoColor=white)
+![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
+### Base de datos
+![MySQL](https://img.shields.io/badge/mysql-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white)
+### Otras tecnologías
+![Apache Maven](https://img.shields.io/badge/Apache%20Maven-C71A36?style=for-the-badge&logo=Apache%20Maven&logoColor=white)
+![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
+![Eclipse](https://img.shields.io/badge/Eclipse-FE7A16.svg?style=for-the-badge&logo=Eclipse&logoColor=white)
 
-* <img src="https://media.discordapp.net/attachments/487685117414735872/897503707921543228/JZ.png" width="60" height="60" align="center"/> Josue Carlos Zenteno Yave : JosueCarlos.Zenteno@alu.uclm.es
-
-* <img src="https://media.discordapp.net/attachments/487685117414735872/897503704100536350/SS.png" width="60" height="60" align="center"/> Sergio Silvestre Pavón : Sergio.Silvestre@alu.uclm.es
-  
-* <img src="https://media.discordapp.net/attachments/487685117414735872/897503706185085008/JA.png" width="60" height="60" align="center"/> Javier Álvarez Páramo : Javier.Alvarez13@alu.uclm.es
-
-* <img src="https://media.discordapp.net/attachments/487685117414735872/908489846698422293/xinpelo.png" width="60" height="60" align="center"/> Juan Muñoz Calvo : Juan.Munoz7@alu.uclm.es
-
-## :books: More about the project :books:
-[juegosTSW](https://github.com/jalvarezz13/juegosTSW) is a games web application where you can actually play Tic Tac Toe and Checkers.
-
-If you want to know more about how juegosTSW works internally go to the official [Wiki](https://github.com/jalvarezz13/juegosTSW/wiki).
-
-## :raising_hand: Contact us :raising_hand:
-Feel free to send us an email if you have any question about the project.
+## Autores
+<pre>Javier Álvarez Páramo  <a align="center" title="Linkedin" href="https://www.linkedin.com/in/javieralpa/"><img align="center" src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white"/></a></pre>
+<pre>Juan Muñoz Calvo  <a align="center" title="Linkedin" href="https://www.linkedin.com/in/jmunoz00/"><img align="center" src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white"/></a></pre>
+<pre>Sergio Silvestre Pavón  <a align="center" title="Linkedin" href="https://www.linkedin.com/in/sergio-silvestre-pav%C3%B3n-081011224/"><img align="center" src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white"/></a></pre>
+<pre>Josué Carlos Zenteno Yave  <a align="center" title="Linkedin" href="https://www.linkedin.com/in/josue-zenteno/"><img align="center" src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white"/></a></pre>
