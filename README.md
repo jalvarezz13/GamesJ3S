@@ -2,7 +2,7 @@
 
 # GamesJ3S
 ## Contenido
-Descripción del proyecto
+Se trata de una aplicación web para jugar a juegos de tablero de dos jugadores. El sistema ofrece a los jugadores, las tres en rayas y las damas, entre otros. Los envíos de información del user agent al servidor se realizan por HTTP. Las actualizaciones de tablero desde el servidor al user agent se hacen mediante WebSockets. La aplicación también permite realizar videoconferencias y el uso de un chat. Toda la aplicación es testeada mediante pruebas de JUnit Jupiter, Selenium y JMeter.
 
 ## Como usar
 Contiene todo el código y los recursos multimedia para la correcta ejecución de la aplicación. Para ello:
