@@ -1,4 +1,4 @@
- <img src="https://media.discordapp.net/attachments/487685117414735872/908488203609198623/palanca-de-mando.png?width=480&height=480" width="" height="90" align = "left">
+ <img src="https://github.com/jalvarezz13/GamesJ3S/blob/master/images/logo.png" width="" height="90" align = "left">
 
 # GamesJ3S
 ## Contenido
@@ -45,7 +45,8 @@ git clone https://github.com/jalvarezz13/GamesJ3S
 ![Eclipse](https://img.shields.io/badge/Eclipse-FE7A16.svg?style=for-the-badge&logo=Eclipse&logoColor=white)
 
 ## Autores
-<pre>Javier Álvarez Páramo  <a align="center" title="Linkedin" href="https://www.linkedin.com/in/javieralpa/"><img align="center" src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white"/></a></pre>
-<pre>Juan Muñoz Calvo  <a align="center" title="Linkedin" href="https://www.linkedin.com/in/jmunoz00/"><img align="center" src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white"/></a></pre>
-<pre>Sergio Silvestre Pavón  <a align="center" title="Linkedin" href="https://www.linkedin.com/in/sergio-silvestre-pav%C3%B3n-081011224/"><img align="center" src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white"/></a></pre>
-<pre>Josué Carlos Zenteno Yave  <a align="center" title="Linkedin" href="https://www.linkedin.com/in/josue-zenteno/"><img align="center" src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white"/></a></pre>
+<pre>Javier Álvarez Páramo  <a align="right" title="Linkedin" href="https://www.linkedin.com/in/javieralpa/"><img align="right" src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white"/></a><a align="right" title="GitHub" href=""><img align="right" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/></a></pre>
+<pre>Juan Muñoz Calvo  <a align="right" title="Linkedin" href="https://www.linkedin.com/in/jmunoz00/"><img align="right" src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white"/></a><a align="right" title="GitHub" href=""><img align="right" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/></a></pre>
+<pre>Sergio Silvestre Pavón  <a align="right" title="Linkedin" href="https://www.linkedin.com/in/sergio-silvestre-pav%C3%B3n-081011224/"><img align="right" src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white"/></a><a align="right" title="GitHub" href=""><img align="right" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/></a></pre>
+<pre>Josué Carlos Zenteno Yave  <a align="right" title="Linkedin" href="https://www.linkedin.com/in/josue-zenteno/"><img align="right" src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white"/></a><a align="right" title="GitHub" href=""><img align="right" src="https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white"/></a>
+</pre>
