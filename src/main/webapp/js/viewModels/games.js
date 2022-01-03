@@ -76,6 +76,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           pieceColor: self.chosenPiece().toString().split(" ")[1],
           movementX: movementX.toString(),
           movementY: movementY.toString(),
+          direction: movement,
           matchId: match.id,
         };
       }
@@ -106,7 +107,10 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       };
       ws.onmessage = function (event) {
         let msg = JSON.parse(event.data);
-        if (msg.type == "MATCH UPDATE") self.reload(msg.matchId);
+        if (msg.type == "MATCH UPDATE") {
+          //self.updateAlivePieces(msg.matchId);
+          self.reload(msg.matchId);
+        }
         if (msg.type == "MATCH READY") self.reload(msg.matchId);
       };
     }
@@ -165,6 +169,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         type: "get",
         url: self.routes.updateAlivePieces + matchId,
         success: function (response) {
+          //self.pieces([]);
           self.pieces(self.parsePieces(response));
           self.gameError("");
         },
@@ -195,11 +200,17 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
                 break;
               }
             // Comprueba si es posible mover, si no se puede, imprime eso
-            var token = true;
-            for (let i = 0; i < self.matches().length; i++) if (response.possibleMovementsXY[i] != null) token = false;
-            console.log(JSON.stringify(response));
-            if (token == true) self.gameError("No se puede mover esta ficha");
-            else self.gameError("");
+            let token = true;
+            response.possibleMovementsXY.map((movement)=>{
+              if(movement != null){
+                token = false
+              }
+            })
+            if (token){
+              self.gameError("No se puede mover esta ficha");
+            }else{
+              self.gameError("");
+            }
           },
           error: function (response) {
             console.error(JSON.stringify(response));

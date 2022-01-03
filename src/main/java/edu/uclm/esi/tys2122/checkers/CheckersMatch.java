@@ -1,7 +1,5 @@
 package edu.uclm.esi.tys2122.checkers;
 
-import java.util.Vector;
-
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -21,7 +19,7 @@ public class CheckersMatch extends Match {
 	private User looser;
 	private boolean draw;
 	private boolean[] possibleMovements = { false, false, false, false };
-	private int[][] possibleMovementsXY = new int[4][];
+	private int[][] possibleMovementsXY = { null, null, null, null };
 
 	/* Functions */
 
@@ -47,12 +45,21 @@ public class CheckersMatch extends Match {
 		if (!this.ready)
 			throw new Exception("Esperando jugadores, aún no puede mover");
 
-		CheckersSquare actualSquare = getSquareByPiece(movementData.getString("pieceId"), movementData.getString("pieceColor"));
-		int[] nextSquare = { Integer.parseInt(movementData.getString("movementX")), Integer.parseInt(movementData.getString("movementY")) };
-
-		// DO QUEEN
+		CheckersSquare actualSquare = getSquareByPiece(movementData.getString("pieceId"),
+				movementData.getString("pieceColor"));
+		int[] nextSquare = { Integer.parseInt(movementData.getString("movementX")),
+				Integer.parseInt(movementData.getString("movementY")) };
+		
 		CheckersBoard board = (CheckersBoard) this.getBoard();
 		CheckersSquare[][] squares = board.getSquares();
+		
+		//Kill piece
+		if(Math.abs(nextSquare[0] - actualSquare.getId()[0]) >= 2 || Math.abs(nextSquare[1] - actualSquare.getId()[1]) >= 2) {
+			int [] killedPiecePosition = killPiece(movementData, actualSquare, nextSquare);
+			squares[killedPiecePosition[0]][killedPiecePosition[1]].getPiece().die();
+		}
+
+		// DO QUEEN
 		if (movementData.getString("pieceColor").equals("BLANCO")) {
 			if (squares[nextSquare[0]][nextSquare[1]].isBottomBorder())
 				actualSquare.getPiece().promote();
@@ -63,12 +70,62 @@ public class CheckersMatch extends Match {
 
 		changeMatch(actualSquare.getId(), nextSquare);
 
-		this.playerWithTurn = this.getPlayerWithTurn() == this.getPlayers().get(0) ? this.getPlayers().get(1) : this.getPlayers().get(0);
+		this.playerWithTurn = this.getPlayerWithTurn() == this.getPlayers().get(0) ? this.getPlayers().get(1)
+				: this.getPlayers().get(0);
 
 		this.cleanMovements();
 
 		super.notifyOponents("MATCH UPDATE");
 		;
+	}
+
+	/*
+	 * Given the initial and destination squares, calculate the position of the killed piece
+	 */
+	private int[] killPiece(JSONObject movementData, CheckersSquare actualSquare, int[] nextSquare) {
+		int[] positionKilledPiece = new int[2];
+		
+		if(actualSquare.getPiece().getColor().equals("BLANCO")) {
+			switch(movementData.getString("direction")) {
+				case "leftUp":
+					positionKilledPiece[0] = actualSquare.getId()[0] + 1; 
+					positionKilledPiece[1] = actualSquare.getId()[1] + 1;
+					break;
+				case "rightUp":
+					positionKilledPiece[0] = actualSquare.getId()[0] + 1; 
+					positionKilledPiece[1] = actualSquare.getId()[1] - 1;
+					break;
+				case "rightDown":
+					positionKilledPiece[0] = actualSquare.getId()[0] - 1; 
+					positionKilledPiece[1] = actualSquare.getId()[1] - 1;
+					break;
+				case "leftDown":
+					positionKilledPiece[0] = actualSquare.getId()[0] - 1; 
+					positionKilledPiece[1] = actualSquare.getId()[1] + 1;
+					break;
+			}
+		}else { //NEGRO
+			switch(movementData.getString("direction")) {
+				case "leftUp":
+					positionKilledPiece[0] = actualSquare.getId()[0] - 1; 
+					positionKilledPiece[1] = actualSquare.getId()[1] - 1;
+					break;
+				case "rightUp":
+					positionKilledPiece[0] = actualSquare.getId()[0] - 1; 
+					positionKilledPiece[1] = actualSquare.getId()[1] + 1;
+					break;
+				case "rightDown":
+					positionKilledPiece[0] = actualSquare.getId()[0] + 1; 
+					positionKilledPiece[1] = actualSquare.getId()[1] + 1;
+					break;
+				case "leftDown":
+					positionKilledPiece[0] = actualSquare.getId()[0] + 1; 
+					positionKilledPiece[1] = actualSquare.getId()[1] - 1;
+					break;
+			}
+		}
+		
+		return positionKilledPiece;
 	}
 
 	/*
@@ -95,7 +152,8 @@ public class CheckersMatch extends Match {
 		int pieceCounter = 0;
 		for (int i = 0; i < squares.length; i++) {
 			for (int j = 0; j < squares[0].length; j++) {
-				if (squares[i][j].getPiece() != null && squares[i][j].getPiece().isAlive() && squares[i][j].getPiece().getColor().equals(playerColor)) {
+				if (squares[i][j].getPiece() != null && squares[i][j].getPiece().isAlive()
+						&& squares[i][j].getPiece().getColor().equals(playerColor)) {
 					alivePieces[pieceCounter] = squares[i][j].getPiece();
 					pieceCounter++;
 				}
@@ -114,7 +172,8 @@ public class CheckersMatch extends Match {
 		CheckersSquare[][] squares = board.getSquares();
 		for (int i = 0; i < squares.length; i++) {
 			for (int j = 0; j < squares[0].length; j++) {
-				if (squares[i][j].getPiece() != null && squares[i][j].getPiece().getId() == Integer.parseInt(pieceId) && squares[i][j].getPiece().getColor().equals(pieceColor)) {
+				if (squares[i][j].getPiece() != null && squares[i][j].getPiece().getId() == Integer.parseInt(pieceId)
+						&& squares[i][j].getPiece().getColor().equals(pieceColor)) {
 					return squares[i][j];
 				}
 			}
@@ -127,11 +186,11 @@ public class CheckersMatch extends Match {
 	 */
 	public CheckersMatch getPossibleMovements(String pieceId, String pieceColor) {
 		CheckersSquare pieceSquare = getSquareByPiece(pieceId, pieceColor);
-		Vector<int[]> targetSquares = getNextMovements(pieceSquare);
+		int[][] targetSquares = getNextMovements(pieceSquare);
 
 		setPossibleMovementsXY(targetSquares);
 
-		boolean[] nextMovements = calculatePossibleMovements(pieceSquare.getId(), targetSquares, pieceColor);
+		boolean[] nextMovements = calculatePossibleMovements(targetSquares);
 
 		CheckersBoard board = (CheckersBoard) this.getBoard();
 		CheckersSquare[][] squares = board.getSquares();
@@ -144,9 +203,13 @@ public class CheckersMatch extends Match {
 				CheckersSquare auxSquare;
 				int[] auxId = { i, j };
 				if (isTarget(targetSquares, auxId) && squares[i][j].getPiece() == null) {
-					auxSquare = new CheckersSquare(squares[i][j].getId(), "VERDE", squares[i][j].isUpperBorder(), squares[i][j].isLeftBorder(), squares[i][j].isRightBorder(), squares[i][j].isBottomBorder(), squares[i][j].isCoronate(), squares[i][j].getPiece());
+					auxSquare = new CheckersSquare(squares[i][j].getId(), "VERDE", squares[i][j].isUpperBorder(),
+							squares[i][j].isLeftBorder(), squares[i][j].isRightBorder(), squares[i][j].isBottomBorder(),
+							squares[i][j].isCoronate(), squares[i][j].getPiece());
 				} else {
-					auxSquare = new CheckersSquare(squares[i][j].getId(), squares[i][j].getColor(), squares[i][j].isUpperBorder(), squares[i][j].isLeftBorder(), squares[i][j].isRightBorder(), squares[i][j].isBottomBorder(), squares[i][j].isCoronate(), squares[i][j].getPiece());
+					auxSquare = new CheckersSquare(squares[i][j].getId(), squares[i][j].getColor(),
+							squares[i][j].isUpperBorder(), squares[i][j].isLeftBorder(), squares[i][j].isRightBorder(),
+							squares[i][j].isBottomBorder(), squares[i][j].isCoronate(), squares[i][j].getPiece());
 				}
 				auxSquares[i][j] = auxSquare;
 			}
@@ -165,24 +228,25 @@ public class CheckersMatch extends Match {
 	/*
 	 * Calculates the next squares following game rules
 	 */
-	private Vector<int[]> getNextMovements(CheckersSquare actualSquare) {
+	private int[][] getNextMovements(CheckersSquare actualSquare) {
 		CheckersPiece piece = actualSquare.getPiece();
 		CheckersBoard board = (CheckersBoard) this.getBoard();
 		CheckersSquare[][] squares = board.getSquares();
 
-		Vector<int[]> auxPossibles = new Vector<int[]>();
+		int[][] auxPossibles = new int[4][];
 		if (piece.getType() == "pawn") { // PAWN
 			if (piece.getColor().equals("BLANCO")) { // BLANCO
 				if (!actualSquare.isRightBorder()) { // leftUp?
 					CheckersSquare leftUpSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] + 1];
 					if (leftUpSquare.getPiece() == null) {
-						auxPossibles.add(leftUpSquare.getId());
+						auxPossibles[0] = leftUpSquare.getId();
 					} else {
 						if (leftUpSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
 							if (!leftUpSquare.isBorder()) {
-								CheckersSquare nextLeftUpSquare = squares[leftUpSquare.getId()[0] + 1][leftUpSquare.getId()[1] + 1];
+								CheckersSquare nextLeftUpSquare = squares[leftUpSquare.getId()[0]
+										+ 1][leftUpSquare.getId()[1] + 1];
 								if (nextLeftUpSquare.getPiece() == null) {
-									auxPossibles.add(nextLeftUpSquare.getId());
+									auxPossibles[0] = nextLeftUpSquare.getId();
 								}
 							}
 						}
@@ -191,13 +255,14 @@ public class CheckersMatch extends Match {
 				if (!actualSquare.isLeftBorder()) { // rightUp?
 					CheckersSquare rightUpSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] - 1];
 					if (rightUpSquare.getPiece() == null) {
-						auxPossibles.add(rightUpSquare.getId());
+						auxPossibles[1] = rightUpSquare.getId();
 					} else {
 						if (rightUpSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
 							if (!rightUpSquare.isBorder()) {
-								CheckersSquare nextRightUpSquare = squares[rightUpSquare.getId()[0] + 1][rightUpSquare.getId()[1] - 1];
+								CheckersSquare nextRightUpSquare = squares[rightUpSquare.getId()[0]
+										+ 1][rightUpSquare.getId()[1] - 1];
 								if (nextRightUpSquare.getPiece() == null) {
-									auxPossibles.add(nextRightUpSquare.getId());
+									auxPossibles[1] = nextRightUpSquare.getId();
 								}
 							}
 						}
@@ -207,13 +272,14 @@ public class CheckersMatch extends Match {
 				if (!actualSquare.isLeftBorder()) { // leftUp?
 					CheckersSquare leftUpSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] - 1];
 					if (leftUpSquare.getPiece() == null) {
-						auxPossibles.add(leftUpSquare.getId());
+						auxPossibles[0] = leftUpSquare.getId();
 					} else {
 						if (leftUpSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
 							if (!leftUpSquare.isBorder()) {
-								CheckersSquare nextLeftUpSquare = squares[leftUpSquare.getId()[0] - 1][leftUpSquare.getId()[1] - 1];
+								CheckersSquare nextLeftUpSquare = squares[leftUpSquare.getId()[0]
+										- 1][leftUpSquare.getId()[1] - 1];
 								if (nextLeftUpSquare.getPiece() == null) {
-									auxPossibles.add(nextLeftUpSquare.getId());
+									auxPossibles[0] = nextLeftUpSquare.getId();
 								}
 							}
 						}
@@ -222,13 +288,14 @@ public class CheckersMatch extends Match {
 				if (!actualSquare.isRightBorder()) { // rightUp?
 					CheckersSquare rightUpSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] + 1];
 					if (rightUpSquare.getPiece() == null) {
-						auxPossibles.add(rightUpSquare.getId());
+						auxPossibles[1] = rightUpSquare.getId();
 					} else {
 						if (rightUpSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
 							if (!rightUpSquare.isBorder()) {
-								CheckersSquare nextRightUpSquare = squares[rightUpSquare.getId()[0] - 1][rightUpSquare.getId()[1] + 1];
+								CheckersSquare nextRightUpSquare = squares[rightUpSquare.getId()[0]
+										- 1][rightUpSquare.getId()[1] + 1];
 								if (nextRightUpSquare.getPiece() == null) {
-									auxPossibles.add(nextRightUpSquare.getId());
+									auxPossibles[1] = nextRightUpSquare.getId();
 								}
 							}
 						}
@@ -243,42 +310,24 @@ public class CheckersMatch extends Match {
 
 	/*
 	 * Calculates the direction according to the current position and the possible
-	 * destination squares
-	 * TODO: Se puede simplificar (CREO) ya que 0, 1, 2, 3 se hace en sentido de agujas de reloj
+	 * destination squares TODO: Se puede simplificar (CREO) ya que 0, 1, 2, 3 se
+	 * hace en sentido de agujas de reloj
 	 */
-	private boolean[] calculatePossibleMovements(int[] actualSquare, Vector<int[]> nextSquares, String pieceColor) {
+	private boolean[] calculatePossibleMovements(int[][] targetSquares) {
 		boolean nextMovements[] = { false, false, false, false };
-		for (int i = 0; i < nextSquares.size(); i++) {
-			if (pieceColor.equals("BLANCO")) {
-				if (nextSquares.get(i)[0] > actualSquare[0] && nextSquares.get(i)[1] > actualSquare[1]) {
-					nextMovements[0] = true;
-				} else if (nextSquares.get(i)[0] > actualSquare[0] && nextSquares.get(i)[1] < actualSquare[1]) {
-					nextMovements[1] = true;
-				} else if (nextSquares.get(i)[0] < actualSquare[0] && nextSquares.get(i)[1] < actualSquare[1]) {
-					nextMovements[2] = true;
-				} else if (nextSquares.get(i)[0] < actualSquare[0] && nextSquares.get(i)[1] > actualSquare[1]) {
-					nextMovements[3] = true;
-				}
-			} else {
-				if (nextSquares.get(i)[0] < actualSquare[0] && nextSquares.get(i)[1] < actualSquare[1]) {
-					nextMovements[0] = true;
-				} else if (nextSquares.get(i)[0] < actualSquare[0] && nextSquares.get(i)[1] > actualSquare[1]) {
-					nextMovements[1] = true;
-				} else if (nextSquares.get(i)[0] > actualSquare[0] && nextSquares.get(i)[1] > actualSquare[1]) {
-					nextMovements[2] = true;
-				} else if (nextSquares.get(i)[0] > actualSquare[0] && nextSquares.get(i)[1] < actualSquare[1]) {
-					nextMovements[3] = true;
-				}
-			}
-		}
+
+		for (int i = 0; i < targetSquares.length; i++)
+			if (targetSquares[i] != null)
+				nextMovements[i] = true;
 
 		return nextMovements;
 	}
 
-	private boolean isTarget(Vector<int[]> targetSquares, int[] auxId) {
-		for (int i = 0; i < targetSquares.size(); i++) {
-			if (targetSquares.get(i)[0] == auxId[0] && targetSquares.get(i)[1] == auxId[1])
-				return true;
+	private boolean isTarget(int[][] targetSquares, int[] auxId) {
+		for (int i = 0; i < targetSquares.length; i++) {
+			if (targetSquares[i] != null)
+				if (targetSquares[i][0] == auxId[0] && targetSquares[i][1] == auxId[1])
+					return true;
 		}
 		return false;
 	}
@@ -321,9 +370,8 @@ public class CheckersMatch extends Match {
 		return possibleMovementsXY;
 	}
 
-	public void setPossibleMovementsXY(Vector<int[]> possibleMovementsXY) {
-		for (int i = 0; i < possibleMovementsXY.size(); i++)
-			this.possibleMovementsXY[i] = possibleMovementsXY.get(i);
+	public void setPossibleMovementsXY(int[][] targetSquares) {
+		this.possibleMovementsXY = targetSquares;
 	}
 
 	public void cleanMovements() {
