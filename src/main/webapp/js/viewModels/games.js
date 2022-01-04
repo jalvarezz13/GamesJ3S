@@ -62,7 +62,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     mover(match, movement) {
       let self = this;
       let info;
-      const [movementX, movementY] = self.getSquareByDirection(match.possibleMovementsXY, movement)
+      const [movementX, movementY] = self.getSquareByDirection(match.possibleMovementsXY, movement);
 
       if (match.game == "TictactoeMatch") {
         info = {
@@ -87,7 +87,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         contentType: "application/json",
         success: function (response) {
           // Select apunta a Seleccione...
-          self.chosenPiece(["Seleccione..."])
+          self.chosenPiece(["Seleccione..."]);
           console.log(JSON.stringify(response));
           self.gameError("");
         },
@@ -108,7 +108,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       ws.onmessage = function (event) {
         let msg = JSON.parse(event.data);
         if (msg.type == "MATCH UPDATE") {
-          //self.updateAlivePieces(msg.matchId);
+          self.updateAlivePieces(msg.matchId);
           self.reload(msg.matchId);
         }
         if (msg.type == "MATCH READY") self.reload(msg.matchId);
@@ -170,7 +170,9 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         url: self.routes.updateAlivePieces + matchId,
         success: function (response) {
           //self.pieces([]);
+          console.log(self.pieces());
           self.pieces(self.parsePieces(response));
+          console.log(self.pieces());
           self.gameError("");
         },
         error: function (response) {
@@ -182,7 +184,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
 
     showPossibleMovements(match) {
       let self = this;
-      if (self.chosenPiece() != "Seleccione...") {
+      if (self.chosenPiece() != "Seleccione..." && self.chosenPiece().toString().split(" ")[0] != "") {
         let info = {
           matchId: match.id,
           pieceId: self.chosenPiece().toString().split(" ")[0],
@@ -201,14 +203,14 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
               }
             // Comprueba si es posible mover, si no se puede, imprime eso
             let token = true;
-            response.possibleMovementsXY.map((movement)=>{
-              if(movement != null){
-                token = false
+            response.possibleMovementsXY.map((movement) => {
+              if (movement != null) {
+                token = false;
               }
-            })
-            if (token){
+            });
+            if (token) {
               self.gameError("No se puede mover esta ficha");
-            }else{
+            } else {
               self.gameError("");
             }
           },
