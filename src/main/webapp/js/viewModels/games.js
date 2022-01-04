@@ -228,9 +228,11 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       let alivePieces = [];
       alivePieces.push(`Seleccione...`);
       response.map((Piece) => {
-        let { id, color } = Piece;
-        alivePieces.push(`${id} ${color}`);
-        self.playerColor(color);
+        if (Piece != null){
+          let { id, color } = Piece;
+          alivePieces.push(`${id} ${color}`);
+          self.playerColor(color);
+        }
       });
       return alivePieces;
     }
