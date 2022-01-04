@@ -602,6 +602,79 @@ iframe {
   font-weight: 400;
 }
 
-.tableroRotate {
+/*TABLERO*/
+
+.Rotate {
   transform: rotate(180deg);
+}
+
+.Board {
+  display: flex;
+  flex-direction: column;
+}
+
+.Row {
+  display: flex;
+  flex-direction: row;
+}
+
+.Square {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.brownSquare {
+  background-color: #693424;
+}
+.whiteSquare {
+  background-color: #fddda4;
+}
+.greenSquare {
+  background-color: lightgreen;
+}
+
+.whitePlayerBP,
+.blackPlayerBP {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #202124;
+  border-radius: 100%;
+  border: solid 5px black;
+
+  width: 80%;
+  height: 80%;
+}
+
+.whitePlayerWP,
+.blackPlayerWP {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #fefefe;
+  border-radius: 100%;
+  border: solid 5px #b6b6b6;
+
+  width: 80%;
+  height: 80%;
+}
+
+.whitePlayerBP .pieceId,
+.blackPlayerBP .pieceId {
+  color: white;
+  font-size: 10px;
+}
+
+.whitePlayerWP .pieceId,
+.blackPlayerWP .pieceId {
+  color: black;
+  font-size: 10px;
 }

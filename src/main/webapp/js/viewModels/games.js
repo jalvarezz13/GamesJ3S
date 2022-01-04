@@ -9,17 +9,23 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
   class MenuViewModel {
     constructor() {
       let self = this;
+      //Routes
       self.routes = routesFile.getRoutes();
 
+      //Games
       self.games = ko.observableArray([]);
       self.matches = ko.observableArray([]);
       self.gameError = ko.observable(null);
       self.tempName = ko.observable(null);
 
+      //Checkers
       self.pieces = ko.observableArray([]);
       self.chosenPiece = ko.observableArray([]);
-
       self.playerColor = ko.observable("BLANCO");
+
+      //Tic Tac Toe
+      self.x = ko.observable(null);
+      self.y = ko.observable(null);
 
       // Header Config
       self.headerConfig = ko.observable({
@@ -62,8 +68,6 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     mover(match, movement) {
       let self = this;
       let info;
-      const [movementX, movementY] = self.getSquareByDirection(match.possibleMovementsXY, movement);
-
       if (match.game == "TictactoeMatch") {
         info = {
           x: this.x(),
@@ -71,6 +75,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           matchId: match.id,
         };
       } else {
+        const [movementX, movementY] = self.getSquareByDirection(match.possibleMovementsXY, movement);
         info = {
           pieceId: self.chosenPiece().toString().split(" ")[0],
           pieceColor: self.chosenPiece().toString().split(" ")[1],
