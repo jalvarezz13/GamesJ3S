@@ -54,36 +54,52 @@ public class TestCompleteCheckersMatch {
 		pause(500);
 
 		// start Movements
-		movePiece(driverWhite, "12 BLANCO", "rightUp");
+		movePiece(driverWhite, "1 BLANCO", "rightUp");
 
 		movePiece(driverBlack, "1 NEGRO", "rightUp");
 
-		movePiece(driverWhite, "9 BLANCO", "leftUp");
+		movePiece(driverWhite, "4 BLANCO", "leftUp");
 
 		movePiece(driverBlack, "1 NEGRO", "leftUp");
 
-		movePiece(driverWhite, "11 BLANCO", "rightUp");
+		movePiece(driverWhite, "2 BLANCO", "rightUp");
 
 		movePiece(driverBlack, "3 NEGRO", "rightUp");
 
-		movePiece(driverWhite, "11 BLANCO", "leftUp");
+		movePiece(driverWhite, "2 BLANCO", "leftUp");
 
 		movePiece(driverBlack, "2 NEGRO", "leftUp");
 
-		movePiece(driverWhite, "7 BLANCO", "rightUp");
+		movePiece(driverWhite, "6 BLANCO", "rightUp");
 
 		movePiece(driverBlack, "5 NEGRO", "rightUp");
 
-		movePiece(driverWhite, "11 BLANCO", "rightUp");
+		movePiece(driverWhite, "2 BLANCO", "rightUp");
 
 		movePiece(driverBlack, "6 NEGRO", "rightUp");
+		
+		movePiece(driverWhite, "1 BLANCO", "rightUp");
 
-		// tocaria mover 12 blanca
+		movePiece(driverBlack, "8 NEGRO", "leftUp");
+
+		movePiece(driverWhite, "3 BLANCO", "rightUp");
+
+		movePiece(driverBlack, "5 NEGRO", "leftUp");
+
+		movePiece(driverWhite, "7 BLANCO", "rightUp");
+
+		movePiece(driverBlack, "11 NEGRO", "rightUp");
+
+		movePiece(driverWhite, "1 BLANCO", "leftUp"); // doQueen
+
+		movePiece(driverBlack, "2 NEGRO", "rightUp");
+
+
 
 	}
 
 	private void movePiece(WebDriver driver, String pieceName, String movement) {
-		Select driverList = new Select(driver.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/ol/li/div[9]/select")));
+		Select driverList = new Select(driver.findElement(By.id("dropDown")));
 		driverList.selectByVisibleText(pieceName);
 		pause(500);
 		driver.findElement(By.id(movement)).click();

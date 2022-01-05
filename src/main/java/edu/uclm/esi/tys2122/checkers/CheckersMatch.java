@@ -317,7 +317,7 @@ public class CheckersMatch extends Match {
 			}
 		} else { // CHECKER
 			if (piece.getColor().equals("BLANCO")) { // BLANCO
-				if (!actualSquare.isRightBorder()) { // leftUp
+				if (!actualSquare.isRightBorder() || !actualSquare.isBottomBorder()) { // leftUp
 					CheckersSquare leftUpSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] + 1];
 					if (leftUpSquare.getPiece() == null || !leftUpSquare.getPiece().isAlive()) {
 						auxPossibles[0] = leftUpSquare.getId();
@@ -333,7 +333,7 @@ public class CheckersMatch extends Match {
 						}
 					}
 				}
-				if (!actualSquare.isLeftBorder()) { // rightUp
+				if (!actualSquare.isLeftBorder() || !actualSquare.isBottomBorder()) { // rightUp
 					CheckersSquare rightUpSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] - 1];
 					if (rightUpSquare.getPiece() == null || !rightUpSquare.getPiece().isAlive()) {
 						auxPossibles[1] = rightUpSquare.getId();
@@ -349,40 +349,40 @@ public class CheckersMatch extends Match {
 						}
 					}
 				}
-				if (!actualSquare.isLeftBorder()) { // rightDown
+				if (!actualSquare.isLeftBorder() || !actualSquare.isUpperBorder()) { // rightDown
 					CheckersSquare rightDownSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] - 1];
 					if (rightDownSquare.getPiece() == null || !rightDownSquare.getPiece().isAlive()) {
-						auxPossibles[1] = rightDownSquare.getId();
+						auxPossibles[2] = rightDownSquare.getId();
 					} else {
 						if (rightDownSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
 							if (!rightDownSquare.isBorder()) {
 								CheckersSquare nextRightDownSquare = squares[rightDownSquare.getId()[0]
 										- 1][rightDownSquare.getId()[1] - 1];
 								if (nextRightDownSquare.getPiece() == null  || !nextRightDownSquare.getPiece().isAlive()) {
-									auxPossibles[1] = nextRightDownSquare.getId();
+									auxPossibles[2] = nextRightDownSquare.getId();
 								}
 							}
 						}
 					}
 				}
-				if (!actualSquare.isRightBorder()) { // leftDown
+				if (!actualSquare.isRightBorder() || !actualSquare.isUpperBorder()) { // leftDown
 					CheckersSquare leftDownSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] + 1];
 					if (leftDownSquare.getPiece() == null || !leftDownSquare.getPiece().isAlive()) {
-						auxPossibles[0] = leftDownSquare.getId();
+						auxPossibles[3] = leftDownSquare.getId();
 					} else {
 						if (leftDownSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
 							if (!leftDownSquare.isBorder()) {
 								CheckersSquare nextLeftDownSquare = squares[leftDownSquare.getId()[0]
 										- 1][leftDownSquare.getId()[1] + 1];
 								if (nextLeftDownSquare.getPiece() == null || !nextLeftDownSquare.getPiece().isAlive()) {
-									auxPossibles[0] = nextLeftDownSquare.getId();
+									auxPossibles[3] = nextLeftDownSquare.getId();
 								}
 							}
 						}
 					}
 				}	
 			} else { // NEGRO
-				if (!actualSquare.isLeftBorder()) { // leftUp
+				if (!actualSquare.isLeftBorder() || !actualSquare.isUpperBorder()) { // leftUp
 					CheckersSquare leftUpSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] - 1];
 					if (leftUpSquare.getPiece() == null || !leftUpSquare.getPiece().isAlive()) {
 						auxPossibles[0] = leftUpSquare.getId();
@@ -398,7 +398,7 @@ public class CheckersMatch extends Match {
 						}
 					}
 				}
-				if (!actualSquare.isRightBorder()) { // rightUp
+				if (!actualSquare.isRightBorder() || !actualSquare.isUpperBorder()) { // rightUp
 					CheckersSquare rightUpSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] + 1];
 					if (rightUpSquare.getPiece() == null || !rightUpSquare.getPiece().isAlive()) {
 						auxPossibles[1] = rightUpSquare.getId();
@@ -414,33 +414,33 @@ public class CheckersMatch extends Match {
 						}
 					}
 				}
-				if (!actualSquare.isLeftBorder()) { // rightDown
+				if (!actualSquare.isLeftBorder() || !actualSquare.isBottomBorder()) { // rightDown
 					CheckersSquare rightDownSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] + 1];
 					if (rightDownSquare.getPiece() == null || !rightDownSquare.getPiece().isAlive()) {
-						auxPossibles[1] = rightDownSquare.getId();
+						auxPossibles[2] = rightDownSquare.getId();
 					} else {
 						if (rightDownSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
 							if (!rightDownSquare.isBorder()) {
 								CheckersSquare nextRightDownSquare = squares[rightDownSquare.getId()[0]
 										+ 1][rightDownSquare.getId()[1] + 1];
 								if (nextRightDownSquare.getPiece() == null  || !nextRightDownSquare.getPiece().isAlive()) {
-									auxPossibles[1] = nextRightDownSquare.getId();
+									auxPossibles[2] = nextRightDownSquare.getId();
 								}
 							}
 						}
 					}
 				}
-				if (!actualSquare.isRightBorder()) { // leftDown
+				if (!actualSquare.isRightBorder() || !actualSquare.isBottomBorder()) { // leftDown
 					CheckersSquare leftDownSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] - 1];
 					if (leftDownSquare.getPiece() == null || !leftDownSquare.getPiece().isAlive()) {
-						auxPossibles[0] = leftDownSquare.getId();
+						auxPossibles[3] = leftDownSquare.getId();
 					} else {
 						if (leftDownSquare.getPiece().getColor() != actualSquare.getPiece().getColor()) {
 							if (!leftDownSquare.isBorder()) {
 								CheckersSquare nextLeftDownSquare = squares[leftDownSquare.getId()[0]
 										+ 1][leftDownSquare.getId()[1] - 1];
 								if (nextLeftDownSquare.getPiece() == null || !nextLeftDownSquare.getPiece().isAlive()) {
-									auxPossibles[0] = nextLeftDownSquare.getId();
+									auxPossibles[3] = nextLeftDownSquare.getId();
 								}
 							}
 						}
