@@ -1,5 +1,8 @@
 package edu.uclm.esi.tys2122.selenium;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +12,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -53,6 +57,23 @@ public class TestCompleteCheckersMatch {
 		driverBlack.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[3]/div/button")).click();
 		pause(500);
 
+		WebElement msg;
+		//You can't move
+		selectItem(driverWhite, "8 BLANCO");
+		pause(500);
+		msg = driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/ol/li/div[11]"));
+		pause(500);
+		assertEquals(msg.getText(), "No se puede mover esta ficha");
+		pause(500);
+		
+		//Not your turn
+		movePiece(driverBlack, "2 NEGRO", "rightUp");
+		pause(500);
+		msg = driverBlack.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/ol/li/div[11]"));
+		pause(500);
+		assertEquals(msg.getText(), "No es tu turno");
+		pause(500);
+		
 		// start Movements
 		movePiece(driverWhite, "1 BLANCO", "rightUp");
 
@@ -94,16 +115,106 @@ public class TestCompleteCheckersMatch {
 
 		movePiece(driverBlack, "2 NEGRO", "rightUp");
 
+		movePiece(driverWhite, "7 BLANCO", "leftUp");
 
+		movePiece(driverBlack, "3 NEGRO", "rightUp");
+
+		movePiece(driverWhite, "1 BLANCO", "rightDown");
+
+		movePiece(driverBlack, "5 NEGRO", "rightUp");
+
+		movePiece(driverWhite, "1 BLANCO", "rightDown");
+
+		movePiece(driverBlack, "8 NEGRO", "leftUp");
+
+		movePiece(driverWhite, "6 BLANCO", "rightUp");
+
+		movePiece(driverBlack, "11 NEGRO", "leftUp");
+
+		movePiece(driverWhite, "8 BLANCO", "leftUp");
+
+		movePiece(driverBlack, "4 NEGRO", "leftUp");
+
+		movePiece(driverWhite, "12 BLANCO", "leftUp");
+
+		movePiece(driverBlack, "4 NEGRO", "leftUp");
+
+		movePiece(driverWhite, "12 BLANCO", "leftUp");
+
+		movePiece(driverBlack, "1 NEGRO", "rightUp");
+
+		movePiece(driverWhite, "1 BLANCO", "leftDown");
+
+		movePiece(driverBlack, "1 NEGRO", "leftUp"); // doQueen
+
+		movePiece(driverWhite, "1 BLANCO", "leftDown");
+		
+		movePiece(driverBlack, "3 NEGRO", "leftUp");
+
+		movePiece(driverWhite, "9 BLANCO", "rightUp");
+
+		movePiece(driverBlack, "11 NEGRO", "rightUp");
+
+		movePiece(driverWhite, "8 BLANCO", "leftUp");
+
+		movePiece(driverBlack, "11 NEGRO", "rightUp");
+
+		movePiece(driverWhite, "8 BLANCO", "leftUp");
+
+		movePiece(driverBlack, "9 NEGRO", "leftUp");
+
+		movePiece(driverWhite, "6 BLANCO", "leftUp");
+
+		movePiece(driverBlack, "9 NEGRO", "rightUp");
+
+		movePiece(driverWhite, "6 BLANCO", "leftUp");
+
+		movePiece(driverBlack, "9 NEGRO", "leftUp");
+		
+		movePiece(driverWhite, "6 BLANCO", "leftUp"); // doQueen
+
+		movePiece(driverBlack, "10 NEGRO", "leftUp");
+
+		movePiece(driverWhite, "6 BLANCO", "rightDown");
+
+		movePiece(driverBlack, "10 NEGRO", "leftUp");
+
+		movePiece(driverWhite, "6 BLANCO", "rightDown");
+
+		movePiece(driverBlack, "12 NEGRO", "leftUp");
+
+		movePiece(driverWhite, "8 BLANCO", "leftUp"); // doQueen
+
+		movePiece(driverBlack, "11 NEGRO", "leftUp");
+
+		movePiece(driverWhite, "5 BLANCO", "rightUp");
+
+		movePiece(driverBlack, "9 NEGRO", "rightUp");
+
+		movePiece(driverWhite, "12 BLANCO", "rightUp");
+
+		movePiece(driverBlack, "10 NEGRO", "rightUp");
+
+		movePiece(driverWhite, "6 BLANCO", "rightDown");
+
+		movePiece(driverBlack, "1 NEGRO", "rightDown");
+
+		movePiece(driverWhite, "11 BLANCO", "rightUp");
+		
+		//TODOTYSW: assert de victoria
 
 	}
 
 	private void movePiece(WebDriver driver, String pieceName, String movement) {
-		Select driverList = new Select(driver.findElement(By.id("dropDown")));
-		driverList.selectByVisibleText(pieceName);
+		selectItem(driver, pieceName);
 		pause(500);
 		driver.findElement(By.id(movement)).click();
 		pause(1000);
+	}
+
+	private void selectItem(WebDriver driver, String pieceName) {
+		Select driverList = new Select(driver.findElement(By.id("dropDown")));
+		driverList.selectByVisibleText(pieceName);
 	}
 
 	private void goGames() {
@@ -120,4 +231,5 @@ public class TestCompleteCheckersMatch {
 			e.printStackTrace();
 		}
 	}
+	
 }

@@ -78,7 +78,6 @@ public class CheckersMatch extends Match {
 		this.cleanMovements();
 
 		super.notifyOponents("MATCH UPDATE");
-		;
 	}
 
 	/*
@@ -317,7 +316,7 @@ public class CheckersMatch extends Match {
 			}
 		} else { // CHECKER
 			if (piece.getColor().equals("BLANCO")) { // BLANCO
-				if (!actualSquare.isRightBorder() || !actualSquare.isBottomBorder()) { // leftUp
+				if (!actualSquare.isRightBorder() && !actualSquare.isBottomBorder()) { // leftUp
 					CheckersSquare leftUpSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] + 1];
 					if (leftUpSquare.getPiece() == null || !leftUpSquare.getPiece().isAlive()) {
 						auxPossibles[0] = leftUpSquare.getId();
@@ -333,7 +332,7 @@ public class CheckersMatch extends Match {
 						}
 					}
 				}
-				if (!actualSquare.isLeftBorder() || !actualSquare.isBottomBorder()) { // rightUp
+				if (!actualSquare.isLeftBorder() && !actualSquare.isBottomBorder()) { // rightUp
 					CheckersSquare rightUpSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] - 1];
 					if (rightUpSquare.getPiece() == null || !rightUpSquare.getPiece().isAlive()) {
 						auxPossibles[1] = rightUpSquare.getId();
@@ -349,7 +348,7 @@ public class CheckersMatch extends Match {
 						}
 					}
 				}
-				if (!actualSquare.isLeftBorder() || !actualSquare.isUpperBorder()) { // rightDown
+				if (!actualSquare.isRightBorder() && !actualSquare.isUpperBorder()) { // rightDown
 					CheckersSquare rightDownSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] - 1];
 					if (rightDownSquare.getPiece() == null || !rightDownSquare.getPiece().isAlive()) {
 						auxPossibles[2] = rightDownSquare.getId();
@@ -365,7 +364,7 @@ public class CheckersMatch extends Match {
 						}
 					}
 				}
-				if (!actualSquare.isRightBorder() || !actualSquare.isUpperBorder()) { // leftDown
+				if (!actualSquare.isLeftBorder() && !actualSquare.isUpperBorder()) { // leftDown
 					CheckersSquare leftDownSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] + 1];
 					if (leftDownSquare.getPiece() == null || !leftDownSquare.getPiece().isAlive()) {
 						auxPossibles[3] = leftDownSquare.getId();
@@ -382,7 +381,7 @@ public class CheckersMatch extends Match {
 					}
 				}	
 			} else { // NEGRO
-				if (!actualSquare.isLeftBorder() || !actualSquare.isUpperBorder()) { // leftUp
+				if (!actualSquare.isLeftBorder() && !actualSquare.isUpperBorder()) { // leftUp
 					CheckersSquare leftUpSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] - 1];
 					if (leftUpSquare.getPiece() == null || !leftUpSquare.getPiece().isAlive()) {
 						auxPossibles[0] = leftUpSquare.getId();
@@ -398,7 +397,7 @@ public class CheckersMatch extends Match {
 						}
 					}
 				}
-				if (!actualSquare.isRightBorder() || !actualSquare.isUpperBorder()) { // rightUp
+				if (!actualSquare.isRightBorder() && !actualSquare.isUpperBorder()) { // rightUp
 					CheckersSquare rightUpSquare = squares[actualSquare.getId()[0] - 1][actualSquare.getId()[1] + 1];
 					if (rightUpSquare.getPiece() == null || !rightUpSquare.getPiece().isAlive()) {
 						auxPossibles[1] = rightUpSquare.getId();
@@ -414,7 +413,7 @@ public class CheckersMatch extends Match {
 						}
 					}
 				}
-				if (!actualSquare.isLeftBorder() || !actualSquare.isBottomBorder()) { // rightDown
+				if (!actualSquare.isRightBorder() && !actualSquare.isBottomBorder()) { // rightDown
 					CheckersSquare rightDownSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] + 1];
 					if (rightDownSquare.getPiece() == null || !rightDownSquare.getPiece().isAlive()) {
 						auxPossibles[2] = rightDownSquare.getId();
@@ -430,7 +429,7 @@ public class CheckersMatch extends Match {
 						}
 					}
 				}
-				if (!actualSquare.isRightBorder() || !actualSquare.isBottomBorder()) { // leftDown
+				if (!actualSquare.isLeftBorder() && !actualSquare.isBottomBorder()) { // leftDown
 					CheckersSquare leftDownSquare = squares[actualSquare.getId()[0] + 1][actualSquare.getId()[1] - 1];
 					if (leftDownSquare.getPiece() == null || !leftDownSquare.getPiece().isAlive()) {
 						auxPossibles[3] = leftDownSquare.getId();
