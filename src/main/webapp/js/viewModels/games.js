@@ -93,7 +93,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         success: function (response) {
           // Select apunta a Seleccione...
           self.chosenPiece(["Seleccione..."]);
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           self.gameError("");
         },
         error: function (response) {
@@ -132,7 +132,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           if (game.name == "Las damas") {
             self.updateAlivePieces(response.id);
           }
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           self.gameError("");
         },
         error: function (response) {
@@ -156,7 +156,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
               self.matches.splice(i, 1, response);
               break;
             }
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
           self.gameError("");
         },
         error: function (response) {
@@ -175,9 +175,9 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         url: self.routes.updateAlivePieces + matchId,
         success: function (response) {
           //self.pieces([]);
-          console.log(self.pieces());
+          // console.log(self.pieces());
           self.pieces(self.parsePieces(response));
-          console.log(self.pieces());
+          // console.log(self.pieces());
           self.gameError("");
         },
         error: function (response) {
@@ -233,7 +233,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       let alivePieces = [];
       alivePieces.push(`Seleccione...`);
       response.map((Piece) => {
-        if (Piece != null){
+        if (Piece != null) {
           let { id, color } = Piece;
           alivePieces.push(`${id} ${color}`);
           self.playerColor(color);

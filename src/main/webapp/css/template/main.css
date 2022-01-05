@@ -515,8 +515,12 @@ iframe {
 }
 
 /*//////////////////////////////////////////////////////////////////
-[ Custom CSS ]*/
+                          [ Custom CSS ] 
+/////////////////////////////////////////////////////////////////*/
 
+/*****************************[ GAMES ]*****************************/
+
+/**************[ CONTAINER ]**************/
 .wrap-games {
   width: fit-content;
   background: #232e33;
@@ -546,14 +550,164 @@ iframe {
   padding-bottom: 20px;
   border-color: #a64bf4;
 }
+/************[ END CONTAINER ]************/
 
-.grid-games-buttons {
+/**************[ MATCH INFO ]*************/
+.MatchInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-.products {
+.Player {
   display: flex;
   flex-direction: column;
-  text-align: center;
+  align-items: center;
+
+  flex-grow: 1;
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+
+  background: linear-gradient(to left, #154792, #1e68d4);
+}
+
+.Rival {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  flex-grow: 1;
+  flex-shrink: 1;
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+
+  background: linear-gradient(to right, #f0ac1b, #f3be47);
+}
+
+.Player .Name,
+.Rival .Name,
+.Rival .Waiting {
+  font-size: 1.225rem;
+}
+
+/***********[ END MATCH INFO ]************/
+
+/***************************[ END GAMES ]***************************/
+
+/***************************[ CHECKERS ]****************************/
+
+/****************[ BOARD ]****************/
+.Rotate {
+  transform: rotate(180deg);
+}
+
+.Board {
+  display: flex;
+  flex-direction: column;
+
+  margin: 20px 0px 20px 0px;
+}
+
+.Row {
+  display: flex;
+  flex-direction: row;
+}
+
+.Square {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.brownSquare {
+  background-color: #693424;
+}
+
+.whiteSquare {
+  background-color: #fddda4;
+}
+
+.greenSquare {
+  background-color: lightgreen;
+}
+
+.whitePlayerBP,
+.blackPlayerBP {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #202124;
+  border-radius: 100%;
+  border: solid 5px black;
+
+  width: 80%;
+  height: 80%;
+}
+
+.whitePlayerWP,
+.blackPlayerWP {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #fefefe;
+  border-radius: 100%;
+  border: solid 5px #b6b6b6;
+
+  width: 80%;
+  height: 80%;
+}
+
+.whitePlayerBP .pieceId,
+.blackPlayerBP .pieceId {
+  z-index: 1;
+  color: white;
+  font-size: 10px;
+}
+
+.whitePlayerWP .pieceId,
+.blackPlayerWP .pieceId {
+  color: black;
+  font-size: 10px;
+}
+
+.whitePlayerWP .relativePos {
+  color: white;
+  position: relative;
+  bottom: 18px;
+}
+
+.blackPlayerBP .relativePos {
+  color: black;
+  position: relative;
+  bottom: 8px;
+}
+
+.whitePlayerWP .whiteCrown {
+  position: relative;
+  top: 8px;
+}
+
+.blackPlayerBP .blackCrown {
+  position: relative;
+  top: 8px;
+}
+/**************[ END BOARD ]**************/
+
+/***************[ CONTROLS ]**************/
+.ButtonContainer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .ButtonContainer .DirectionButton {
@@ -576,20 +730,78 @@ iframe {
 .ButtonContainer .DirectionButtonRigthDown .fa-arrow-circle-o-left {
   font-size: 50px;
   color: white;
-  transform: rotate(-45deg);
+  transform: rotate(-135deg);
 }
 
 .ButtonContainer .DirectionButtonLeftDown .fa-arrow-circle-o-left {
   font-size: 50px;
   color: white;
-  transform: rotate(-135deg);
+  transform: rotate(-45deg);
 }
 
 .ButtonContainer .DirectionButtonRefresh .fa-refresh {
   font-size: 45px;
   color: white;
 }
+/*************[ END CONTROLS ]************/
 
+/*************************[ END CHECKERS ]**************************/
+
+/**************************[ TIC TAC TOE ]**************************/
+
+/****************[ BOARD ]****************/
+.TicTacToeSquare {
+  width: 120px;
+  height: 120px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: solid white 5px;
+}
+
+.TicTacToeBackground {
+  background-color: #181f22;
+}
+
+.TicTacToeSquare .Cross {
+  font-size: 4rem;
+}
+
+.TicTacToeSquare .Circle {
+  font-size: 4rem;
+}
+/**************[ END BOARD ]**************/
+
+/***************[ CONTROLS ]**************/
+.TicTacToe-Controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.TicTacToe-Controls .Position {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.TicTacToe-Controls .Move {
+  font-size: 45px;
+  color: white;
+}
+
+.TicTacToe-Controls .Refresh {
+  font-size: 45px;
+  color: white;
+}
+/*************[ END CONTROLS ]************/
+
+/************************[ END TIC TAC TOE ]************************/
+
+/****************************[ AUTHORS ]****************************/
 .authors {
   display: flex;
   flex-direction: column;
@@ -601,80 +813,4 @@ iframe {
   font-size: 1.5rem;
   font-weight: 400;
 }
-
-/*TABLERO*/
-
-.Rotate {
-  transform: rotate(180deg);
-}
-
-.Board {
-  display: flex;
-  flex-direction: column;
-}
-
-.Row {
-  display: flex;
-  flex-direction: row;
-}
-
-.Square {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.brownSquare {
-  background-color: #693424;
-}
-.whiteSquare {
-  background-color: #fddda4;
-}
-.greenSquare {
-  background-color: lightgreen;
-}
-
-.whitePlayerBP,
-.blackPlayerBP {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  background-color: #202124;
-  border-radius: 100%;
-  border: solid 5px black;
-
-  width: 80%;
-  height: 80%;
-}
-
-.whitePlayerWP,
-.blackPlayerWP {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-
-  background-color: #fefefe;
-  border-radius: 100%;
-  border: solid 5px #b6b6b6;
-
-  width: 80%;
-  height: 80%;
-}
-
-.whitePlayerBP .pieceId,
-.blackPlayerBP .pieceId {
-  color: white;
-  font-size: 10px;
-}
-
-.whitePlayerWP .pieceId,
-.blackPlayerWP .pieceId {
-  color: black;
-  font-size: 10px;
-}
+/**************************[ END AUTHORS ]**************************/

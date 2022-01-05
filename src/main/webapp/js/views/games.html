@@ -19,197 +19,246 @@
     <div class="limiter">
       <div class="container-login100" style="background-image: url('css/images/fondoPrincipal.jpg')">
         <div class="wrap-games p-l-55 p-r-55 p-t-65 p-b-54">
-          <form class="login100-form validate-form">
-            <span class="login100-form-title p-b-20"> Juegos </span>
+          <span class="login100-form-title p-b-20"> Juegos </span>
 
-            <!-- Guest name -->
-            <!-- ko if: matches().length == 0 -->
-            <div class="wrap-input100 m-b-23">
-              <span class="label-input100">Nombre de usuario (opcional)</span>
-              <input class="input100" data-bind="value : tempName" type="text" name="username" placeholder="Usuario..." />
-              <span class="focus-input100" data-symbol="&#xf206;"></span>
+          <!-- Guest name -->
+          <!-- ko if: matches().length == 0 -->
+          <div class="wrap-input100 m-b-23">
+            <span class="label-input100">Nombre de usuario (opcional)</span>
+            <input class="input100" data-bind="value : tempName" type="text" name="username" placeholder="Usuario..." />
+            <span class="focus-input100" data-symbol="&#xf206;"></span>
+          </div>
+          <!-- /ko -->
+
+          <!-- Game Buttons -->
+          <!-- ko foreach : games -->
+          <div class="container-login100-form-btn p-t-5 p-b-5">
+            <div class="wrap-login100-form-btn">
+              <div class="login100-form-bgbtn"></div>
+              <button class="login100-form-btn" data-bind="click : function() { $parent.joinGame($data); }" value="games">
+                <label class="label-games" data-bind="html: name"></label>
+              </button>
             </div>
+          </div>
+          <!-- /ko -->
+
+          <div class="ol-games m-t-50">
+            <!-- ko if: matches().length > 0 -->
+            <span class="login100-form-title p-t-40px p-b-20"> Partidas </span>
             <!-- /ko -->
-
-            <!-- Game Buttons -->
-            <!-- ko foreach : games -->
-            <div class="container-login100-form-btn p-t-5 p-b-5">
-              <div class="wrap-login100-form-btn">
-                <div class="login100-form-bgbtn"></div>
-                <button class="login100-form-btn" data-bind="click : function() { $parent.joinGame($data); }" value="games">
-                  <label class="label-games" data-bind="html: name"></label>
-                </button>
-              </div>
-            </div>
-            <!-- /ko -->
-
-            <ol class="ol-games m-t-50">
-              <!-- ko if: matches().length > 0 -->
-              <span class="login100-form-title p-t-40px p-b-20"> Partidas </span>
-              <!-- /ko -->
-              <!-- ko foreach : matches -->
-              <li class="match-style m-b-20">
-                <div>Id: <span data-bind="html : id"></span></div>
-                <div>Preparada: <span data-bind="html : ready"></span></div>
-                <div>Jugador 1: <span data-bind="html : players[0].name"></span></div>
-
-                <div>
-                  Jugador 2:
+            <!-- ko foreach : matches -->
+            <div class="match-style m-b-20">
+              <div class="MatchInfo">
+                <div class="Player">
+                  Tú
+                  <span data-bind="html : players[0].name" class="Name"></span>
+                </div>
+                <div class="Rival">
+                  Rival
                   <!-- ko if : players[1] -->
-                  <span data-bind="html : players[1].name"></span>
+                  <span data-bind="html : players[1].name" class="Name"></span>
                   <!-- /ko -->
                   <!-- ko ifnot : players[1] -->
-                  Esperando
+                  <span class="Waiting"> Esperando...</span>
                   <!-- /ko -->
                 </div>
+              </div>
 
-                <div>
-                  Jugador con el turno:
-                  <!-- ko if : playerWithTurn -->
-                  <span data-bind="html : playerWithTurn.name"></span>
-                  <!-- /ko -->
-                </div>
+              <!-- ko if : game == "TictactoeMatch" -->
 
-                <div>Ganador: <span data-bind="html : winner"></span></div>
-                <div>Perdedor: <span data-bind="html : looser"></span></div>
-
-                <div>Acabó en empate: <span data-bind="html : draw"></span></div>
-
-                <br />
-
-                <!-- ko if : game == "TictactoeMatch" -->
-
-                <!-- ko with : board -->
+              <!-- ko with : board -->
+              <div class="Board">
                 <!-- ko foreach : squares -->
-                <!-- ko foreach : $data -->
-                <input data-bind="value : $data" type="text" size="1" />
-                <!-- /ko -->
-                <!-- /ko -->
-                <!-- /ko -->
-
-                <input data-bind="value : $parent.x" type="number" size="1" placeholder="X" />
-                <input data-bind="value: $parent.y" type="number" size="1" placeholder="Y" />
-                <button class="button-games" data-bind="click: function() { $parent.mover($data); }">Mover</button>
-                <button class="button-games" data-bind="click : function() { $parent.reload($data); }">Recargar partida</button>
-
-                <!-- /ko -->
-
-                <!-- ko if : game == "CheckersMatch" -->
-                <!-- ko if : $parent.playerColor() == "BLANCO"  -->
-                <!-- ko with : board -->
-                <div class="Board Rotate">
-                  <!-- ko foreach : squares -->
-                  <div class="Row">
-                    <!-- ko foreach : $data -->
-                    <!-- ko if : $data.color == "NEGRO" -->
-                    <div class="Square brownSquare">
-                      <!-- ko if : $data.piece != null -->
-                      <!-- ko if : $data.piece.color == "NEGRO" && $data.piece.alive == true -->
-                      <div class="whitePlayerBP">
-                        <span data-bind="html : $data.piece.id" class="pieceId"></span>
-                      </div>
-                      <!-- /ko -->
-                      <!-- ko if : $data.piece.color == "BLANCO" && $data.piece.alive == true -->
-                      <div class="whitePlayerWP">
-                        <span data-bind="html : $data.piece.id" class="pieceId Rotate"></span>
-                      </div>
-                      <!-- /ko -->
-                      <!-- /ko -->
-                    </div>
-                    <!-- /ko -->
-                    <!-- ko if : $data.color == "BLANCO" -->
-                    <div class="Square whiteSquare"></div>
-                    <!-- /ko -->
-                    <!-- ko if : $data.color == "VERDE" -->
-                    <div class="Square greenSquare"></div>
-                    <!-- /ko -->
-                    <!-- /ko -->
+                <div class="Row">
+                  <!-- ko foreach : $data -->
+                  <!-- ko if : $data == 0 -->
+                  <div class="TicTacToeSquare TicTacToeBackground">
+                    <i class="fa fa-wheelchair-alt"></i>
                   </div>
-                  <!-- /ko -->
-                </div>
-                <!-- /ko -->
-                <!-- /ko -->
+                  <!-- /ko-->
 
-                <!-- ko if : $parent.playerColor() == "NEGRO"  -->
-                <!-- ko with : board -->
-                <div class="Board">
-                  <!-- ko foreach : squares -->
-                  <div class="Row">
-                    <!-- ko foreach : $data -->
-                    <!-- ko if : $data.color == "NEGRO" -->
-                    <div class="Square brownSquare">
-                      <!-- ko if : $data.piece != null -->
-                      <!-- ko if : $data.piece.color == "NEGRO" && $data.piece.alive == true -->
-                      <div class="blackPlayerBP">
-                        <span data-bind="html : $data.piece.id" class="pieceId"></span>
-                      </div>
-                      <!-- /ko -->
-                      <!-- ko if : $data.piece.color == "BLANCO" && $data.piece.alive == true -->
-                      <div class="blackPlayerWP">
-                        <span data-bind="html : $data.piece.id" class="pieceId Rotate"></span>
-                      </div>
-                      <!-- /ko -->
-                      <!-- /ko -->
-                    </div>
-                    <!-- /ko -->
-                    <!-- ko if : $data.color == "BLANCO" -->
-                    <div class="Square whiteSquare"></div>
-                    <!-- /ko -->
-                    <!-- ko if : $data.color == "VERDE" -->
-                    <div class="Square greenSquare"></div>
-                    <!-- /ko -->
-                    <!-- /ko -->
+                  <!-- ko if : $data == 1 -->
+                  <div class="TicTacToeSquare TicTacToeBackground">
+                    <i class="fa fa-close Cross"></i>
                   </div>
+                  <!-- /ko-->
+
+                  <!-- ko if : $data == 2 -->
+                  <div class="TicTacToeSquare TicTacToeBackground">
+                    <i class="fa fa-circle-o Circle"></i>
+                  </div>
+                  <!-- /ko-->
                   <!-- /ko -->
                 </div>
                 <!-- /ko -->
-                <!-- /ko -->
-
-                <div class="ButtonContainer">
-                  <select
-                    data-bind="options: $parent.pieces, selectedOptions:$parent.chosenPiece, event:{ change: function() { $parent.showPossibleMovements($data)} }"
-                  ></select>
-
-                  <!-- ko if : possibleMovements[0] == true -->
-                  <button id="leftUp" data-bind="click: function() { $parent.mover($data, 'leftUp'); }" class="DirectionButtonLeftUp">
-                    <i class="fa fa-arrow-circle-o-left"></i>
-                  </button>
-                  <!-- /ko -->
-
-                  <!-- ko if : possibleMovements[1] == true -->
-                  <button id="rightUp" data-bind="click: function() { $parent.mover($data, 'rightUp'); }" class="DirectionButtonRigthUp">
-                    <i class="fa fa-arrow-circle-o-left"></i>
-                  </button>
-                  <!-- /ko -->
-
-                  <!-- ko if : possibleMovements[2] == true -->
-                  <button
-                    id="rightDown"
-                    data-bind="click: function() { $parent.mover($data, 'rightDown'); }"
-                    class="DirectionButtonRigthDown"
-                  >
-                    <i class="fa fa-arrow-circle-o-left"></i>
-                  </button>
-                  <!-- /ko -->
-
-                  <!-- ko if : possibleMovements[3] == true -->
-                  <button id="leftDown" data-bind="click: function() { $parent.mover($data, 'leftDown'); }" class="DirectionButtonLeftDown">
-                    <i class="fa fa-arrow-circle-o-left"></i>
-                  </button>
-                  <!-- /ko -->
-
-                  <button data-bind="click : function() { $parent.reload($data); }" class="DirectionButtonRefresh">
-                    <i class="fa fa-refresh"></i>
-                  </button>
-                </div>
-
-                <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : $parent.gameError" style="color: red"></div>
-
-                <!-- /ko -->
-              </li>
+              </div>
               <!-- /ko -->
-            </ol>
-          </form>
+              <div class="TicTacToe-Controls">
+                <div class="Position">
+                  <input data-bind="value : $parent.x" type="number" size="1" placeholder="X" />
+                  <input data-bind="value: $parent.y" type="number" size="1" placeholder="Y" />
+                </div>
+                <button data-bind="click : function() { $parent.mover($data); }" class="Move">
+                  <i class="fa fa-bitcoin"></i>
+                </button>
+                <button data-bind="click : function() { $parent.reload($data); }" class="Refresh">
+                  <i class="fa fa-refresh"></i>
+                </button>
+              </div>
+
+              <!-- /ko -->
+
+              <!-- ko if : game == "CheckersMatch" -->
+              <!-- ko if : $parent.playerColor() == "BLANCO"  -->
+              <!-- ko with : board -->
+              <div class="Board Rotate">
+                <!-- ko foreach : squares -->
+                <div class="Row">
+                  <!-- ko foreach : $data -->
+                  <!-- ko if : $data.color == "NEGRO" -->
+                  <div class="Square brownSquare">
+                    <!-- ko if : $data.piece != null -->
+                    <!-- ko if : $data.piece.color == "NEGRO" && $data.piece.alive == true -->
+
+                    <!-- ko if : $data.piece.type == "pawn" -->
+                    <div class="whitePlayerBP"></div>
+                    <!-- /ko -->
+
+                    <!-- ko if : $data.piece.type == "queen" -->
+                    <div class="whitePlayerBP">
+                      <img src="../../css/images/white-crown.svg" class="blackCrown Rotate" />
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- ko if : $data.piece.color == "BLANCO" && $data.piece.alive == true -->
+
+                    <!-- ko if : $data.piece.type == "pawn" -->
+                    <div class="whitePlayerWP">
+                      <span data-bind="html : $data.piece.id" class="pieceId Rotate"></span>
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko if : $data.piece.type == "queen" -->
+                    <div class="whitePlayerWP">
+                      <img src="../../css/images/black-crown.svg" class="whiteCrown Rotate" />
+                      <span data-bind="html : $data.piece.id" class="pieceId Rotate relativePos"></span>
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- /ko -->
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if : $data.color == "BLANCO" -->
+                  <div class="Square whiteSquare"></div>
+                  <!-- /ko -->
+                  <!-- ko if : $data.color == "VERDE" -->
+                  <div class="Square greenSquare"></div>
+                  <!-- /ko -->
+                  <!-- /ko -->
+                </div>
+                <!-- /ko -->
+              </div>
+              <!-- /ko -->
+              <!-- /ko -->
+
+              <!-- ko if : $parent.playerColor() == "NEGRO"  -->
+              <!-- ko with : board -->
+              <div class="Board">
+                <!-- ko foreach : squares -->
+                <div class="Row">
+                  <!-- ko foreach : $data -->
+                  <!-- ko if : $data.color == "NEGRO" -->
+                  <div class="Square brownSquare">
+                    <!-- ko if : $data.piece != null -->
+                    <!-- ko if : $data.piece.color == "NEGRO" && $data.piece.alive == true -->
+
+                    <!-- ko if : $data.piece.type == "pawn" -->
+                    <div class="blackPlayerBP">
+                      <span data-bind="html : $data.piece.id" class="pieceId"></span>
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko if : $data.piece.type == "queen" -->
+                    <div class="blackPlayerBP">
+                      <img src="../../css/images/white-crown.svg" class="blackCrown" />
+                      <span data-bind="html : $data.piece.id" class="pieceId relativePos"></span>
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- /ko -->
+                    <!-- ko if : $data.piece.color == "BLANCO" && $data.piece.alive == true -->
+
+                    <!-- ko if : $data.piece.type == "pawn" -->
+                    <div class="blackPlayerWP"></div>
+                    <!-- /ko -->
+
+                    <!-- ko if : $data.piece.type == "queen" -->
+                    <div class="blackPlayerWP">
+                      <img src="../../css/images/black-crown.svg" class="whiteCrown" />
+                    </div>
+                    <!-- /ko -->
+                    <!-- /ko -->
+                    <!-- /ko -->
+                  </div>
+                  <!-- /ko -->
+                  <!-- ko if : $data.color == "BLANCO" -->
+                  <div class="Square whiteSquare"></div>
+                  <!-- /ko -->
+                  <!-- ko if : $data.color == "VERDE" -->
+                  <div class="Square greenSquare"></div>
+                  <!-- /ko -->
+                  <!-- /ko -->
+                </div>
+                <!-- /ko -->
+              </div>
+              <!-- /ko -->
+              <!-- /ko -->
+
+              <div class="ButtonContainer">
+                <select
+                  id="dropDown"
+                  data-bind="options: $parent.pieces, selectedOptions:$parent.chosenPiece, event:{ change: function() { $parent.showPossibleMovements($data)} }"
+                ></select>
+
+                <!-- ko if : possibleMovements[0] == true -->
+                <button id="leftUp" data-bind="click: function() { $parent.mover($data, 'leftUp'); }" class="DirectionButtonLeftUp">
+                  <i class="fa fa-arrow-circle-o-left"></i>
+                </button>
+                <!-- /ko -->
+
+                <!-- ko if : possibleMovements[1] == true -->
+                <button id="rightUp" data-bind="click: function() { $parent.mover($data, 'rightUp'); }" class="DirectionButtonRigthUp">
+                  <i class="fa fa-arrow-circle-o-left"></i>
+                </button>
+                <!-- /ko -->
+
+                <!-- ko if : possibleMovements[3] == true -->
+                <button id="leftDown" data-bind="click: function() { $parent.mover($data, 'leftDown'); }" class="DirectionButtonLeftDown">
+                  <i class="fa fa-arrow-circle-o-left"></i>
+                </button>
+                <!-- /ko -->
+
+                <!-- ko if : possibleMovements[2] == true -->
+                <button
+                  id="rightDown"
+                  data-bind="click: function() { $parent.mover($data, 'rightDown'); }"
+                  class="DirectionButtonRigthDown"
+                >
+                  <i class="fa fa-arrow-circle-o-left"></i>
+                </button>
+                <!-- /ko -->
+
+                <button data-bind="click : function() { $parent.reload($data); }" class="DirectionButtonRefresh">
+                  <i class="fa fa-refresh"></i>
+                </button>
+              </div>
+
+              <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : $parent.gameError" style="color: red"></div>
+
+              <!-- /ko -->
+            </div>
+            <!-- /ko -->
+          </div>
         </div>
       </div>
     </div>
