@@ -1,5 +1,7 @@
 package edu.uclm.esi.tys2122.checkers;
 
+import java.util.ArrayList;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
@@ -149,19 +151,30 @@ public class CheckersMatch extends Match {
 		CheckersBoard board = (CheckersBoard) this.getBoard();
 		CheckersSquare[][] squares = board.getSquares();
 		CheckersPiece[] alivePieces = new CheckersPiece[12];
+		CheckersPiece[] alivePiecesSend = new CheckersPiece[12];
+		ArrayList<Integer> alivePiecesId = new ArrayList<>();
 		int pieceCounter = 0;
 		for (int i = 0; i < squares.length; i++) {
 			for (int j = 0; j < squares[0].length; j++) {
 				if (squares[i][j].getPiece() != null && squares[i][j].getPiece().isAlive()
 						&& squares[i][j].getPiece().getColor().equals(playerColor)) {
 					alivePieces[pieceCounter] = squares[i][j].getPiece();
+					alivePiecesId.add(squares[i][j].getPiece().getId());
 					pieceCounter++;
 				}
 			}
 		}
-
-		return alivePieces;
-
+		
+		alivePiecesId.sort(null);
+		for (int i = 0; i < alivePiecesId.size(); i++) {
+			for(int j = 0; j < alivePieces.length; j++) {
+				if(alivePieces[j] != null)
+					if(alivePiecesId.get(i) == alivePieces[j].getId())
+						alivePiecesSend[i] = alivePieces[j];
+			}
+		}
+		
+		return alivePiecesSend;
 	}
 
 	/*

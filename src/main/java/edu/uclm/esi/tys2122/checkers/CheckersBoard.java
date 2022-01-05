@@ -15,7 +15,8 @@ public class CheckersBoard extends Board {
 		String squareColorOdd = "BLANCO";
 		String squareColorPair = "NEGRO";
 		String pieceColor = "BLANCO";
-		int counter = 1;
+		int counter = 12;
+		boolean vuelta = false;
 
 		for (int i = 0; i < squares.length; i++) {
 			for (int j = 0; j < squares[i].length; j++) {
@@ -55,10 +56,17 @@ public class CheckersBoard extends Board {
 				if (this.squares[i][j].getColor().equals("NEGRO") && i != 3 && i != 4) {
 					CheckersPiece auxPiece = new CheckersPiece();
 					auxPiece.setColor(pieceColor);
-					pieceColor = counter == 12 ? "NEGRO" : pieceColor;
+					pieceColor = counter == 1 ? "NEGRO" : pieceColor;
 
 					auxPiece.setId(counter);
-					counter = counter < 12 ? counter + 1 : 1;
+					
+					if(counter > 1 && !vuelta) {
+						counter --;
+					}else if (vuelta){
+						counter ++;
+					}else{
+						vuelta = true;
+					}
 
 					this.squares[i][j].setPiece(auxPiece);
 				}
