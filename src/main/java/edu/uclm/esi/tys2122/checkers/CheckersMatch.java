@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import edu.uclm.esi.tys2122.model.Board;
 import edu.uclm.esi.tys2122.model.Match;
@@ -41,11 +43,11 @@ public class CheckersMatch extends Match {
 
 	@Override
 	public void move(String userId, JSONObject movementData) throws Exception {
-		if (!this.getPlayerWithTurn().getId().equals(userId))
-			throw new Exception("No es tu turno");
-
 		if (!this.ready)
-			throw new Exception("Esperando jugadores, aún no puede mover");
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Esperando jugadores, aún no se puede mover");
+		
+		if (!this.getPlayerWithTurn().getId().equals(userId))
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No es tu turno");
 
 		CheckersSquare actualSquare = getSquareByPiece(movementData.getString("pieceId"),
 				movementData.getString("pieceColor"));

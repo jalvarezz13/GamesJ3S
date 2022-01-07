@@ -52,28 +52,28 @@ public class TestCompleteCheckersMatch {
 		goGames();
 
 		// start CheckersMatch
-		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[3]/div/button")).click();
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/div[3]/div/button")).click();
 		pause(500);
-		driverBlack.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[3]/div/button")).click();
+		driverBlack.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/div[3]/div/button")).click();
 		pause(500);
 
 		WebElement msg;
-		//You can't move
+		// You can't move
 		selectItem(driverWhite, "8 BLANCO");
 		pause(500);
-		msg = driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/ol/li/div[11]"));
+		msg = driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/div[3]/div/div[4]"));
 		pause(500);
 		assertEquals(msg.getText(), "No se puede mover esta ficha");
 		pause(500);
-		
-		//Not your turn
+
+		// Not your turn
 		movePiece(driverBlack, "2 NEGRO", "rightUp");
 		pause(500);
-		msg = driverBlack.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/ol/li/div[11]"));
+		msg = driverBlack.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/div[3]/div[1]/div[4]"));
 		pause(500);
 		assertEquals(msg.getText(), "No es tu turno");
 		pause(500);
-		
+
 		// start Movements
 		movePiece(driverWhite, "1 BLANCO", "rightUp");
 
@@ -98,7 +98,7 @@ public class TestCompleteCheckersMatch {
 		movePiece(driverWhite, "2 BLANCO", "rightUp");
 
 		movePiece(driverBlack, "6 NEGRO", "rightUp");
-		
+
 		movePiece(driverWhite, "1 BLANCO", "rightUp");
 
 		movePiece(driverBlack, "8 NEGRO", "leftUp");
@@ -148,7 +148,7 @@ public class TestCompleteCheckersMatch {
 		movePiece(driverBlack, "1 NEGRO", "leftUp"); // doQueen
 
 		movePiece(driverWhite, "1 BLANCO", "leftDown");
-		
+
 		movePiece(driverBlack, "3 NEGRO", "leftUp");
 
 		movePiece(driverWhite, "9 BLANCO", "rightUp");
@@ -170,7 +170,7 @@ public class TestCompleteCheckersMatch {
 		movePiece(driverWhite, "6 BLANCO", "leftUp");
 
 		movePiece(driverBlack, "9 NEGRO", "leftUp");
-		
+
 		movePiece(driverWhite, "6 BLANCO", "leftUp"); // doQueen
 
 		movePiece(driverBlack, "10 NEGRO", "leftUp");
@@ -200,9 +200,14 @@ public class TestCompleteCheckersMatch {
 		movePiece(driverBlack, "1 NEGRO", "rightDown");
 
 		movePiece(driverWhite, "11 BLANCO", "rightUp");
-		
-		//TODOTYSW: assert de victoria
 
+		// TODOTYSW: assert de victoria
+
+	}
+
+	private void selectItem(WebDriver driver, String pieceName) {
+		Select driverList = new Select(driver.findElement(By.id("dropDown")));
+		driverList.selectByVisibleText(pieceName);
 	}
 
 	private void movePiece(WebDriver driver, String pieceName, String movement) {
@@ -210,11 +215,6 @@ public class TestCompleteCheckersMatch {
 		pause(500);
 		driver.findElement(By.id(movement)).click();
 		pause(1000);
-	}
-
-	private void selectItem(WebDriver driver, String pieceName) {
-		Select driverList = new Select(driver.findElement(By.id("dropDown")));
-		driverList.selectByVisibleText(pieceName);
 	}
 
 	private void goGames() {
@@ -231,5 +231,5 @@ public class TestCompleteCheckersMatch {
 			e.printStackTrace();
 		}
 	}
-	
+
 }
