@@ -78,16 +78,12 @@ public class GamesController extends CookiesController {
 	}
 
 	@PostMapping("/move")
-	public Match move(HttpSession session, @RequestBody Map<String, Object> movement) {
+	public Match move(HttpSession session, @RequestBody Map<String, Object> movement) throws Exception {
 		User user = (User) session.getAttribute("user");
 		JSONObject jso = new JSONObject(movement);
 		Match match = gamesService.getMatch(jso.getString("matchId"));
-		try {
-			match.move(user.getId(), jso);
-			return match;
-		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
-		}
+		match.move(user.getId(), jso);
+		return match;
 	}
 
 	@GetMapping("/findMatch/{matchId}")
