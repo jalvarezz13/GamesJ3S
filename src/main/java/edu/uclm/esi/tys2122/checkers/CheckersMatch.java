@@ -59,6 +59,7 @@ public class CheckersMatch extends Match {
 		if(Math.abs(nextSquare[0] - actualSquare.getId()[0]) >= 2 || Math.abs(nextSquare[1] - actualSquare.getId()[1]) >= 2) {
 			int [] killedPiecePosition = killPiece(movementData, actualSquare, nextSquare);
 			squares[killedPiecePosition[0]][killedPiecePosition[1]].getPiece().die();
+			checkWinner();
 		}
 
 		// DO QUEEN
@@ -78,6 +79,22 @@ public class CheckersMatch extends Match {
 		this.cleanMovements();
 
 		super.notifyOponents("MATCH UPDATE");
+	}
+
+	private void checkWinner() {
+		System.out.println("Entra en el método");
+		if (this.getAlivePieces(this.players.get(0).getId()) == null) {
+			this.setWinner(this.players.get(1));
+			this.setLooser(this.players.get(0));
+			System.out.println("Ganador negro");
+		}
+		else {
+			if (this.getAlivePieces(this.players.get(1).getId()) == null) {
+				this.setWinner(this.players.get(0));
+				this.setLooser(this.players.get(1));
+				System.out.println("Ganador blanco");
+			}
+		}		
 	}
 
 	/*
