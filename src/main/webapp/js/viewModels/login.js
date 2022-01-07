@@ -80,27 +80,27 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       accUtils.announce("Login page loaded.");
       // document.title = "Login";
 
-      var self = this;
-      let divGoogle = document.createElement("div");
-      divGoogle.setAttribute("id", "my-signin2");
-      document.getElementById("zonaGoogle").appendChild(divGoogle);
-      gapi.signin2.render("my-signin2", {
-        scope: "profile email",
-        width: 150,
-        height: 50,
-        longtitle: false,
-        theme: "dark",
-        onsuccess: function (response) {
-          self.googleUser = response;
-          localStorage.login3rd = true;
-          self.login();
-        },
-        onfailure: function (error) {
-          alert(error);
-          console.log(error);
-          self.googleUser = undefined;
-        },
-      });
+      // var self = this;
+      // let divGoogle = document.createElement("div");
+      // divGoogle.setAttribute("id", "my-signin2");
+      // document.getElementById("zonaGoogle").appendChild(divGoogle);
+      // gapi.signin2.render("my-signin2", {
+      //   scope: "profile email",
+      //   width: 150,
+      //   height: 50,
+      //   longtitle: false,
+      //   theme: "dark",
+      //   onsuccess: function (response) {
+      //     self.googleUser = response;
+      //     localStorage.login3rd = true;
+      //     self.login();
+      //   },
+      //   onfailure: function (error) {
+      //     alert(error);
+      //     console.log(error);
+      //     self.googleUser = undefined;
+      //   },
+      // });
     }
 
     disconnected() {

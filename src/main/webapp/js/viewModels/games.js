@@ -156,7 +156,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
               self.matches.splice(i, 1, response);
               break;
             }
-          // console.log(JSON.stringify(response));
+          console.log(JSON.stringify(response));
           self.gameError("");
         },
         error: function (response) {
