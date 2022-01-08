@@ -68,6 +68,17 @@
 
               <!-- ko if : game == "TictactoeMatch" -->
 
+              <!--ko if : players.length == 2 -->
+              <div>
+                Tiene el turno:
+                <div class="MatchWaitingTurn" data-bind="html: playerWithTurn.name"></div>
+              </div>
+              <!-- /ko -->
+
+              <!--ko ifnot : players.length == 2 -->
+              <div class="MatchWaitingTurn">Esperando a tu rival</div>
+              <!-- /ko -->
+
               <!-- ko with : board -->
               <div class="Board">
                 <!-- ko foreach : squares -->
@@ -75,7 +86,7 @@
                   <!-- ko foreach : $data -->
                   <!-- ko if : $data == 0 -->
                   <div class="TicTacToeSquare TicTacToeBackground">
-                    <i class="fa fa-wheelchair-alt"></i>
+                    <i class="fa fa-snowflake-o"></i>
                   </div>
                   <!-- /ko-->
 
@@ -97,24 +108,50 @@
               <!-- /ko -->
               <div class="TicTacToe-Controls">
                 <div class="Position">
-                  <input data-bind="value: x" type="number" size="1" placeholder="X" />
-                  <input data-bind="value: y" type="number" size="1" placeholder="Y" />
+                  <input class="CoordinateInput" data-bind="value: x" type="number" min="0" max="2" placeholder="X" />
+                  <input class="CoordinateInput" data-bind="value: y" type="number" min="0" max="2" placeholder="Y" />
                 </div>
                 <button data-bind="click : function() { $parent.mover($data); }" class="Move">
-                  <i class="fa fa-bitcoin"></i>
+                  <i class="fa fa-play-circle"></i>
                 </button>
                 <button data-bind="click : function() { $parent.reload($data.id); }" class="Refresh">
                   <i class="fa fa-refresh"></i>
                 </button>
               </div>
 
+              <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : gameError" style="color: red"></div>
               <!-- /ko -->
 
               <!-- ko if : game == "CheckersMatch" -->
-
-
-              
               <!-- ko if : playerColor == "BLANCO"  -->
+
+              <!-- ko if : winner != null -->
+              <!-- ko if : winner.name == players[0].name-->
+              <div class="ModalWinner">
+                <div class="ModalContent">
+                  ¡Has Ganado!
+                  <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
+                </div>
+              </div>
+              <!-- /ko -->
+
+              <!-- ko if : winner.name == players[1].name-->
+              <div class="ModalWinner">
+                <div class="ModalContent">
+                  ¡Has Perdido!
+                  <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- /ko -->
+
+              <!--ko if : players.length == 2 && playerWithTurn.name == players[0].name-->
+              <div class="MatchHavingTurn">Es tu turno</div>
+              <!-- /ko -->
+              <!-- ko ifnot : players.length == 2 && playerWithTurn.name == players[0].name -->
+              <div class="MatchWaitingTurn">Esperando a tu rival</div>
+              <!-- /ko -->
+
               <!-- ko with : board -->
               <div class="Board Rotate">
                 <!-- ko foreach : squares -->
@@ -167,6 +204,34 @@
               <!-- /ko -->
 
               <!-- ko if : playerColor == "NEGRO"  -->
+
+              <!-- ko if : winner != null -->
+              <!-- ko if : winner.name == players[1].name-->
+              <div class="ModalWinner">
+                <div class="ModalContent">
+                  ¡Has Ganado!
+                  <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
+                </div>
+              </div>
+              <!-- /ko -->
+
+              <!-- ko if : winner.name == players[0].name-->
+              <div class="ModalWinner">
+                <div class="ModalContent">
+                  ¡Has Perdido!
+                  <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
+                </div>
+              </div>
+              <!-- /ko -->
+              <!-- /ko -->
+
+              <!--ko if : players.length == 2 && playerWithTurn.name == players[1].name-->
+              <div class="MatchHavingTurn">Es tu turno</div>
+              <!-- /ko -->
+              <!-- ko ifnot : players.length == 2 && playerWithTurn.name == players[1].name -->
+              <div class="MatchWaitingTurn">Esperando a tu rival</div>
+              <!-- /ko -->
+
               <!-- ko with : board -->
               <div class="Board">
                 <!-- ko foreach : squares -->
@@ -222,6 +287,7 @@
               <div class="ButtonContainer">
                 <select
                   id="dropDown"
+                  class="PiecesDropDown"
                   data-bind="options: pieces, selectedOptions: chosenPiece, event:{ change: function() { $parent.showPossibleMovements($data)} }"
                 ></select>
 

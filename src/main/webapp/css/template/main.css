@@ -559,6 +559,7 @@ iframe {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
 .Player {
@@ -592,6 +593,42 @@ iframe {
   font-size: 1.225rem;
 }
 
+.MatchHavingTurn {
+  font-weight: 100;
+  text-align: center;
+  font-size: 1.125rem;
+  background: linear-gradient(90deg, #aeff00, #aeff00, #aeff00);
+  letter-spacing: 5px;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 80%;
+  animation: shine 5s linear infinite;
+  position: relative;
+}
+.MatchWaitingTurn {
+  font-weight: 100;
+  text-align: center;
+  font-size: 1.125rem;
+  background: linear-gradient(90deg, #fefefe, #fefefe, #fefefe);
+  letter-spacing: 5px;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-repeat: no-repeat;
+  background-size: 80%;
+  animation: shine 5s linear infinite;
+  position: relative;
+}
+@keyframes shine {
+  0% {
+    background-position-x: -500%;
+  }
+  100% {
+    background-position-x: 500%;
+  }
+}
 /***********[ END MATCH INFO ]************/
 
 /***************************[ END GAMES ]***************************/
@@ -633,7 +670,7 @@ iframe {
 }
 
 .greenSquare {
-  background-color: lightgreen;
+  background-color: limegreen;
 }
 
 .whitePlayerBP,
@@ -710,6 +747,16 @@ iframe {
   justify-content: space-between;
 }
 
+.PiecesDropDown {
+  border-radius: 15px;
+  border: 0px;
+}
+
+.PiecesDropDown option:hover {
+  color: #fefefe;
+  background-color: #a64bf4 !important;
+}
+
 .ButtonContainer .DirectionButton {
   width: 50px;
   height: 50px;
@@ -743,7 +790,61 @@ iframe {
   font-size: 45px;
   color: white;
 }
+
+.ButtonContainer .DirectionButtonLeftUp .fa-arrow-circle-o-left:hover,
+.ButtonContainer .DirectionButtonRigthUp .fa-arrow-circle-o-left:hover,
+.ButtonContainer .DirectionButtonRigthDown .fa-arrow-circle-o-left:hover,
+.ButtonContainer .DirectionButtonLeftDown .fa-arrow-circle-o-left:hover,
+.ButtonContainer .DirectionButtonRefresh .fa-refresh:hover {
+  color: #a64bf4;
+}
+
 /*************[ END CONTROLS ]************/
+
+/****************[ MODAL ]****************/
+.ModalWinner {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.ModalWinner .ModalContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  font-size: 3rem;
+
+  background: linear-gradient(to bottom left, #480852, #1b384a);
+  border-radius: 20px;
+  padding: 20px;
+
+  width: 500px;
+  height: 250px;
+}
+
+.ModalWinner .ModalContent button {
+  margin-top: 20px;
+  font-size: 1.5rem;
+  padding: 10px;
+  border-radius: 20px;
+  background-color: #f0ac1b;
+  color: white;
+}
+/**************[ END MODAL ]**************/
 
 /*************************[ END CHECKERS ]**************************/
 
@@ -751,8 +852,8 @@ iframe {
 
 /****************[ BOARD ]****************/
 .TicTacToeSquare {
-  width: 120px;
-  height: 120px;
+  width: 133px;
+  height: 133px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -796,6 +897,25 @@ iframe {
 .TicTacToe-Controls .Refresh {
   font-size: 45px;
   color: white;
+}
+
+.TicTacToe-Controls .Move:hover,
+.TicTacToe-Controls .Refresh:hover {
+  color: #a64bf4;
+}
+
+.Position .CoordinateInput {
+  border-radius: 20px;
+  margin: 5px;
+  font-size: 1.2rem;
+  text-align: center;
+  caret-color: transparent;
+}
+
+.Position .CoordinateInput::placeholder {
+  color: black;
+  font-size: 1.2rem;
+  text-align: center;
 }
 /*************[ END CONTROLS ]************/
 

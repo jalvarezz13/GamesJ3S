@@ -163,6 +163,8 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           if (actualMatch.game == "TictactoeMatch") {
             newMatch = {
               ...response,
+              x: null,
+              y: null,
               gameError: "",
             };
           }
@@ -176,7 +178,6 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
               gameError: "",
             };
           }
-
           self.updateMatch(matchId, newMatch);
         },
         error: function (response) {
@@ -193,6 +194,16 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         if (self.matches()[i].id == matchId) {
           self.matches.splice(i, 1);
           self.matches.splice(i, 0, newMatch);
+          break;
+        }
+    }
+
+    // BOTH: Removes a Match given a matchId
+    removeMatch(matchId) {
+      let self = this;
+      for (let i = 0; i < self.matches().length; i++)
+        if (self.matches()[i].id == matchId) {
+          self.matches.splice(i, 1);
           break;
         }
     }
@@ -280,6 +291,12 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         case "leftDown":
           return squares[3];
       }
+    }
+
+    // CHECKERS: Remove the match that has been won given the match id
+    winGame(matchId) {
+      let self = this;
+      self.removeMatch(matchId);
     }
 
     disconnected() {
