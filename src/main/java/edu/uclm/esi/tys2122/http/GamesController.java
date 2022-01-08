@@ -68,6 +68,11 @@ public class GamesController extends CookiesController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No se encuentra el juego " + gameName);
 
 		Match match = getMatch(game);
+
+		if (!match.getPlayers().isEmpty() && match.getPlayers().get(0).getId() == user.getId()) {
+			throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No puedes iniciar más partidas mientras tienes una en espera.");
+		}
+
 		match.addPlayer(user);
 		if (match.isReady()) {
 			game.getPendingMatches().remove(match);

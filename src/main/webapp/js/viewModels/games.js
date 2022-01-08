@@ -17,11 +17,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       self.matches = ko.observableArray([]);
       self.tempName = ko.observable(null);
 
-      //Tic Tac Toe
-      self.x = ko.observable(null);
-      self.y = ko.observable(null);
-
-      //Errors
+      //Error
       self.globalError = ko.observable(null);
 
       // Header Config
@@ -60,13 +56,14 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       $.ajax(data);
     }
 
+    // BOTH: Realiza un movimiento
     mover(match, movement) {
       let self = this;
       let info;
       if (match.game == "TictactoeMatch") {
         info = {
-          x: self.x(),
-          y: self.y(),
+          x: match.x,
+          y: match.y,
           matchId: match.id,
         };
       }
@@ -97,6 +94,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       $.ajax(data);
     }
 
+    // BOTH: Se conecta al web socket para actualizar la partida
     conectarAWebSocket() {
       let self = this;
       let ws = new WebSocket(`ws://${window.location.origin.split("//")[1]}/${self.routes.webSocket}`);
@@ -105,14 +103,18 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       };
       ws.onmessage = function (event) {
         let msg = JSON.parse(event.data);
+        let gameName = self.matches().find((match) => match.id == msg.matchId).game;
         if (msg.type == "MATCH UPDATE") {
-          self.updateAlivePieces(msg.matchId);
+          if(gameName == "CheckersMatch") {
+            self.updateAlivePieces(msg.matchId);
+          }
           self.reload(msg.matchId);
         }
         if (msg.type == "MATCH READY") self.reload(msg.matchId);
       };
     }
 
+    // BOTH: Nos une a una partida nueva
     joinGame(game) {
       let self = this;
 
@@ -120,18 +122,27 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         type: "get",
         url: self.routes.joinGame + game.name + "&" + self.tempName(),
         success: function (response) {
-          response = {
-            ...response,
-            pieces: [],
-            chosenPiece: [],
-            playerColor: "BLANCO",
-            gameError: "",
-          };
-          self.matches.push(response);
-
-          self.conectarAWebSocket();
+          if (game.name == "Tres en raya") {
+            response = {
+              ...response,
+              x: null,
+              y: null,
+              gameError: "",
+            };
+            self.matches.push(response);
+            self.conectarAWebSocket();
+          }
 
           if (game.name == "Las damas") {
+            response = {
+              ...response,
+              pieces: [],
+              chosenPiece: [],
+              playerColor: "BLANCO",
+              gameError: "",
+            };
+            self.matches.push(response);
+            self.conectarAWebSocket();
             self.updateAlivePieces(response.id);
           }
         },
@@ -143,6 +154,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       $.ajax(data);
     }
 
+    // BOTH: Solicita de nuevo la partidad dado un id
     reload(matchId) {
       let self = this;
 
@@ -151,15 +163,28 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         url: self.routes.findMatch + matchId,
         success: function (response) {
           let actualMatch = self.matches().find((match) => match.id == matchId);
-          let newMatch = {
-            ...response,
-            pieces: actualMatch.pieces,
-            chosenPiece: ["Seleccione..."],
-            playerColor: actualMatch.playerColor,
-            gameError: "",
-          };
-          console.log(JSON.stringify(response));
+          let newMatch;
+          if (actualMatch.game == "TictactoeMatch") {
+            newMatch = {
+              ...response,
+              gameError: "",
+            };
+          }
+
+          if (actualMatch.game == "CheckersMatch") {
+            newMatch = {
+              ...response,
+              pieces: actualMatch.pieces,
+              chosenPiece: ["Seleccione..."],
+              playerColor: actualMatch.playerColor,
+              gameError: "",
+            };
+          }
+
           self.updateMatch(matchId, newMatch);
+
+          // Imprime el nuevo tablero
+          console.log(JSON.stringify(newMatch));
         },
         error: function (response) {
           self.globalError(response.responseJSON.message);
@@ -168,6 +193,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       $.ajax(data);
     }
 
+    // CHECKERS: Actualiza el select con las piezas vivas
     updateAlivePieces(matchId) {
       let self = this;
 
@@ -192,6 +218,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       $.ajax(data);
     }
 
+    // CHECKERS: Muestra en verde los posibles movimientos
     showPossibleMovements(match) {
       let self = this;
       if (match.chosenPiece != "Seleccione..." && match.chosenPiece.toString().split(" ")[0] != "") {
@@ -226,6 +253,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       }
     }
 
+    // CHECKERS: Parsea para el select las piezas
     parsePieces(response) {
       let alivePieces = [];
       let playerColor;
@@ -240,6 +268,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       return [alivePieces, playerColor];
     }
 
+    // CHECKERS: Obtiene según la dirección, la celda destino
     getSquareByDirection(squares, movement) {
       switch (movement) {
         case "leftUp":
@@ -253,14 +282,13 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       }
     }
 
-    // Reemplaza la match entera
+    // BOTH: Reemplaza la match entera
     updateMatch(matchId, newMatch) {
       let self = this;
       for (let i = 0; i < self.matches().length; i++)
         if (self.matches()[i].id == matchId) {
-          let auxIndex = self.matches.indexOf(i);
-          self.matches.splice(auxIndex, 1);
-          self.matches.splice(auxIndex, 0, newMatch);
+          self.matches.splice(i, 1);
+          self.matches.splice(i, 0, newMatch);
           break;
         }
     }

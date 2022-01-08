@@ -52,11 +52,11 @@
             <div class="match-style m-b-20">
               <div class="MatchInfo">
                 <div class="Player">
-                  Tú
+                  Jugador 1
                   <span data-bind="html : players[0].name" class="Name"></span>
                 </div>
                 <div class="Rival">
-                  Rival
+                  Jugador 2
                   <!-- ko if : players[1] -->
                   <span data-bind="html : players[1].name" class="Name"></span>
                   <!-- /ko -->
@@ -97,13 +97,13 @@
               <!-- /ko -->
               <div class="TicTacToe-Controls">
                 <div class="Position">
-                  <input data-bind="value : $parent.x" type="number" size="1" placeholder="X" />
-                  <input data-bind="value: $parent.y" type="number" size="1" placeholder="Y" />
+                  <input data-bind="value: x" type="number" size="1" placeholder="X" />
+                  <input data-bind="value: y" type="number" size="1" placeholder="Y" />
                 </div>
                 <button data-bind="click : function() { $parent.mover($data); }" class="Move">
                   <i class="fa fa-bitcoin"></i>
                 </button>
-                <button data-bind="click : function() { $parent.reload($data); }" class="Refresh">
+                <button data-bind="click : function() { $parent.reload($data.id); }" class="Refresh">
                   <i class="fa fa-refresh"></i>
                 </button>
               </div>
@@ -111,6 +111,9 @@
               <!-- /ko -->
 
               <!-- ko if : game == "CheckersMatch" -->
+
+
+              
               <!-- ko if : playerColor == "BLANCO"  -->
               <!-- ko with : board -->
               <div class="Board Rotate">
@@ -250,7 +253,7 @@
                 </button>
                 <!-- /ko -->
 
-                <button data-bind="click : function() { $parent.reload($data); }" class="DirectionButtonRefresh">
+                <button data-bind="click : function() { $parent.reload($data.id); }" class="DirectionButtonRefresh">
                   <i class="fa fa-refresh"></i>
                 </button>
               </div>
