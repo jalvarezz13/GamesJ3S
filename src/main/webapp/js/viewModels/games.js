@@ -15,17 +15,14 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       //Games
       self.games = ko.observableArray([]);
       self.matches = ko.observableArray([]);
-      self.gameError = ko.observable(null);
       self.tempName = ko.observable(null);
-
-      //Checkers
-      self.pieces = ko.observableArray([]);
-      self.chosenPiece = ko.observableArray([]);
-      self.playerColor = ko.observable("BLANCO");
 
       //Tic Tac Toe
       self.x = ko.observable(null);
       self.y = ko.observable(null);
+
+      //Errors
+      self.globalError = ko.observable(null);
 
       // Header Config
       self.headerConfig = ko.observable({
@@ -57,7 +54,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           self.games(response);
         },
         error: function (response) {
-          console.error(JSON.stringify(response));
+          self.globalError(JSON.stringify(response));
         },
       };
       $.ajax(data);
@@ -68,35 +65,33 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       let info;
       if (match.game == "TictactoeMatch") {
         info = {
-          x: this.x(),
-          y: this.y(),
+          x: self.x(),
+          y: self.y(),
           matchId: match.id,
         };
-      } else {
+      }
+      if (match.game == "CheckersMatch") {
         const [movementX, movementY] = self.getSquareByDirection(match.possibleMovementsXY, movement);
         info = {
-          pieceId: self.chosenPiece().toString().split(" ")[0],
-          pieceColor: self.chosenPiece().toString().split(" ")[1],
+          pieceId: match.chosenPiece.toString().split(" ")[0],
+          pieceColor: match.chosenPiece.toString().split(" ")[1],
           movementX: movementX.toString(),
           movementY: movementY.toString(),
           direction: movement,
           matchId: match.id,
         };
       }
+
       let data = {
         type: "post",
         url: self.routes.move,
         data: JSON.stringify(info),
         contentType: "application/json",
-        success: function (response) {
-          // Select apunta a Seleccione...
-          self.chosenPiece(["Seleccione..."]);
-          // console.log(JSON.stringify(response));
-          self.gameError("");
-        },
+        success: function (response) {},
         error: function (response) {
           console.error(JSON.stringify(response));
-          self.gameError(response.responseJSON.message);
+          match.gameError = response.responseJSON.message;
+          self.updateMatch(match.id, match);
         },
       };
       $.ajax(data);
@@ -125,43 +120,49 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         type: "get",
         url: self.routes.joinGame + game.name + "&" + self.tempName(),
         success: function (response) {
-          response = {...response, pieces: ko.observableArray([]), chosenPiece: ko.observableArray([]), playerColor: "BLANCO", gameError: ""}
+          response = {
+            ...response,
+            pieces: [],
+            chosenPiece: [],
+            playerColor: "BLANCO",
+            gameError: "",
+          };
           self.matches.push(response);
 
           self.conectarAWebSocket();
+
           if (game.name == "Las damas") {
             self.updateAlivePieces(response.id);
           }
-          // console.log(JSON.stringify(response));
-          self.gameError("");
         },
         error: function (response) {
           console.error(JSON.stringify(response));
-          self.gameError(response.responseJSON.message);
+          self.globalError(response.responseJSON.message);
         },
       };
       $.ajax(data);
     }
 
-    reload(match) {
+    reload(matchId) {
       let self = this;
-      let matchId = match.id ? match.id : match;
 
       let data = {
         type: "get",
         url: self.routes.findMatch + matchId,
         success: function (response) {
-          for (let i = 0; i < self.matches().length; i++)
-            if (self.matches()[i].id == matchId) {
-              self.matches.splice(i, 1, response);
-              break;
-            }
+          let actualMatch = self.matches().find((match) => match.id == matchId);
+          let newMatch = {
+            ...response,
+            pieces: actualMatch.pieces,
+            chosenPiece: ["Seleccione..."],
+            playerColor: actualMatch.playerColor,
+            gameError: "",
+          };
           console.log(JSON.stringify(response));
-          self.gameError("");
+          self.updateMatch(matchId, newMatch);
         },
         error: function (response) {
-          console.error(JSON.stringify(response));
-          self.gameError(response.responseJSON.message);
+          self.globalError(response.responseJSON.message);
         },
       };
       $.ajax(data);
@@ -174,18 +175,18 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         type: "get",
         url: self.routes.updateAlivePieces + matchId,
         success: function (response) {
-          let actualMatch = self.matches().find(match => match.id == matchId)
+          let actualMatch = self.matches().find((match) => match.id == matchId);
 
           const [pieces, color] = self.parsePieces(response);
-          actualMatch.pieces(pieces);
-          actualMatch.chosenPiece(['Seleccione...']);
+          actualMatch.pieces = pieces;
+          actualMatch.chosenPiece = ["Seleccione..."];
           actualMatch.playerColor = color;
           actualMatch.gameError = "";
 
-          self.updateMatch(matchId, actualMatch)
+          self.updateMatch(matchId, actualMatch);
         },
         error: function (response) {
-          self.gameError(response.responseJSON.message);
+          self.globalError(response.responseJSON.message);
         },
       };
       $.ajax(data);
@@ -193,11 +194,11 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
 
     showPossibleMovements(match) {
       let self = this;
-      if (self.chosenPiece() != "Seleccione..." && self.chosenPiece().toString().split(" ")[0] != "") {
+      if (match.chosenPiece != "Seleccione..." && match.chosenPiece.toString().split(" ")[0] != "") {
         let info = {
           matchId: match.id,
-          pieceId: self.chosenPiece().toString().split(" ")[0],
-          pieceColor: self.chosenPiece().toString().split(" ")[1],
+          pieceId: match.chosenPiece.toString().split(" ")[0],
+          pieceColor: match.chosenPiece.toString().split(" ")[1],
         };
         let data = {
           type: "post",
@@ -205,27 +206,20 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           data: JSON.stringify(info),
           contentType: "application/json",
           success: function (response) {
-            for (let i = 0; i < self.matches().length; i++)
-              if (self.matches()[i].id == match.id) {
-                self.matches.splice(i, 1, response);
-                break;
-              }
+            //Actualizamos solo los campos que nos interesan
+            match.board = response.board;
+            match.possibleMovements = response.possibleMovements;
+            match.possibleMovementsXY = response.possibleMovementsXY;
+
             // Comprueba si es posible mover, si no se puede, imprime eso
-            let token = true;
-            response.possibleMovementsXY.map((movement) => {
-              if (movement != null) {
-                token = false;
-              }
-            });
-            if (token) {
-              self.gameError("No se puede mover esta ficha");
-            } else {
-              self.gameError("");
-            }
+            match.gameError = match.possibleMovementsXY.every((movement) => movement == null) ? "No se puede mover esta ficha" : "";
+
+            //Actualizamos la partida
+            self.updateMatch(match.id, match);
           },
           error: function (response) {
             console.error(JSON.stringify(response));
-            self.gameError(response.responseJSON.message);
+            self.globalError(response.responseJSON.message);
           },
         };
         $.ajax(data);
@@ -246,7 +240,6 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       return [alivePieces, playerColor];
     }
 
-    // TODO: Repasar logica al igual que en backend
     getSquareByDirection(squares, movement) {
       switch (movement) {
         case "leftUp":
@@ -261,13 +254,15 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     }
 
     // Reemplaza la match entera
-    updateMatch (matchId, newMatch) {
+    updateMatch(matchId, newMatch) {
       let self = this;
       for (let i = 0; i < self.matches().length; i++)
-      if (self.matches()[i].id == matchId) {
-        self.matches[i] = newMatch
-        break;
-      }
+        if (self.matches()[i].id == matchId) {
+          let auxIndex = self.matches.indexOf(i);
+          self.matches.splice(auxIndex, 1);
+          self.matches.splice(auxIndex, 0, newMatch);
+          break;
+        }
     }
 
     disconnected() {

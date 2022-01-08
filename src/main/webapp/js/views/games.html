@@ -42,6 +42,8 @@
           </div>
           <!-- /ko -->
 
+          <div class="GlobalError" data-bind="html: globalError"></div>
+
           <div class="ol-games m-t-50">
             <!-- ko if: matches().length > 0 -->
             <span class="login100-form-title p-t-40px p-b-20"> Partidas </span>
@@ -109,7 +111,7 @@
               <!-- /ko -->
 
               <!-- ko if : game == "CheckersMatch" -->
-              <!-- ko if : $parent.playerColor() == "BLANCO"  -->
+              <!-- ko if : playerColor == "BLANCO"  -->
               <!-- ko with : board -->
               <div class="Board Rotate">
                 <!-- ko foreach : squares -->
@@ -161,7 +163,7 @@
               <!-- /ko -->
               <!-- /ko -->
 
-              <!-- ko if : $parent.playerColor() == "NEGRO"  -->
+              <!-- ko if : playerColor == "NEGRO"  -->
               <!-- ko with : board -->
               <div class="Board">
                 <!-- ko foreach : squares -->
@@ -253,7 +255,7 @@
                 </button>
               </div>
 
-              <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : $parent.gameError" style="color: red"></div>
+              <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : gameError" style="color: red"></div>
 
               <!-- /ko -->
             </div>
