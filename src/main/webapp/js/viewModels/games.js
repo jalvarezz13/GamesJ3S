@@ -55,11 +55,9 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         url: self.routes.getGames,
         success: function (response) {
           self.games(response);
-          self.gameError("");
         },
         error: function (response) {
           console.error(JSON.stringify(response));
-          self.gameError(response.responseJSON.message);
         },
       };
       $.ajax(data);
@@ -127,7 +125,9 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         type: "get",
         url: self.routes.joinGame + game.name + "&" + self.tempName(),
         success: function (response) {
+          response = {...response, pieces: ko.observableArray([]), chosenPiece: ko.observableArray([]), playerColor: "BLANCO", gameError: ""}
           self.matches.push(response);
+
           self.conectarAWebSocket();
           if (game.name == "Las damas") {
             self.updateAlivePieces(response.id);
@@ -174,11 +174,15 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         type: "get",
         url: self.routes.updateAlivePieces + matchId,
         success: function (response) {
-          //self.pieces([]);
-          // console.log(self.pieces());
-          self.pieces(self.parsePieces(response));
-          // console.log(self.pieces());
-          self.gameError("");
+          let actualMatch = self.matches().find(match => match.id == matchId)
+
+          const [pieces, color] = self.parsePieces(response);
+          actualMatch.pieces(pieces);
+          actualMatch.chosenPiece(['Seleccione...']);
+          actualMatch.playerColor = color;
+          actualMatch.gameError = "";
+
+          self.updateMatch(matchId, actualMatch)
         },
         error: function (response) {
           self.gameError(response.responseJSON.message);
@@ -229,17 +233,17 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     }
 
     parsePieces(response) {
-      let self = this;
       let alivePieces = [];
+      let playerColor;
       alivePieces.push(`Seleccione...`);
       response.map((Piece) => {
         if (Piece != null) {
           let { id, color } = Piece;
           alivePieces.push(`${id} ${color}`);
-          self.playerColor(color);
+          playerColor = color;
         }
       });
-      return alivePieces;
+      return [alivePieces, playerColor];
     }
 
     // TODO: Repasar logica al igual que en backend
@@ -253,6 +257,16 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           return squares[2];
         case "leftDown":
           return squares[3];
+      }
+    }
+
+    // Reemplaza la match entera
+    updateMatch (matchId, newMatch) {
+      let self = this;
+      for (let i = 0; i < self.matches().length; i++)
+      if (self.matches()[i].id == matchId) {
+        self.matches[i] = newMatch
+        break;
       }
     }
 

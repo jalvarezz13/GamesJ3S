@@ -217,7 +217,7 @@
               <div class="ButtonContainer">
                 <select
                   id="dropDown"
-                  data-bind="options: $parent.pieces, selectedOptions:$parent.chosenPiece, event:{ change: function() { $parent.showPossibleMovements($data)} }"
+                  data-bind="options: pieces, selectedOptions: chosenPiece, event:{ change: function() { $parent.showPossibleMovements($data)} }"
                 ></select>
 
                 <!-- ko if : possibleMovements[0] == true -->
