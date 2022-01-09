@@ -136,7 +136,7 @@
               </div>
               <!-- /ko -->
 
-              <!-- ko if : winner.name == players[1].name-->
+              <!-- ko if : looser.name == players[0].name-->
               <div class="ModalWinner">
                 <div class="ModalContent">
                   <p id="looserMsg" class="ModalContentText">¡Has Perdido!</p>
@@ -218,7 +218,7 @@
               </div>
               <!-- /ko -->
 
-              <!-- ko if : winner.name == players[0].name-->
+              <!-- ko if : looser.name == players[1].name-->
               <div class="ModalWinner">
                 <div class="ModalContent">
                   <p id="looserMsg" class="ModalContentText">¡Has Perdido!</p>
@@ -229,7 +229,7 @@
               <!-- /ko -->
               <!-- /ko -->
 
-              <!--ko if : players.length == 2 && playerWithTurn.name == players[1].name-->
+              <!-- ko if : players.length == 2 && playerWithTurn.name == players[1].name -->
               <div class="MatchHavingTurn">Es tu turno</div>
               <!-- /ko -->
               <!-- ko ifnot : players.length == 2 && playerWithTurn.name == players[1].name -->
