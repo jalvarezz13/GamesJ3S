@@ -130,15 +130,17 @@
               <div class="ModalWinner">
                 <div class="ModalContent">
                   ¡Has Ganado!
+                  <i class="fa fa-smile-o"></i>
                   <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
                 </div>
               </div>
               <!-- /ko -->
 
-              <!-- ko if : winner.name == players[1].name-->
+              <!-- ko if : looser.name == players[0].name-->
               <div class="ModalWinner">
                 <div class="ModalContent">
                   ¡Has Perdido!
+                  <i class="fa fa-frown-o"></i>
                   <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
                 </div>
               </div>
@@ -210,22 +212,24 @@
               <div class="ModalWinner">
                 <div class="ModalContent">
                   ¡Has Ganado!
+                  <i class="fa fa-smile-o"></i>
                   <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
                 </div>
               </div>
               <!-- /ko -->
 
-              <!-- ko if : winner.name == players[0].name-->
+              <!-- ko if : looser.name == players[1].name-->
               <div class="ModalWinner">
                 <div class="ModalContent">
                   ¡Has Perdido!
+                  <i class="fa fa-frown-o"></i>
                   <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
                 </div>
               </div>
               <!-- /ko -->
               <!-- /ko -->
 
-              <!--ko if : players.length == 2 && playerWithTurn.name == players[1].name-->
+              <!-- ko if : players.length == 2 && playerWithTurn.name == players[1].name -->
               <div class="MatchHavingTurn">Es tu turno</div>
               <!-- /ko -->
               <!-- ko ifnot : players.length == 2 && playerWithTurn.name == players[1].name -->
