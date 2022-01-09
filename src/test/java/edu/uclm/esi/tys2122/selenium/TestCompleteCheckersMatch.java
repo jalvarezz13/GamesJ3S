@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -49,30 +51,38 @@ public class TestCompleteCheckersMatch {
 
 	@Test
 	public void playMatch() {
+		WebElement msg;
 		goGames();
 
 		// start CheckersMatch
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/div[3]/div/button")).click();
 		pause(500);
+		// scroll to bottom page
+		driverWhite.findElement(By.tagName("html")).sendKeys(Keys.END);
+			
+		
 		driverBlack.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/div[3]/div/button")).click();
 		pause(500);
+		// scroll to bottom page
+		driverBlack.findElement(By.tagName("html")).sendKeys(Keys.END);
 
-		WebElement msg;
+
+		
 		// You can't move
 		selectItem(driverWhite, "8 BLANCO");
 		pause(500);
-		msg = driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/div[3]/div/div[4]"));
+		msg = driverWhite.findElement(By.id("gameError"));
 		pause(500);
 		assertEquals(msg.getText(), "No se puede mover esta ficha");
-		pause(500);
+		pause(3000);
 
 		// Not your turn
-		movePiece(driverBlack, "2 NEGRO", "rightUp");
+		movePiece(driverBlack, "3 NEGRO", "rightUp");
 		pause(500);
-		msg = driverBlack.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/div[3]/div[1]/div[4]"));
+		msg = driverBlack.findElement(By.id("gameError"));
 		pause(500);
 		assertEquals(msg.getText(), "No es tu turno");
-		pause(500);
+		pause(3000);
 
 		// start Movements
 		movePiece(driverWhite, "1 BLANCO", "rightUp");
@@ -200,9 +210,20 @@ public class TestCompleteCheckersMatch {
 		movePiece(driverBlack, "1 NEGRO", "rightDown");
 
 		movePiece(driverWhite, "11 BLANCO", "rightUp");
-
-		// TODOTYSW: assert de victoria
-
+		
+		// winner assert
+		msg = driverWhite.findElement(By.id("winnerMsg"));
+		pause(500);
+		assertEquals(msg.getText(), "¡Has Ganado!");
+		pause(500);
+		driverWhite.findElement(By.id("WinnerEndGame")).click();
+		
+		// looser assert
+		msg = driverBlack.findElement(By.id("looserMsg"));
+		pause(500);
+		assertEquals(msg.getText(), "¡Has Perdido!");
+		pause(500);
+		driverBlack.findElement(By.id("WinnerEndGame")).click();
 	}
 
 	private void selectItem(WebDriver driver, String pieceName) {
@@ -213,7 +234,8 @@ public class TestCompleteCheckersMatch {
 	private void movePiece(WebDriver driver, String pieceName, String movement) {
 		selectItem(driver, pieceName);
 		pause(500);
-		driver.findElement(By.id(movement)).click();
+		JavascriptExecutor js = (JavascriptExecutor)driver;
+		js.executeScript("arguments[0].click()", driver.findElement(By.id(movement)));
 		pause(1000);
 	}
 

@@ -594,7 +594,7 @@ iframe {
 }
 
 .MatchHavingTurn {
-  font-weight: 100;
+  /* font-weight: 100;
   text-align: center;
   font-size: 1.125rem;
   background: linear-gradient(90deg, #aeff00, #aeff00, #aeff00);
@@ -605,10 +605,16 @@ iframe {
   background-repeat: no-repeat;
   background-size: 80%;
   animation: shine 5s linear infinite;
-  position: relative;
+  position: relative; */
+  font-weight: 100;
+  text-align: center;
+  font-size: 1.125rem;
+  background-color: mediumseagreen;
+  border-radius: 15px;
+  padding: 1px 0px;
 }
 .MatchWaitingTurn {
-  font-weight: 100;
+  /* font-weight: 100;
   text-align: center;
   font-size: 1.125rem;
   background: linear-gradient(90deg, #fefefe, #fefefe, #fefefe);
@@ -619,8 +625,15 @@ iframe {
   background-repeat: no-repeat;
   background-size: 80%;
   animation: shine 5s linear infinite;
-  position: relative;
+  position: relative; */
+  font-weight: 100;
+  text-align: center;
+  font-size: 1.125rem;
+  background-color: indianred;
+  border-radius: 15px;
+  padding: 1px 0px;
 }
+
 @keyframes shine {
   0% {
     background-position-x: -500%;
@@ -825,15 +838,20 @@ iframe {
   align-items: center;
   justify-content: center;
 
-  color: white;
-  font-size: 3rem;
-
   background: linear-gradient(to bottom left, #480852, #1b384a);
   border-radius: 20px;
   padding: 20px;
 
   width: 500px;
-  height: 250px;
+}
+
+.ModalWinner .ModalContent .ModalContentText {
+  color: white;
+  font-size: 3rem;
+}
+
+.ModalContentIcon {
+  font-size: 100px;
 }
 
 .ModalWinner .ModalContent button {

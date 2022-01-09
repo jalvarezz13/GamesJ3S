@@ -221,7 +221,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           const [pieces, color] = self.parsePieces(response);
           actualMatch.pieces = pieces;
           actualMatch.chosenPiece = ["Seleccione..."];
-          actualMatch.playerColor = color;
+          actualMatch.playerColor = (color == undefined ? actualMatch.playerColor : color);
           actualMatch.gameError = "";
 
           self.updateMatch(matchId, actualMatch);

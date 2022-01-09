@@ -129,7 +129,8 @@
               <!-- ko if : winner.name == players[0].name-->
               <div class="ModalWinner">
                 <div class="ModalContent">
-                  ¡Has Ganado!
+                  <p id="winnerMsg" class="ModalContentText">¡Has Ganado!</p>
+                  <i class="fa fa-smile-o ModalContentIcon"></i>  
                   <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
                 </div>
               </div>
@@ -138,7 +139,8 @@
               <!-- ko if : winner.name == players[1].name-->
               <div class="ModalWinner">
                 <div class="ModalContent">
-                  ¡Has Perdido!
+                  <p id="looserMsg" class="ModalContentText">¡Has Perdido!</p>
+                  <i class="fa fa-frown-o ModalContentIcon"></i>   
                   <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
                 </div>
               </div>
@@ -209,7 +211,8 @@
               <!-- ko if : winner.name == players[1].name-->
               <div class="ModalWinner">
                 <div class="ModalContent">
-                  ¡Has Ganado!
+                  <p id="winnerMsg" class="ModalContentText">¡Has Ganado!</p>
+                  <i class="fa fa-smile-o ModalContentIcon"></i>            
                   <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
                 </div>
               </div>
@@ -218,7 +221,8 @@
               <!-- ko if : winner.name == players[0].name-->
               <div class="ModalWinner">
                 <div class="ModalContent">
-                  ¡Has Perdido!
+                  <p id="looserMsg" class="ModalContentText">¡Has Perdido!</p>
+                  <i class="fa fa-frown-o ModalContentIcon"></i>   
                   <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
                 </div>
               </div>
@@ -324,7 +328,7 @@
                 </button>
               </div>
 
-              <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : gameError" style="color: red"></div>
+              <div id="gameError" class="oj-sm-12 m-b-20 m-t-20" data-bind="html : gameError" style="color: red"></div>
 
               <!-- /ko -->
             </div>
