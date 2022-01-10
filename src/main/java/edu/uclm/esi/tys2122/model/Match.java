@@ -73,7 +73,12 @@ public abstract class Match {
 		}
 	}
 
-	public void notifyOponents(String type, User... users) {
+	/**
+	 * Notifica a los usuarios de la partida excepto a @param users
+	 * @param type Tipo de actualizacion de la match {READY, UPDATE, FINISH}
+	 * @param users Usuarios a los que no se notifica la actualizacion
+	 */
+	public void notifyOponents(String type, User... users) { 
 		JSONObject jso = new JSONObject();
 		jso.put("type", type);
 		jso.put("matchId", this.id);
@@ -126,6 +131,10 @@ public abstract class Match {
 
 	public abstract void move(String userId, JSONObject jso) throws Exception;
 
+	public abstract User getWinner();
+	
+	public abstract void closeMatchByUser(User user);
+
 	/* Getters And Setters */
 
 	public String getGame() {
@@ -169,4 +178,4 @@ public abstract class Match {
 		this.ready = ready;
 	}
 
-}
+	}

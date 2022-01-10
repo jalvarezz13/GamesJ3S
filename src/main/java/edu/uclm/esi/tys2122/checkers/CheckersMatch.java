@@ -37,7 +37,7 @@ public class CheckersMatch extends Match {
 		this.ready = this.players.size() == 2;
 		if (this.ready) {
 			this.playerWithTurn = this.players.get(0);
-			super.notifyOponents("MATCH READY");
+			super.notifyOponents("MATCH READY", this.players.get(1));
 		}
 	}
 
@@ -471,7 +471,7 @@ public class CheckersMatch extends Match {
 	}
 
 	/* Getters And Setters */
-
+	@Override
 	public User getWinner() {
 		return winner;
 	}
@@ -518,5 +518,14 @@ public class CheckersMatch extends Match {
 
 		int[][] possibleMovementsXY = new int[4][];
 		this.possibleMovementsXY = possibleMovementsXY;
+	}
+	
+	public void closeMatchByUser(User user) {
+		this.setLooser(user);
+		for (User u : this.players)
+			if(!u.equals(user))
+				this.setWinner(u);
+		
+		notifyOponents("MATCH UPDATE", user);
 	}
 }

@@ -52,5 +52,21 @@ public abstract class Game {
 	public void setPlayingMatches(List<Match> playingMatches) {
 		this.playingMatches = playingMatches;
 	}
+	
+	public void closeMatchesByUser(User user) {		
+		for(Match m : this.pendingMatches) {
+			if(m.getPlayers().get(0).getId().equals(user.getId()))
+				this.pendingMatches.remove(m);
+		}
+		
+		for(Match m : this.playingMatches) {
+			if(m.getPlayers().get(0).getId().equals(user.getId()) || m.getPlayers().get(1).getId().equals(user.getId())) {
+				if(m.getWinner() == null)
+					m.closeMatchByUser(user);
+			}
+		}
+		
+	}
+
 
 }

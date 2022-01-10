@@ -116,16 +116,22 @@ public class UserController extends CookiesController {
 			String token = jso.getString("token");
 			String newPass = jso.getString("newPass");
 			String newPass2 = jso.getString("newPass2");
-
+		
 			if (!newPass.equals(newPass2))
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
 
-			User user = userRepo.findByToken(token);
-			if (user != null) {
+			if (newPass.length() < 4)
+				throw new ResponseStatusException(HttpStatus.CONFLICT, "La contraseña debe tener al menos cuatro caracteres");
+			
+			newPass = org.apache.commons.codec.digest.DigestUtils.sha512Hex(newPass);
+			
+			User user = null;
+			try {
+				user = userRepo.findByToken(token);
 				userRepo.updatePwdById(newPass, user.getId());
-				userRepo.deleteTokenAfterUse(user.getId());
-			} else {
-				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No hay solicitud de cambio de contraseña para esta cuenta");
+				userRepo.deleteTokenAfterUse(user.getId());				
+			} catch (Exception e) {
+				throw new ResponseStatusException(HttpStatus.CONFLICT, "No hay solicitud de cambio de contraseña para esta cuenta");
 			}
 
 		} catch (Exception e) {
@@ -170,9 +176,9 @@ public class UserController extends CookiesController {
 		String type = "normal";
 
 		if (!pwd1.equals(pwd2))
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: las contraseñas no coinciden");
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "Las contraseñas no coinciden");
 		if (pwd1.length() < 4)
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: la contraseña debe tener al menos cuatro caracteres");
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "La contraseña debe tener al menos cuatro caracteres");
 
 		pwd1 = org.apache.commons.codec.digest.DigestUtils.sha512Hex(pwd1);
 
@@ -189,7 +195,7 @@ public class UserController extends CookiesController {
 
 			return "Registro completado exitosamente";
 		} catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.CONFLICT, "Error: El usuario ya existe");
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "El usuario ya existe");
 		}
 	}
 

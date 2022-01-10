@@ -3,6 +3,8 @@ package edu.uclm.esi.tys2122.websockets;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -14,6 +16,8 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import edu.uclm.esi.tys2122.http.Manager;
+import edu.uclm.esi.tys2122.model.User;
+import edu.uclm.esi.tys2122.model.Game;
 
 @Component
 public class WebSocketGenerico extends TextWebSocketHandler {
@@ -54,7 +58,7 @@ public class WebSocketGenerico extends TextWebSocketHandler {
 		exception.printStackTrace();
 	}
 
-	@SuppressWarnings("unused") // remember to delete this
+	@SuppressWarnings("unused")
 	private void send(WebSocketSession session, Object... typesAndValues) {
 		JSONObject jso = new JSONObject();
 		int i = 0;
@@ -71,8 +75,19 @@ public class WebSocketGenerico extends TextWebSocketHandler {
 	}
 	
 	@Override
-	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		// TODO Auto-generated method stub
-		super.afterConnectionClosed(session, status);
+	public void afterConnectionClosed(WebSocketSession wssession, CloseStatus status) throws Exception {
+		Manager.get().closeMatchesByWs(wssession.getId());
+		
+		super.afterConnectionClosed(wssession, status);
 	}
 }
+
+
+
+
+
+
+
+
+
+

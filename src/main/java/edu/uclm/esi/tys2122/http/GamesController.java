@@ -57,7 +57,11 @@ public class GamesController extends CookiesController {
 				tempName = "anonimo" + new SecureRandom().nextInt(1000);
 			String tempEmail = tempName + "@" + tempName + ".es";
 			user = new User(tempName, tempEmail);
-			userService.save(user);
+			try {
+				userService.save(user);
+			} catch (Exception e) {
+				throw new ResponseStatusException(HttpStatus.CONFLICT, "Este nombre ya esta registrado por otro usuario");
+			}
 			session.setAttribute("user", user);
 		}
 

@@ -97,7 +97,7 @@ public class TictactoeMatch extends Match {
 	}
 
 	/* Getter And Setters */
-
+	@Override
 	public User getWinner() {
 		return winner;
 	}
@@ -108,5 +108,27 @@ public class TictactoeMatch extends Match {
 
 	public boolean isDraw() {
 		return draw;
+	}
+
+	public void setWinner(User winner) {
+		this.winner = winner;
+	}
+
+	public void setLooser(User looser) {
+		this.looser = looser;
+	}
+
+	public void setDraw(boolean draw) {
+		this.draw = draw;
+	}
+
+	@Override
+	public void closeMatchByUser(User user) {
+		this.setLooser(user);
+		for (User u : this.players)
+			if(!u.equals(user))
+				this.setWinner(u);
+		
+		notifyOponents("MATCH UPDATE", user);
 	}
 }

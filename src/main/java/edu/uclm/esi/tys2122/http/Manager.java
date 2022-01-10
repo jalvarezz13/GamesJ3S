@@ -107,8 +107,13 @@ public class Manager {
 		this.matchSessionsByWs.put(wrapperSession.getWsSession().getId(), wrapperSession);
 	}
 
-	public void findWsSession(String id) {
-		System.out.println(matchSessionsByWs);
+	public void closeMatchesByWs(String id) {	
+		User user = (User) matchSessionsByWs.get(id).getHttpSession().getAttribute("user");		
+		
+		for(Game g : games) { //2 iteraciones (2 juegos: TicTacToe y Checkers) 
+			g.closeMatchesByUser(user);
+		}
+		
 	}
 
 	/* Utilities */
