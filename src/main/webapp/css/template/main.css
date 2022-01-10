@@ -526,6 +526,7 @@ iframe {
   background: #232e33;
   border-radius: 10px;
   overflow: hidden;
+  max-width: 510px;
 }
 
 .label-games {
@@ -799,7 +800,8 @@ iframe {
   transform: rotate(-45deg);
 }
 
-.ButtonContainer .DirectionButtonRefresh .fa-refresh {
+.ButtonContainer .DirectionButtonRefresh .fa-refresh,
+.ButtonContainer .DirectionButtonRefresh .fa-flag {
   font-size: 45px;
   color: white;
 }
@@ -808,7 +810,8 @@ iframe {
 .ButtonContainer .DirectionButtonRigthUp .fa-arrow-circle-o-left:hover,
 .ButtonContainer .DirectionButtonRigthDown .fa-arrow-circle-o-left:hover,
 .ButtonContainer .DirectionButtonLeftDown .fa-arrow-circle-o-left:hover,
-.ButtonContainer .DirectionButtonRefresh .fa-refresh:hover {
+.ButtonContainer .DirectionButtonRefresh .fa-refresh:hover,
+.ButtonContainer .DirectionButtonRefresh .fa-flag:hover {
   color: #a64bf4;
 }
 
@@ -953,3 +956,30 @@ iframe {
   font-weight: 400;
 }
 /**************************[ END AUTHORS ]**************************/
+
+/****************************[ ERRORS ]****************************/
+
+#gameError {
+  font-weight: 100;
+  text-align: center;
+  font-size: 1.125rem;
+  background-color: #e63946;
+  border-radius: 10px;
+  color: white;
+  padding: 1px;
+}
+
+.GlobalError {
+  font-weight: 100;
+  text-align: center;
+  font-size: 1.125rem;
+  background-color: #e63946;
+  border-radius: 10px;
+  color: white;
+  padding: 1px;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding: 5px;
+}
+/**************************[ END ERRORS ]**************************/

@@ -12,8 +12,9 @@ define([], function () {
         joinGame: "/games/joinGame/",
         findMatch: "/games/findMatch/",
         updateAlivePieces: "/games/updateAlivePieces/",
-        showPossibleMovements: "/games/showPossibleMovements",
-        
+        showPossibleMovements: "/games/showPossibleMovements",   
+        surrender: "/games/surrender/",
+
         webSocket: "wsGenerico",
     }
     

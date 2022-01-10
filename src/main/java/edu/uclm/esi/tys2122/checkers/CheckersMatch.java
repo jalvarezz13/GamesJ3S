@@ -79,7 +79,7 @@ public class CheckersMatch extends Match {
 
 		super.notifyOponents("MATCH UPDATE");
 	}
-
+	
 	private void checkWinner(String pieceColor) {
 		if (pieceColor.equals("BLANCO")) {
 			if (this.getAlivePieces(this.players.get(1).getId())[0] == null) {

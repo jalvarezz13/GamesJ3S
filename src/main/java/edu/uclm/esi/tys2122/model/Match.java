@@ -75,10 +75,10 @@ public abstract class Match {
 
 	/**
 	 * Notifica a los usuarios de la partida excepto a @param users
-	 * @param type Tipo de actualizacion de la match {READY, UPDATE, FINISH}
+	 * @param type  Tipo de actualizacion de la match {READY, UPDATE, FINISH}
 	 * @param users Usuarios a los que no se notifica la actualizacion
 	 */
-	public void notifyOponents(String type, User... users) { 
+	public void notifyOponents(String type, User... users) {
 		JSONObject jso = new JSONObject();
 		jso.put("type", type);
 		jso.put("matchId", this.id);
@@ -113,16 +113,6 @@ public abstract class Match {
 		return false;
 	}
 
-	/*
-	 * private JSONObject toJSON() { JSONObject jso = new JSONObject(); Class clazz
-	 * = this.getClass(); Field[] fields = clazz.getDeclaredFields(); for (int i=0;
-	 * i<fields.length; i++) { Field field = fields[i]; field.setAccessible(true);
-	 * if (field.getAnnotation(Transient.class)==null) { try {
-	 * jso.put(field.getName(), field.get(this)); } catch (Exception e) { // TODO
-	 * Auto-generated catch block e.printStackTrace(); } } } jso.put("board",
-	 * this.board.toString()); return jso; }
-	 */
-
 	/* Abstract Functions */
 
 	protected abstract void checkReady();
@@ -132,9 +122,9 @@ public abstract class Match {
 	public abstract void move(String userId, JSONObject jso) throws Exception;
 
 	public abstract User getWinner();
-	
-	public abstract void closeMatchByUser(User user);
 
+	public abstract void closeMatchByUser(User user);
+	
 	/* Getters And Setters */
 
 	public String getGame() {
@@ -177,5 +167,4 @@ public abstract class Match {
 	public void setReady(boolean ready) {
 		this.ready = ready;
 	}
-
-	}
+}

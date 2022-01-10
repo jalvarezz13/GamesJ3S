@@ -122,6 +122,13 @@ public class GamesController extends CookiesController {
 
 		return auxMatch;
 	}
+	
+	@GetMapping("/surrender/{matchId}")
+	public void surrender(HttpSession session, @PathVariable String matchId) throws Exception {
+		User user = (User) session.getAttribute("user");
+		Match auxMatch = gamesService.getMatch(matchId);
+		auxMatch.closeMatchByUser(user);
+	}
 
 	/* Functions */
 

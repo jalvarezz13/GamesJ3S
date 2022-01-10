@@ -208,6 +208,22 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         }
     }
 
+    // BOTH: Ask for surrender
+    surrender(matchId) {
+      let self = this;
+      let data = {
+        type: "get",
+        url: self.routes.surrender + matchId,
+        success: function (response) {
+          self.reload(matchId);
+        },
+        error: function (response) {
+          self.globalError(response.responseJSON.message);
+        },
+      };
+      $.ajax(data);
+    }
+
     // CHECKERS: Updates select component
     updateAlivePieces(matchId) {
       let self = this;
@@ -221,7 +237,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           const [pieces, color] = self.parsePieces(response);
           actualMatch.pieces = pieces;
           actualMatch.chosenPiece = ["Seleccione..."];
-          actualMatch.playerColor = (color == undefined ? actualMatch.playerColor : color);
+          actualMatch.playerColor = color == undefined ? actualMatch.playerColor : color;
           actualMatch.gameError = "";
 
           self.updateMatch(matchId, actualMatch);
@@ -307,6 +323,5 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       // Implement if needed
     }
   }
-
   return MenuViewModel;
 });

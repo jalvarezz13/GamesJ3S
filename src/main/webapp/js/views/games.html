@@ -1,351 +1,365 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" type="text/css" href="css/template/vendor/bootstrap/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/fonts/iconic/css/material-design-iconic-font.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/template/vendor/animate/animate.css" />
-    <link rel="stylesheet" type="text/css" href="css/template/vendor/css-hamburgers/hamburgers.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/template/vendor/animsition/css/animsition.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/template/vendor/select2/select2.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/template/vendor/daterangepicker/daterangepicker.css" />
-    <link rel="stylesheet" type="text/css" href="css/template/util.css" />
-    <link rel="stylesheet" type="text/css" href="css/template/main.css" />
-  </head>
 
-  <body>
-    <div class="limiter">
-      <div class="container-login100" style="background-image: url('css/images/fondoPrincipal.jpg')">
-        <div class="wrap-games p-l-55 p-r-55 p-t-65 p-b-54">
-          <span class="login100-form-title p-b-20"> Juegos </span>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" href="css/template/vendor/bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/fonts/font-awesome-4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/fonts/iconic/css/material-design-iconic-font.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/template/vendor/animate/animate.css" />
+  <link rel="stylesheet" type="text/css" href="css/template/vendor/css-hamburgers/hamburgers.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/template/vendor/animsition/css/animsition.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/template/vendor/select2/select2.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/template/vendor/daterangepicker/daterangepicker.css" />
+  <link rel="stylesheet" type="text/css" href="css/template/util.css" />
+  <link rel="stylesheet" type="text/css" href="css/template/main.css" />
+</head>
 
-          <!-- Guest name -->
-          <!-- ko if: matches().length == 0 -->
-          <div class="wrap-input100 m-b-23">
-            <span class="label-input100">Nombre de usuario (opcional)</span>
-            <input class="input100" data-bind="value : tempName" type="text" name="username" placeholder="Usuario..." />
-            <span class="focus-input100" data-symbol="&#xf206;"></span>
+<body>
+  <div class="limiter">
+    <div class="container-login100" style="background-image: url('css/images/fondoPrincipal.jpg')">
+      <div class="wrap-games p-l-55 p-r-55 p-t-65 p-b-54">
+        <span class="login100-form-title p-b-20"> Juegos </span>
+
+        <!-- Guest name -->
+        <!-- ko if: matches().length == 0 -->
+        <div class="wrap-input100 m-b-23">
+          <span class="label-input100">Nombre de usuario (opcional)</span>
+          <input class="input100" data-bind="value : tempName" type="text" name="username" placeholder="Usuario..." />
+          <span class="focus-input100" data-symbol="&#xf206;"></span>
+        </div>
+        <!-- /ko -->
+
+        <!-- Game Buttons -->
+        <!-- ko foreach : games -->
+        <div class="container-login100-form-btn p-t-5 p-b-5">
+          <div class="wrap-login100-form-btn">
+            <div class="login100-form-bgbtn"></div>
+            <button class="login100-form-btn" data-bind="click : function() { $parent.joinGame($data); }" value="games">
+              <label class="label-games" data-bind="html: name"></label>
+            </button>
           </div>
-          <!-- /ko -->
+        </div>
+        <!-- /ko -->
 
-          <!-- Game Buttons -->
-          <!-- ko foreach : games -->
-          <div class="container-login100-form-btn p-t-5 p-b-5">
-            <div class="wrap-login100-form-btn">
-              <div class="login100-form-bgbtn"></div>
-              <button class="login100-form-btn" data-bind="click : function() { $parent.joinGame($data); }" value="games">
-                <label class="label-games" data-bind="html: name"></label>
+        <!-- ko if: globalError() != "" && globalError() != null -->
+        <div class="GlobalError" data-bind="html: globalError"></div>
+        <!-- /ko -->
+
+        <div class="ol-games m-t-50">
+          <!-- ko if: matches().length > 0 -->
+          <span class="login100-form-title p-t-40px p-b-20"> Partidas </span>
+          <!-- /ko -->
+          <!-- ko foreach : matches -->
+          <div class="match-style m-b-20">
+            <div class="MatchInfo">
+              <div class="Player">
+                Jugador 1
+                <span data-bind="html : players[0].name" class="Name"></span>
+              </div>
+              <div class="Rival">
+                Jugador 2
+                <!-- ko if : players[1] -->
+                <span data-bind="html : players[1].name" class="Name"></span>
+                <!-- /ko -->
+                <!-- ko ifnot : players[1] -->
+                <span class="Waiting"> Esperando...</span>
+                <!-- /ko -->
+              </div>
+            </div>
+
+            <!-- ko if : game == "TictactoeMatch" -->
+
+            <!--ko if : players.length == 2 -->
+            <div>
+              Tiene el turno:
+              <div class="MatchWaitingTurn" data-bind="html: playerWithTurn.name"></div>
+            </div>
+            <!-- /ko -->
+
+            <!--ko ifnot : players.length == 2 -->
+            <div class="MatchWaitingTurn">Esperando a tu rival</div>
+            <!-- /ko -->
+
+            <!-- ko with : board -->
+            <div class="Board">
+              <!-- ko foreach : squares -->
+              <div class="Row">
+                <!-- ko foreach : $data -->
+                <!-- ko if : $data == 0 -->
+                <div class="TicTacToeSquare TicTacToeBackground">
+                  <i class="fa fa-snowflake-o"></i>
+                </div>
+                <!-- /ko-->
+
+                <!-- ko if : $data == 1 -->
+                <div class="TicTacToeSquare TicTacToeBackground">
+                  <i class="fa fa-close Cross"></i>
+                </div>
+                <!-- /ko-->
+
+                <!-- ko if : $data == 2 -->
+                <div class="TicTacToeSquare TicTacToeBackground">
+                  <i class="fa fa-circle-o Circle"></i>
+                </div>
+                <!-- /ko-->
+                <!-- /ko -->
+              </div>
+              <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <div class="TicTacToe-Controls">
+              <div class="Position">
+                <input class="CoordinateInput" data-bind="value: x" type="number" min="0" max="2" placeholder="X" />
+                <input class="CoordinateInput" data-bind="value: y" type="number" min="0" max="2" placeholder="Y" />
+              </div>
+              <button data-bind="click : function() { $parent.mover($data); }" class="Move">
+                <i class="fa fa-play-circle"></i>
+              </button>
+              <!-- Surrender button -->
+              <button data-bind="click : function() { $parent.surrender($data.id); }" class="Refresh">
+                <i class="fa fa-flag"></i>
+              </button>
+
+              <!-- Reload button -->
+              <button data-bind="click : function() { $parent.reload($data.id); }" class="Refresh">
+                <i class="fa fa-refresh"></i>
               </button>
             </div>
-          </div>
-          <!-- /ko -->
 
-          <div class="GlobalError" data-bind="html: globalError"></div>
-
-          <div class="ol-games m-t-50">
-            <!-- ko if: matches().length > 0 -->
-            <span class="login100-form-title p-t-40px p-b-20"> Partidas </span>
+            <!-- ko if: gameError != "" -->
+            <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : gameError"></div>
             <!-- /ko -->
-            <!-- ko foreach : matches -->
-            <div class="match-style m-b-20">
-              <div class="MatchInfo">
-                <div class="Player">
-                  Jugador 1
-                  <span data-bind="html : players[0].name" class="Name"></span>
-                </div>
-                <div class="Rival">
-                  Jugador 2
-                  <!-- ko if : players[1] -->
-                  <span data-bind="html : players[1].name" class="Name"></span>
+
+            <!-- /ko -->
+
+            <!-- ko if : game == "CheckersMatch" -->
+            <!-- ko if : playerColor == "BLANCO"  -->
+
+            <!-- ko if : winner != null -->
+            <!-- ko if : winner.name == players[0].name-->
+            <div class="ModalWinner">
+              <div class="ModalContent">
+                <p id="winnerMsg" class="ModalContentText">¡Has Ganado!</p>
+                <i class="fa fa-smile-o ModalContentIcon"></i>
+                <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
+              </div>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if : looser.name == players[0].name-->
+            <div class="ModalWinner">
+              <div class="ModalContent">
+                <p id="looserMsg" class="ModalContentText">¡Has Perdido!</p>
+                <i class="fa fa-frown-o ModalContentIcon"></i>
+                <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+
+            <!--ko if : players.length == 2 && playerWithTurn.name == players[0].name-->
+            <div class="MatchHavingTurn">Es tu turno</div>
+            <!-- /ko -->
+            <!-- ko ifnot : players.length == 2 && playerWithTurn.name == players[0].name -->
+            <div class="MatchWaitingTurn">Esperando a tu rival</div>
+            <!-- /ko -->
+
+            <!-- ko with : board -->
+            <div class="Board Rotate">
+              <!-- ko foreach : squares -->
+              <div class="Row">
+                <!-- ko foreach : $data -->
+                <!-- ko if : $data.color == "NEGRO" -->
+                <div class="Square brownSquare">
+                  <!-- ko if : $data.piece != null -->
+                  <!-- ko if : $data.piece.color == "NEGRO" && $data.piece.alive == true -->
+
+                  <!-- ko if : $data.piece.type == "pawn" -->
+                  <div class="whitePlayerBP"></div>
                   <!-- /ko -->
-                  <!-- ko ifnot : players[1] -->
-                  <span class="Waiting"> Esperando...</span>
-                  <!-- /ko -->
-                </div>
-              </div>
 
-              <!-- ko if : game == "TictactoeMatch" -->
-
-              <!--ko if : players.length == 2 -->
-              <div>
-                Tiene el turno:
-                <div class="MatchWaitingTurn" data-bind="html: playerWithTurn.name"></div>
-              </div>
-              <!-- /ko -->
-
-              <!--ko ifnot : players.length == 2 -->
-              <div class="MatchWaitingTurn">Esperando a tu rival</div>
-              <!-- /ko -->
-
-              <!-- ko with : board -->
-              <div class="Board">
-                <!-- ko foreach : squares -->
-                <div class="Row">
-                  <!-- ko foreach : $data -->
-                  <!-- ko if : $data == 0 -->
-                  <div class="TicTacToeSquare TicTacToeBackground">
-                    <i class="fa fa-snowflake-o"></i>
-                  </div>
-                  <!-- /ko-->
-
-                  <!-- ko if : $data == 1 -->
-                  <div class="TicTacToeSquare TicTacToeBackground">
-                    <i class="fa fa-close Cross"></i>
-                  </div>
-                  <!-- /ko-->
-
-                  <!-- ko if : $data == 2 -->
-                  <div class="TicTacToeSquare TicTacToeBackground">
-                    <i class="fa fa-circle-o Circle"></i>
-                  </div>
-                  <!-- /ko-->
-                  <!-- /ko -->
-                </div>
-                <!-- /ko -->
-              </div>
-              <!-- /ko -->
-              <div class="TicTacToe-Controls">
-                <div class="Position">
-                  <input class="CoordinateInput" data-bind="value: x" type="number" min="0" max="2" placeholder="X" />
-                  <input class="CoordinateInput" data-bind="value: y" type="number" min="0" max="2" placeholder="Y" />
-                </div>
-                <button data-bind="click : function() { $parent.mover($data); }" class="Move">
-                  <i class="fa fa-play-circle"></i>
-                </button>
-                <button data-bind="click : function() { $parent.reload($data.id); }" class="Refresh">
-                  <i class="fa fa-refresh"></i>
-                </button>
-              </div>
-
-              <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : gameError" style="color: red"></div>
-              <!-- /ko -->
-
-              <!-- ko if : game == "CheckersMatch" -->
-              <!-- ko if : playerColor == "BLANCO"  -->
-
-              <!-- ko if : winner != null -->
-              <!-- ko if : winner.name == players[0].name-->
-              <div class="ModalWinner">
-                <div class="ModalContent">
-                  <p id="winnerMsg" class="ModalContentText">¡Has Ganado!</p>
-                  <i class="fa fa-smile-o ModalContentIcon"></i>  
-                  <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
-                </div>
-              </div>
-              <!-- /ko -->
-
-              <!-- ko if : looser.name == players[0].name-->
-              <div class="ModalWinner">
-                <div class="ModalContent">
-                  <p id="looserMsg" class="ModalContentText">¡Has Perdido!</p>
-                  <i class="fa fa-frown-o ModalContentIcon"></i>   
-                  <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
-                </div>
-              </div>
-              <!-- /ko -->
-              <!-- /ko -->
-
-              <!--ko if : players.length == 2 && playerWithTurn.name == players[0].name-->
-              <div class="MatchHavingTurn">Es tu turno</div>
-              <!-- /ko -->
-              <!-- ko ifnot : players.length == 2 && playerWithTurn.name == players[0].name -->
-              <div class="MatchWaitingTurn">Esperando a tu rival</div>
-              <!-- /ko -->
-
-              <!-- ko with : board -->
-              <div class="Board Rotate">
-                <!-- ko foreach : squares -->
-                <div class="Row">
-                  <!-- ko foreach : $data -->
-                  <!-- ko if : $data.color == "NEGRO" -->
-                  <div class="Square brownSquare">
-                    <!-- ko if : $data.piece != null -->
-                    <!-- ko if : $data.piece.color == "NEGRO" && $data.piece.alive == true -->
-
-                    <!-- ko if : $data.piece.type == "pawn" -->
-                    <div class="whitePlayerBP"></div>
-                    <!-- /ko -->
-
-                    <!-- ko if : $data.piece.type == "queen" -->
-                    <div class="whitePlayerBP">
-                      <img src="../../css/images/white-crown.svg" class="blackCrown Rotate" />
-                    </div>
-                    <!-- /ko -->
-                    <!-- /ko -->
-                    <!-- ko if : $data.piece.color == "BLANCO" && $data.piece.alive == true -->
-
-                    <!-- ko if : $data.piece.type == "pawn" -->
-                    <div class="whitePlayerWP">
-                      <span data-bind="html : $data.piece.id" class="pieceId Rotate"></span>
-                    </div>
-                    <!-- /ko -->
-
-                    <!-- ko if : $data.piece.type == "queen" -->
-                    <div class="whitePlayerWP">
-                      <img src="../../css/images/black-crown.svg" class="whiteCrown Rotate" />
-                      <span data-bind="html : $data.piece.id" class="pieceId Rotate relativePos"></span>
-                    </div>
-                    <!-- /ko -->
-                    <!-- /ko -->
-                    <!-- /ko -->
+                  <!-- ko if : $data.piece.type == "queen" -->
+                  <div class="whitePlayerBP">
+                    <img src="../../css/images/white-crown.svg" class="blackCrown Rotate" />
                   </div>
                   <!-- /ko -->
-                  <!-- ko if : $data.color == "BLANCO" -->
-                  <div class="Square whiteSquare"></div>
                   <!-- /ko -->
-                  <!-- ko if : $data.color == "VERDE" -->
-                  <div class="Square greenSquare"></div>
-                  <!-- /ko -->
-                  <!-- /ko -->
-                </div>
-                <!-- /ko -->
-              </div>
-              <!-- /ko -->
-              <!-- /ko -->
+                  <!-- ko if : $data.piece.color == "BLANCO" && $data.piece.alive == true -->
 
-              <!-- ko if : playerColor == "NEGRO"  -->
-
-              <!-- ko if : winner != null -->
-              <!-- ko if : winner.name == players[1].name-->
-              <div class="ModalWinner">
-                <div class="ModalContent">
-                  <p id="winnerMsg" class="ModalContentText">¡Has Ganado!</p>
-                  <i class="fa fa-smile-o ModalContentIcon"></i>            
-                  <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
-                </div>
-              </div>
-              <!-- /ko -->
-
-              <!-- ko if : looser.name == players[1].name-->
-              <div class="ModalWinner">
-                <div class="ModalContent">
-                  <p id="looserMsg" class="ModalContentText">¡Has Perdido!</p>
-                  <i class="fa fa-frown-o ModalContentIcon"></i>   
-                  <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
-                </div>
-              </div>
-              <!-- /ko -->
-              <!-- /ko -->
-
-              <!-- ko if : players.length == 2 && playerWithTurn.name == players[1].name -->
-              <div class="MatchHavingTurn">Es tu turno</div>
-              <!-- /ko -->
-              <!-- ko ifnot : players.length == 2 && playerWithTurn.name == players[1].name -->
-              <div class="MatchWaitingTurn">Esperando a tu rival</div>
-              <!-- /ko -->
-
-              <!-- ko with : board -->
-              <div class="Board">
-                <!-- ko foreach : squares -->
-                <div class="Row">
-                  <!-- ko foreach : $data -->
-                  <!-- ko if : $data.color == "NEGRO" -->
-                  <div class="Square brownSquare">
-                    <!-- ko if : $data.piece != null -->
-                    <!-- ko if : $data.piece.color == "NEGRO" && $data.piece.alive == true -->
-
-                    <!-- ko if : $data.piece.type == "pawn" -->
-                    <div class="blackPlayerBP">
-                      <span data-bind="html : $data.piece.id" class="pieceId"></span>
-                    </div>
-                    <!-- /ko -->
-
-                    <!-- ko if : $data.piece.type == "queen" -->
-                    <div class="blackPlayerBP">
-                      <img src="../../css/images/white-crown.svg" class="blackCrown" />
-                      <span data-bind="html : $data.piece.id" class="pieceId relativePos"></span>
-                    </div>
-                    <!-- /ko -->
-
-                    <!-- /ko -->
-                    <!-- ko if : $data.piece.color == "BLANCO" && $data.piece.alive == true -->
-
-                    <!-- ko if : $data.piece.type == "pawn" -->
-                    <div class="blackPlayerWP"></div>
-                    <!-- /ko -->
-
-                    <!-- ko if : $data.piece.type == "queen" -->
-                    <div class="blackPlayerWP">
-                      <img src="../../css/images/black-crown.svg" class="whiteCrown" />
-                    </div>
-                    <!-- /ko -->
-                    <!-- /ko -->
-                    <!-- /ko -->
+                  <!-- ko if : $data.piece.type == "pawn" -->
+                  <div class="whitePlayerWP">
+                    <span data-bind="html : $data.piece.id" class="pieceId Rotate"></span>
                   </div>
                   <!-- /ko -->
-                  <!-- ko if : $data.color == "BLANCO" -->
-                  <div class="Square whiteSquare"></div>
+
+                  <!-- ko if : $data.piece.type == "queen" -->
+                  <div class="whitePlayerWP">
+                    <img src="../../css/images/black-crown.svg" class="whiteCrown Rotate" />
+                    <span data-bind="html : $data.piece.id" class="pieceId Rotate relativePos"></span>
+                  </div>
                   <!-- /ko -->
-                  <!-- ko if : $data.color == "VERDE" -->
-                  <div class="Square greenSquare"></div>
                   <!-- /ko -->
                   <!-- /ko -->
                 </div>
                 <!-- /ko -->
+                <!-- ko if : $data.color == "BLANCO" -->
+                <div class="Square whiteSquare"></div>
+                <!-- /ko -->
+                <!-- ko if : $data.color == "VERDE" -->
+                <div class="Square greenSquare"></div>
+                <!-- /ko -->
+                <!-- /ko -->
               </div>
-              <!-- /ko -->
-              <!-- /ko -->
-
-              <div class="ButtonContainer">
-                <select
-                  id="dropDown"
-                  class="PiecesDropDown"
-                  data-bind="options: pieces, selectedOptions: chosenPiece, event:{ change: function() { $parent.showPossibleMovements($data)} }"
-                ></select>
-
-                <!-- ko if : possibleMovements[0] == true -->
-                <button id="leftUp" data-bind="click: function() { $parent.mover($data, 'leftUp'); }" class="DirectionButtonLeftUp">
-                  <i class="fa fa-arrow-circle-o-left"></i>
-                </button>
-                <!-- /ko -->
-
-                <!-- ko if : possibleMovements[1] == true -->
-                <button id="rightUp" data-bind="click: function() { $parent.mover($data, 'rightUp'); }" class="DirectionButtonRigthUp">
-                  <i class="fa fa-arrow-circle-o-left"></i>
-                </button>
-                <!-- /ko -->
-
-                <!-- ko if : possibleMovements[3] == true -->
-                <button id="leftDown" data-bind="click: function() { $parent.mover($data, 'leftDown'); }" class="DirectionButtonLeftDown">
-                  <i class="fa fa-arrow-circle-o-left"></i>
-                </button>
-                <!-- /ko -->
-
-                <!-- ko if : possibleMovements[2] == true -->
-                <button
-                  id="rightDown"
-                  data-bind="click: function() { $parent.mover($data, 'rightDown'); }"
-                  class="DirectionButtonRigthDown"
-                >
-                  <i class="fa fa-arrow-circle-o-left"></i>
-                </button>
-                <!-- /ko -->
-
-                <button data-bind="click : function() { $parent.reload($data.id); }" class="DirectionButtonRefresh">
-                  <i class="fa fa-refresh"></i>
-                </button>
-              </div>
-
-              <div id="gameError" class="oj-sm-12 m-b-20 m-t-20" data-bind="html : gameError" style="color: red"></div>
-
               <!-- /ko -->
             </div>
             <!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko if : playerColor == "NEGRO"  -->
+
+            <!-- ko if : winner != null -->
+            <!-- ko if : winner.name == players[1].name-->
+            <div class="ModalWinner">
+              <div class="ModalContent">
+                <p id="winnerMsg" class="ModalContentText">¡Has Ganado!</p>
+                <i class="fa fa-smile-o ModalContentIcon"></i>
+                <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
+              </div>
+            </div>
+            <!-- /ko -->
+
+            <!-- ko if : looser.name == players[1].name-->
+            <div class="ModalWinner">
+              <div class="ModalContent">
+                <p id="looserMsg" class="ModalContentText">¡Has Perdido!</p>
+                <i class="fa fa-frown-o ModalContentIcon"></i>
+                <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { $parent.winGame(id) }">Continuar</button>
+              </div>
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+
+            <!-- ko if : players.length == 2 && playerWithTurn.name == players[1].name -->
+            <div class="MatchHavingTurn">Es tu turno</div>
+            <!-- /ko -->
+            <!-- ko ifnot : players.length == 2 && playerWithTurn.name == players[1].name -->
+            <div class="MatchWaitingTurn">Esperando a tu rival</div>
+            <!-- /ko -->
+
+            <!-- ko with : board -->
+            <div class="Board">
+              <!-- ko foreach : squares -->
+              <div class="Row">
+                <!-- ko foreach : $data -->
+                <!-- ko if : $data.color == "NEGRO" -->
+                <div class="Square brownSquare">
+                  <!-- ko if : $data.piece != null -->
+                  <!-- ko if : $data.piece.color == "NEGRO" && $data.piece.alive == true -->
+
+                  <!-- ko if : $data.piece.type == "pawn" -->
+                  <div class="blackPlayerBP">
+                    <span data-bind="html : $data.piece.id" class="pieceId"></span>
+                  </div>
+                  <!-- /ko -->
+
+                  <!-- ko if : $data.piece.type == "queen" -->
+                  <div class="blackPlayerBP">
+                    <img src="../../css/images/white-crown.svg" class="blackCrown" />
+                    <span data-bind="html : $data.piece.id" class="pieceId relativePos"></span>
+                  </div>
+                  <!-- /ko -->
+
+                  <!-- /ko -->
+                  <!-- ko if : $data.piece.color == "BLANCO" && $data.piece.alive == true -->
+
+                  <!-- ko if : $data.piece.type == "pawn" -->
+                  <div class="blackPlayerWP"></div>
+                  <!-- /ko -->
+
+                  <!-- ko if : $data.piece.type == "queen" -->
+                  <div class="blackPlayerWP">
+                    <img src="../../css/images/black-crown.svg" class="whiteCrown" />
+                  </div>
+                  <!-- /ko -->
+                  <!-- /ko -->
+                  <!-- /ko -->
+                </div>
+                <!-- /ko -->
+                <!-- ko if : $data.color == "BLANCO" -->
+                <div class="Square whiteSquare"></div>
+                <!-- /ko -->
+                <!-- ko if : $data.color == "VERDE" -->
+                <div class="Square greenSquare"></div>
+                <!-- /ko -->
+                <!-- /ko -->
+              </div>
+              <!-- /ko -->
+            </div>
+            <!-- /ko -->
+            <!-- /ko -->
+
+            <div class="ButtonContainer">
+              <select id="dropDown" class="PiecesDropDown"
+                data-bind="options: pieces, selectedOptions: chosenPiece, event:{ change: function() { $parent.showPossibleMovements($data)} }"></select>
+
+              <!-- ko if : possibleMovements[0] == true -->
+              <button id="leftUp" data-bind="click: function() { $parent.mover($data, 'leftUp'); }" class="DirectionButtonLeftUp">
+                <i class="fa fa-arrow-circle-o-left"></i>
+              </button>
+              <!-- /ko -->
+
+              <!-- ko if : possibleMovements[1] == true -->
+              <button id="rightUp" data-bind="click: function() { $parent.mover($data, 'rightUp'); }" class="DirectionButtonRigthUp">
+                <i class="fa fa-arrow-circle-o-left"></i>
+              </button>
+              <!-- /ko -->
+
+              <!-- ko if : possibleMovements[3] == true -->
+              <button id="leftDown" data-bind="click: function() { $parent.mover($data, 'leftDown'); }" class="DirectionButtonLeftDown">
+                <i class="fa fa-arrow-circle-o-left"></i>
+              </button>
+              <!-- /ko -->
+
+              <!-- ko if : possibleMovements[2] == true -->
+              <button id="rightDown" data-bind="click: function() { $parent.mover($data, 'rightDown'); }" class="DirectionButtonRigthDown">
+                <i class="fa fa-arrow-circle-o-left"></i>
+              </button>
+              <!-- /ko -->
+
+              <!-- Surrender button -->
+              <button data-bind="click : function() { $parent.surrender($data.id); }" class="DirectionButtonRefresh">
+                <i class="fa fa-flag"></i>
+              </button>
+
+              <!-- Reload button -->
+              <button data-bind="click : function() { $parent.reload($data.id); }" class="DirectionButtonRefresh">
+                <i class="fa fa-refresh"></i>
+              </button>
+            </div>
+
+            <!-- ko if: gameError != "" -->
+            <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : gameError"></div>
+            <!-- /ko -->
+
+            <!-- /ko -->
           </div>
+          <!-- /ko -->
         </div>
       </div>
     </div>
+  </div>
 
-    <!-- Scripts -->
-    <script src="css/template/vendor/jquery/jquery-3.2.1.min.js"></script>
-    <script src="css/template/vendor/animsition/js/animsition.min.js"></script>
-    <script src="css/template/vendor/bootstrap/js/bootstrap.min.js"></script>
-    <script src="css/template/vendor/select2/select2.min.js"></script>
-    <script src="css/template/vendor/daterangepicker/moment.min.js"></script>
-    <script src="css/template/vendor/daterangepicker/daterangepicker.js"></script>
-    <script src="css/template/vendor/countdowntime/countdowntime.js"></script>
-    <script src="css/template/js/main.js"></script>
-  </body>
+  <!-- Scripts -->
+  <script src="css/template/vendor/jquery/jquery-3.2.1.min.js"></script>
+  <script src="css/template/vendor/animsition/js/animsition.min.js"></script>
+  <script src="css/template/vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="css/template/vendor/select2/select2.min.js"></script>
+  <script src="css/template/vendor/daterangepicker/moment.min.js"></script>
+  <script src="css/template/vendor/daterangepicker/daterangepicker.js"></script>
+  <script src="css/template/vendor/countdowntime/countdowntime.js"></script>
+  <script src="css/template/js/main.js"></script>
+</body>
+
 </html>

@@ -53,21 +53,18 @@ public class Manager {
 	}
 
 	private void deleteTemporalUsers() {
-		Runnable r = new Runnable() {
-
+		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (true) {
+				try {
+					Thread.sleep(30000); // Tiempo de gracia para iniciar la aplicacion
 					userRepo.deleteTemporalUserDB();
-					try {
-						Thread.sleep(24 * 60 * 60 * 1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
 			}
-		};
-		new Thread(r).start();
+		});
+		t.start();
 	}
 
 	/* Singleton */
@@ -107,13 +104,13 @@ public class Manager {
 		this.matchSessionsByWs.put(wrapperSession.getWsSession().getId(), wrapperSession);
 	}
 
-	public void closeMatchesByWs(String id) {	
-		User user = (User) matchSessionsByWs.get(id).getHttpSession().getAttribute("user");		
-		
-		for(Game g : games) { //2 iteraciones (2 juegos: TicTacToe y Checkers) 
+	public void closeMatchesByWs(String id) {
+		User user = (User) matchSessionsByWs.get(id).getHttpSession().getAttribute("user");
+
+		for (Game g : games) { // 2 iteraciones (2 juegos: TicTacToe y Checkers)
 			g.closeMatchesByUser(user);
 		}
-		
+
 	}
 
 	/* Utilities */
