@@ -24,6 +24,8 @@ public interface UserRepository extends JpaRepository<User, String> {
 
 	public User findByCookie(String cookieValue);
 
+	@Transactional
+	@Modifying
 	@Query(value = "DELETE FROM user WHERE type='temporal'", nativeQuery = true)
 	public void deleteTemporalUserDB();
 

@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -67,5 +68,11 @@ public class WebSocketGenerico extends TextWebSocketHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+		// TODO Auto-generated method stub
+		super.afterConnectionClosed(session, status);
 	}
 }
