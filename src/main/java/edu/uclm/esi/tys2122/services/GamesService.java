@@ -55,5 +55,4 @@ public class GamesService {
 	public List<Game> getGames() throws IOException, InstantiationException, IllegalAccessException, ClassNotFoundException {
 		return Manager.get().getGames();
 	}
-
 }

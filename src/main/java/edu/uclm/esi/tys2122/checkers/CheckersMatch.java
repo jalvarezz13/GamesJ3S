@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 
 import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import edu.uclm.esi.tys2122.http.Manager;
 import edu.uclm.esi.tys2122.model.Board;
 import edu.uclm.esi.tys2122.model.Match;
 import edu.uclm.esi.tys2122.model.User;
@@ -21,8 +23,12 @@ public class CheckersMatch extends Match {
 	private User winner;
 	@OneToOne
 	private User looser;
+
+	@Transient
 	private boolean draw;
+	@Transient
 	private boolean[] possibleMovements = { false, false, false, false };
+	@Transient
 	private int[][] possibleMovementsXY = { null, null, null, null };
 
 	/* Functions */
@@ -77,9 +83,14 @@ public class CheckersMatch extends Match {
 
 		this.cleanMovements();
 
-		super.notifyOponents("MATCH UPDATE");
+		if(this.winner != null ) {
+			Manager.get().getBattleRepo().saveMatch(this.getGame(), this.getId(), this.getLooser(), this.getWinner());
+			super.notifyOponents("MATCH FINISH");
+		} else {
+			super.notifyOponents("MATCH UPDATE");
+		}
 	}
-	
+
 	private void checkWinner(String pieceColor) {
 		if (pieceColor.equals("BLANCO")) {
 			if (this.getAlivePieces(this.players.get(1).getId())[0] == null) {
@@ -519,13 +530,14 @@ public class CheckersMatch extends Match {
 		int[][] possibleMovementsXY = new int[4][];
 		this.possibleMovementsXY = possibleMovementsXY;
 	}
-	
+
 	public void closeMatchByUser(User user) {
 		this.setLooser(user);
 		for (User u : this.players)
-			if(!u.equals(user))
+			if (!u.equals(user))
 				this.setWinner(u);
-		
-		notifyOponents("MATCH UPDATE", user);
+
+		Manager.get().getBattleRepo().saveMatch(this.getGame(), this.getId(), this.getLooser(), this.getWinner());
+		notifyOponents("MATCH FINISH", user);
 	}
 }

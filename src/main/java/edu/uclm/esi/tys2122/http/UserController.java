@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import edu.uclm.esi.tys2122.dao.UserRepository;
 import edu.uclm.esi.tys2122.model.Email;
 import edu.uclm.esi.tys2122.model.User;
 import edu.uclm.esi.tys2122.services.UserService;
@@ -35,9 +32,6 @@ public class UserController extends CookiesController {
 
 	@Autowired
 	private UserService userService;
-
-	@Autowired
-	private UserRepository userRepo;
 
 	/* Routes */
 
@@ -72,12 +66,12 @@ public class UserController extends CookiesController {
 		String id = jso.getString("id");
 		String ip = request.getRemoteAddr();
 
-		Optional<User> userDB = userRepo.findById(id);
+		Optional<User> userDB = Manager.get().getUserRepo().findById(id);
 		if (userDB.isPresent()) {
 			User user = userDB.get();
 			doLogin(request, response, ip, user);
 		} else {
-			User userByEmail = userRepo.findByEmail(email);
+			User userByEmail = Manager.get().getUserRepo().findByEmail(email);
 			if (userByEmail != null) {
 				doLogin(request, response, ip, userByEmail);
 			} else {
@@ -98,7 +92,7 @@ public class UserController extends CookiesController {
 	private void doLogin(HttpServletRequest request, HttpServletResponse response, String ip, User user) {
 		Cookie cookie = readOrCreateCookie(request, response);
 		user.setCookie(cookie.getValue());
-		userRepo.save(user);
+		Manager.get().getUserRepo().save(user);
 		userService.insertLogin(user, ip, cookie);
 		request.getSession().setAttribute("user", user);
 	}
@@ -116,20 +110,20 @@ public class UserController extends CookiesController {
 			String token = jso.getString("token");
 			String newPass = jso.getString("newPass");
 			String newPass2 = jso.getString("newPass2");
-		
+
 			if (!newPass.equals(newPass2))
 				throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
 
 			if (newPass.length() < 4)
 				throw new ResponseStatusException(HttpStatus.CONFLICT, "La contraseña debe tener al menos cuatro caracteres");
-			
+
 			newPass = org.apache.commons.codec.digest.DigestUtils.sha512Hex(newPass);
-			
+
 			User user = null;
 			try {
-				user = userRepo.findByToken(token);
-				userRepo.updatePwdById(newPass, user.getId());
-				userRepo.deleteTokenAfterUse(user.getId());				
+				user = Manager.get().getUserRepo().findByToken(token);
+				Manager.get().getUserRepo().updatePwdById(newPass, user.getId());
+				Manager.get().getUserRepo().deleteTokenAfterUse(user.getId());
 			} catch (Exception e) {
 				throw new ResponseStatusException(HttpStatus.CONFLICT, "No hay solicitud de cambio de contraseña para esta cuenta");
 			}
@@ -157,7 +151,7 @@ public class UserController extends CookiesController {
 			case "recovery":
 				String auxToken = UUID.randomUUID().toString();
 				auxEmail.send(email, (String) emailDefaultData.get("recoveryMsgTopic"), (String) emailDefaultData.get("recoveryMsgContent") + (String) applicationData.get("home") + "/" + (String) applicationData.get("changePassword") + "/" + auxToken);
-				userRepo.setTokenByEmail(auxToken, email);
+				Manager.get().getUserRepo().setTokenByEmail(auxToken, email);
 				break;
 			}
 		} else {
@@ -175,6 +169,8 @@ public class UserController extends CookiesController {
 		String pwd2 = jso.optString("pwd2");
 		String type = "normal";
 
+		if (userName.equals("") || email.equals("") || pwd1.equals("") || pwd2.equals(""))
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "No puede quedar ningún campo vacío");
 		if (!pwd1.equals(pwd2))
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Las contraseñas no coinciden");
 		if (pwd1.length() < 4)
@@ -197,10 +193,5 @@ public class UserController extends CookiesController {
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "El usuario ya existe");
 		}
-	}
-
-	@DeleteMapping("/remove/{userId}")
-	public void remove(@PathVariable String userId) {
-		System.out.println("Borrar el usuario con id " + userId);
 	}
 }

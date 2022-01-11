@@ -11,13 +11,15 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import edu.uclm.esi.tys2122.dao.UserRepository;
 import edu.uclm.esi.tys2122.websockets.WrapperSession;
 
 @Entity
-@Table(name = "partida")
+@Table(name = "battle")
 public abstract class Match {
 
 	/* Attributes */
@@ -37,6 +39,10 @@ public abstract class Match {
 
 	@Transient
 	protected boolean ready;
+	
+	@Transient
+	@Autowired
+	protected UserRepository userRepo;
 
 	/* Constructors */
 
@@ -75,6 +81,7 @@ public abstract class Match {
 
 	/**
 	 * Notifica a los usuarios de la partida excepto a @param users
+	 * 
 	 * @param type  Tipo de actualizacion de la match {READY, UPDATE, FINISH}
 	 * @param users Usuarios a los que no se notifica la actualizacion
 	 */
@@ -122,9 +129,11 @@ public abstract class Match {
 	public abstract void move(String userId, JSONObject jso) throws Exception;
 
 	public abstract User getWinner();
+	
+	public abstract User getLooser();
 
 	public abstract void closeMatchByUser(User user);
-	
+
 	/* Getters And Setters */
 
 	public String getGame() {

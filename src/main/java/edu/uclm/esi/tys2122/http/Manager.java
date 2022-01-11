@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import edu.uclm.esi.tys2122.dao.BattleRepository;
 import edu.uclm.esi.tys2122.dao.UserRepository;
 import edu.uclm.esi.tys2122.model.Game;
 import edu.uclm.esi.tys2122.model.User;
@@ -25,6 +26,9 @@ public class Manager {
 
 	@Autowired
 	private UserRepository userRepo;
+
+	@Autowired
+	private BattleRepository battleRepo;
 
 	private Vector<Game> games;
 
@@ -57,8 +61,11 @@ public class Manager {
 			@Override
 			public void run() {
 				try {
-					Thread.sleep(30000); // Tiempo de gracia para iniciar la aplicacion
-					userRepo.deleteTemporalUserDB();
+					while (true) {
+						Thread.sleep(30000);
+						userRepo.deleteTemporalUserDB();
+						Thread.sleep(24 * 60 * 60 * 1000);
+					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
@@ -167,6 +174,14 @@ public class Manager {
 
 	public void setHttpSessions(ConcurrentHashMap<String, HttpSession> httpSessions) {
 		this.httpSessions = httpSessions;
+	}
+
+	public UserRepository getUserRepo() {
+		return userRepo;
+	}
+
+	public BattleRepository getBattleRepo() {
+		return battleRepo;
 	}
 
 	public ConcurrentHashMap<String, WrapperSession> getMatchSessionsPorHttp() {

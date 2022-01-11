@@ -122,12 +122,25 @@ public class GamesController extends CookiesController {
 
 		return auxMatch;
 	}
-	
+
 	@GetMapping("/surrender/{matchId}")
 	public void surrender(HttpSession session, @PathVariable String matchId) throws Exception {
 		User user = (User) session.getAttribute("user");
 		Match auxMatch = gamesService.getMatch(matchId);
 		auxMatch.closeMatchByUser(user);
+	}
+
+	@GetMapping("/getStatistics")
+	public void getStatistics(HttpSession session) {
+		User user = null;
+		user = (User) session.getAttribute("user");
+
+		if (user == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Las estadísticas de este usuario no se han encontrado");
+		}
+
+		Object[] array = (Object[]) Manager.get().getBattleRepo().getStatistics(user.getId())[0];
+		System.out.println("Checkers Looser: " + array[0].toString() + "\nCheckers Winner: " + array[1].toString() + "\nTicTacToe Looser: " + array[2].toString() + "\nTictactoe Winner: " + array[3].toString());
 	}
 
 	/* Functions */

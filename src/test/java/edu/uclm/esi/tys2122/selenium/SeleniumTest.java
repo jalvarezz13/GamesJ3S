@@ -72,7 +72,7 @@ public class SeleniumTest {
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[7]/div/button")).click();
 		msg = driverWhite.findElement(By.id("registerError"));
 		pause(500);
-		assertEquals(msg.getText(), "Algún campo está sin rellenar");
+		assertEquals(msg.getText(), "No puede quedar ningún campo vacío");
 		
 		//invalid register: short passwords
 		pause(5000);
@@ -359,6 +359,10 @@ public class SeleniumTest {
 		assertEquals(msg.getText(), "¡Has Ganado!");
 		pause(500);
 		driverWhite.findElement(By.id("WinnerEndGame")).click();
+		
+		pause(500);
+		driverWhite.close();
+		driverBlack.close();
 	}
 
 	private void selectItem(WebDriver driver, String pieceName) {

@@ -102,5 +102,4 @@ public class UserService {
 		} else
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Token " + tokenId + " no encontrado");
 	}
-
 }

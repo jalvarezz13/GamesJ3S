@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 
 import org.json.JSONObject;
 
+import edu.uclm.esi.tys2122.http.Manager;
 import edu.uclm.esi.tys2122.model.Board;
 import edu.uclm.esi.tys2122.model.Match;
 import edu.uclm.esi.tys2122.model.User;
@@ -46,7 +47,13 @@ public class TictactoeMatch extends Match {
 		else {
 			this.playerWithTurn = this.getPlayerWithTurn() == this.getPlayers().get(0) ? this.getPlayers().get(1) : this.getPlayers().get(0);
 		}
-		super.notifyOponents("MATCH UPDATE");
+		
+		if(this.winner != null ) {
+			Manager.get().getBattleRepo().saveMatch(this.getGame(), this.getId(), this.getLooser(), this.getWinner());
+			super.notifyOponents("MATCH FINISH");
+		} else {
+			super.notifyOponents("MATCH UPDATE");
+		}
 	}
 
 	private boolean filled() {
@@ -129,6 +136,7 @@ public class TictactoeMatch extends Match {
 			if(!u.equals(user))
 				this.setWinner(u);
 		
-		notifyOponents("MATCH UPDATE", user);
+		Manager.get().getBattleRepo().saveMatch(this.getGame(), this.getId(), this.getLooser(), this.getWinner());
+		notifyOponents("MATCH FINISH", user);
 	}
 }

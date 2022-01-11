@@ -35,6 +35,19 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
             viewModel: app.getHeaderModel(),
           });
         });
+
+      
+      let data = {
+        type: "get",
+        url: self.routes.getStatistics,
+        success: function (response) {
+          self.statistics(response);
+        },
+        error: function (response) {
+          self.globalError(response.responseJSON.message);
+        },
+      };
+      $.ajax(data);
     }
 
     connected() {
@@ -50,7 +63,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           self.games(response);
         },
         error: function (response) {
-          self.globalError(JSON.stringify(response));
+          self.globalError(response.responseJSON.message.toString());
         },
       };
       $.ajax(data);
@@ -109,7 +122,7 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           }
           self.reload(msg.matchId);
         }
-        if (msg.type == "MATCH READY") self.reload(msg.matchId);
+        if (msg.type == "MATCH READY" || msg.type == "MATCH FINISH") self.reload(msg.matchId);
       };
     }
 

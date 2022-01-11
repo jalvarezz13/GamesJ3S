@@ -8,7 +8,8 @@ define([], function () {
                 
         getGames: "/games/getGames",
         move: "/games/move",
-        
+        getStatistics: "/games/getStatistics",
+
         joinGame: "/games/joinGame/",
         findMatch: "/games/findMatch/",
         updateAlivePieces: "/games/updateAlivePieces/",
