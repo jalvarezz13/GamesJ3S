@@ -24,20 +24,20 @@
                         <!--Nombre de usuario-->
                         <div class="wrap-input100 validate-input m-b-23" data-validate="Campo obligatorio">
                             <span class="label-input100">Nombre de usuario</span>
-                            <input class="input100" data-bind="value : userName" type="text" name="username" placeholder="Usuario..." />
+                            <input id="userName" class="input100" data-bind="value : userName" type="text" name="username" placeholder="Usuario..." />
                             <span class="focus-input100" data-symbol="&#xf206;"></span>
                         </div>
 
                         <!--Contraseña-->
                         <div class="wrap-input100 validate-input" data-validate="Campo obligatorio">
                             <span class="label-input100">Contraseña</span>
-                            <input class="input100" type="password" data-bind="value : pwd" name="pass" placeholder="Contraseña..." />
+                            <input id="pwd" class="input100" type="password" data-bind="value : pwd" name="pass" placeholder="Contraseña..." />
                             <span class="focus-input100" data-symbol="&#xf190;"></span>
                         </div>
 
                         <!--Feedback-->
-                        <div class="oj-sm-12" data-bind="html : message" style="color: cyan"></div>
-                        <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : error" style="color: red"></div>
+                        <div id="loginSuccess" class="oj-sm-12" data-bind="html : message" style="color: cyan"></div>
+                        <div id="loginError" class="oj-sm-12 m-b-20 m-t-20" data-bind="html : error" style="color: red"></div>
 
                         <!--Boton entrar-->
                         <div class="container-login100-form-btn p-t-5">

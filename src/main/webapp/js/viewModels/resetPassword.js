@@ -12,7 +12,7 @@ define([
 
       self.routes = routesFile.getRoutes();
 
-      self.email = ko.observable("pepe@pepe.com");
+      self.email = ko.observable("");
       self.message = ko.observable();
       self.error = ko.observable();
 

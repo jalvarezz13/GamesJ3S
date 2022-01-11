@@ -12,8 +12,8 @@ define(['knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils', '
 
             self.routes = routesFile.getRoutes();
 
-            self.userName = ko.observable('pepe');
-            self.pwd = ko.observable('pepe123');
+            self.userName = ko.observable();
+            self.pwd = ko.observable();
             self.message = ko.observable();
             self.error = ko.observable();
 

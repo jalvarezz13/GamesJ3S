@@ -14,10 +14,10 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
 
     self.routes = routesFile.getRoutes();
 
-    self.userName = ko.observable("pepe");
-    self.email = ko.observable("pepe@pepe.com");
-    self.pwd1 = ko.observable("pepe123");
-    self.pwd2 = ko.observable("pepe123");
+    self.userName = ko.observable();
+    self.email = ko.observable();
+    self.pwd1 = ko.observable();
+    self.pwd2 = ko.observable();
     self.picture = ko.observable();
 
     self.message = ko.observable();

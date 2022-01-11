@@ -3,6 +3,7 @@ package edu.uclm.esi.tys2122.selenium;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +51,115 @@ public class TestCompleteCheckersMatch {
 	}
 
 	@Test
+	public void seleniumTest() {
+		ArrayList<String> fields = generateFields();
+		registerUser(fields);
+		pause(5000);
+		loginUser(fields);
+		pause(5000);
+		playMatch();
+	}
+	
+	public void registerUser(ArrayList<String> fields) {
+		WebElement msg;
+		goRegister();
+		
+		//invalid register: empty field
+		fillFields(driverWhite, "userName", fields.get(0));
+		fillFields(driverWhite, "pwd", "123");
+		fillFields(driverWhite, "repeatPwd", "123");
+		pause(500);
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[7]/div/button")).click();
+		msg = driverWhite.findElement(By.id("registerError"));
+		pause(500);
+		assertEquals(msg.getText(), "Algún campo está sin rellenar");
+		
+		//invalid register: short passwords
+		pause(5000);
+		fillFields(driverWhite, "email", fields.get(1));
+		pause(500);
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[7]/div/button")).click();
+		msg = driverWhite.findElement(By.id("registerError"));
+		pause(500);
+		assertEquals(msg.getText(), "La contraseña debe tener al menos cuatro caracteres");
+		
+		//invalid register: different passwords
+		pause(5000);
+		cleanFields(driverWhite, "pwd");
+		cleanFields(driverWhite, "repeatPwd");
+		fillFields(driverWhite, "pwd", fields.get(2));
+		fillFields(driverWhite, "repeatPwd", "wrongPassword");
+		pause(500);
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[7]/div/button")).click();
+		msg = driverWhite.findElement(By.id("registerError"));
+		pause(500);
+		assertEquals(msg.getText(), "Las contraseñas no coinciden");
+		
+		//valid register
+		pause(5000);
+		cleanFields(driverWhite, "repeatPwd");
+		fillFields(driverWhite, "repeatPwd", fields.get(3));
+		pause(500);
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[7]/div/button")).click();
+		msg = driverWhite.findElement(By.id("registerSuccess"));
+		pause(500);
+		assertEquals(msg.getText(), "Registro completado exitosamente");
+
+		//invalid register: existing user
+		pause(5000);
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[7]/div/button")).click();
+		msg = driverWhite.findElement(By.id("registerError"));
+		pause(500);
+		assertEquals(msg.getText(), "El usuario ya existe");
+	}
+	
+	public void loginUser (ArrayList<String> fields) {
+		WebElement msg;
+		goLogin();
+		
+		//invalid login: non-existent or wrong field 
+		fillFields(driverWhite, "userName", "Selenium999999");
+		fillFields(driverWhite, "pwd", "selenium999999");
+		pause(500);
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[5]/div/button")).click();
+		msg = driverWhite.findElement(By.id("loginError"));
+		pause(500);
+		assertEquals(msg.getText(), "Credenciales no válidas o cuenta no validada");
+		
+		//bad recover password: wrong email
+		pause(5000);
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[8]/a[1]")).click();
+		pause(500);
+		fillFields(driverWhite, "email", "Selenium999999");
+		pause(500);
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[4]/div/button")).click();
+		msg = driverWhite.findElement(By.id("resetError"));
+		pause(500);
+		assertEquals(msg.getText(), "No existe ningún usuario con ese correo");
+		
+		//good recover password
+		pause(5000);
+		cleanFields(driverWhite, "email");
+		fillFields(driverWhite, "email", fields.get(1));
+		pause(500);
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[4]/div/button")).click();
+		msg = driverWhite.findElement(By.id("resetSuccess"));
+		pause(500);
+		assertEquals(msg.getText(), "Te hemos enviado un mensaje para recuperar tu contraseña");
+		
+		//bad recover password: wrong email
+		pause(5000);
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[5]/a")).click();
+		pause(500);
+		fillFields(driverWhite, "userName", fields.get(0));
+		fillFields(driverWhite, "pwd", fields.get(2));
+		pause(500);
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[5]/div/button")).click();
+		msg = driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/span"));
+		pause(500);
+		assertEquals(msg.getText(), "Juegos");
+	}
+	
 	public void playMatch() {
 		WebElement msg;
 		goGames();
@@ -66,9 +176,8 @@ public class TestCompleteCheckersMatch {
 		// scroll to bottom page
 		driverBlack.findElement(By.tagName("html")).sendKeys(Keys.END);
 
-
 		
-		// You can't move
+		// Piece can't move
 		selectItem(driverWhite, "8 BLANCO");
 		pause(500);
 		msg = driverWhite.findElement(By.id("gameError"));
@@ -242,6 +351,38 @@ public class TestCompleteCheckersMatch {
 	private void goGames() {
 		driverWhite.findElement(By.xpath("/html/body/div/div[2]/div/oj-navigation-list/div/div/ul/li[5]/a/span")).click();
 		driverBlack.findElement(By.xpath("/html/body/div/div[2]/div/oj-navigation-list/div/div/ul/li[5]/a/span")).click();
+		pause(500);
+	}
+	
+	private void goRegister() {
+		driverWhite.findElement(By.xpath("/html/body/div/div[2]/div/oj-navigation-list/div/div/ul/li[3]/a/span")).click();
+		pause(500);
+	}
+	
+	private void cleanFields(WebDriver driver, String field) {
+		pause(500);
+		driver.findElement(By.id(field)).clear();
+	}
+	
+	private void fillFields(WebDriver driver, String field, String text) {
+		pause(500);
+		driver.findElement(By.id(field)).sendKeys(text);
+	}
+	
+	private ArrayList<String> generateFields() {
+		ArrayList<String> fields = new ArrayList<String>();
+		int id = (int)(Math.random() * 1000);
+		
+		fields.add("Selenium" + id);
+		fields.add("selenium" + id + "@selenium.com");
+		fields.add("selenium" + id);
+		fields.add("selenium" + id);
+		
+		return fields;
+	}
+	
+	private void goLogin () {
+		driverWhite.findElement(By.xpath("/html/body/div/div[2]/div/oj-navigation-list/div/div/ul/li[1]/a/span")).click();
 		pause(500);
 	}
 
