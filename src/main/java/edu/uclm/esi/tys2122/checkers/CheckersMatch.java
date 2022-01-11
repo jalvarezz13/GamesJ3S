@@ -83,7 +83,7 @@ public class CheckersMatch extends Match {
 
 		this.cleanMovements();
 
-		if(this.winner != null ) {
+		if (this.winner != null) {
 			Manager.get().getBattleRepo().saveMatch(this.getGame(), this.getId(), this.getLooser(), this.getWinner());
 			super.notifyOponents("MATCH FINISH");
 		} else {

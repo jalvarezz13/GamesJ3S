@@ -1,8 +1,10 @@
 package edu.uclm.esi.tys2122.http;
 
+import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.servlet.http.HttpSession;
 
@@ -131,16 +133,22 @@ public class GamesController extends CookiesController {
 	}
 
 	@GetMapping("/getStatistics")
-	public void getStatistics(HttpSession session) {
+	public int[] getStatistics(HttpSession session) {
+		int[] statistics = { 0, 0, 0, 0, 0 };
 		User user = null;
 		user = (User) session.getAttribute("user");
 
-		if (user == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Las estadísticas de este usuario no se han encontrado");
-		}
+		if (user != null) {
+			Object[] array = (Object[]) Manager.get().getBattleRepo().getStatistics(user.getId())[0];
+			boolean token = false;
 
-		Object[] array = (Object[]) Manager.get().getBattleRepo().getStatistics(user.getId())[0];
-		System.out.println("Checkers Looser: " + array[0].toString() + "\nCheckers Winner: " + array[1].toString() + "\nTicTacToe Looser: " + array[2].toString() + "\nTictactoe Winner: " + array[3].toString());
+			for (int i = 0; i < array.length; i++) {
+				token = ((BigInteger) array[i]).intValue() > 0 ? token : true;
+				statistics[i + 1] = ((BigInteger) array[i]).intValue();
+			}
+			statistics[0] = token ? 1 : 0;
+		}
+		return statistics;
 	}
 
 	/* Functions */

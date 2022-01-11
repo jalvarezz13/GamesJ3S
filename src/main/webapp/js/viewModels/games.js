@@ -20,6 +20,10 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       //Error
       self.globalError = ko.observable(null);
 
+      //Statistics
+      self.statistics = ko.observableArray([]);
+      self.visibleModal = ko.observable(false);
+
       // Header Config
       self.headerConfig = ko.observable({
         view: [],
@@ -36,15 +40,16 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           });
         });
 
-      
+      // STATISTICS: Gets statistics
       let data = {
         type: "get",
         url: self.routes.getStatistics,
         success: function (response) {
           self.statistics(response);
+          console.log("exito")
         },
         error: function (response) {
-          self.globalError(response.responseJSON.message);
+          console.log("error")
         },
       };
       $.ajax(data);
@@ -224,17 +229,24 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     // BOTH: Ask for surrender
     surrender(matchId) {
       let self = this;
-      let data = {
-        type: "get",
-        url: self.routes.surrender + matchId,
-        success: function (response) {
-          self.reload(matchId);
-        },
-        error: function (response) {
-          self.globalError(response.responseJSON.message);
-        },
-      };
-      $.ajax(data);
+      let actualMatch = self.matches().find((match) => match.id == matchId);
+      if (actualMatch.ready == false) {
+        actualMatch.gameError = "No puedes eliminar una partida mientras estás esperando"
+        this.updateMatch(matchId, actualMatch)
+      }
+      else {
+        let data = {
+          type: "get",
+          url: self.routes.surrender + matchId,
+          success: function (response) {
+            self.reload(matchId);
+          },
+          error: function (response) {
+            self.globalError(response.responseJSON.message);
+          },
+        };
+        $.ajax(data);
+      }
     }
 
     // CHECKERS: Updates select component
@@ -326,6 +338,17 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
     winGame(matchId) {
       let self = this;
       self.removeMatch(matchId);
+    }
+
+    // STATISTICS: Changes modal visibility
+    openModal() {
+      let self = this;
+      self.visibleModal(true);
+    }
+
+    closeModal() {
+      let self = this;
+      self.visibleModal(false);
     }
 
     disconnected() {

@@ -959,7 +959,8 @@ iframe {
 
 /****************************[ ERRORS ]****************************/
 
-#gameError {
+#gameError,
+.gameErrorT {
   font-weight: 100;
   text-align: center;
   font-size: 1.125rem;

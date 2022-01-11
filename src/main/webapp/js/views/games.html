@@ -43,6 +43,27 @@
         </div>
         <!-- /ko -->
 
+        <!-- ko if: statistics()[0] == 1 -->
+        <div class="container-login100-form-btn p-t-5 p-b-5">
+          <div class="wrap-login100-form-btn">
+            <div class="login100-form-bgbtn"></div>
+            <button class="login100-form-btn" data-bind="click : function() { openModal(); }" value="games">
+              <label class="label-games">Mostrar estadísticas</label>
+            </button>
+          </div>
+        </div>
+        <!-- /ko -->
+
+        <!-- ko if: visibleModal() == true -->
+        <div class="ModalWinner">
+          <div class="ModalContent">
+            <p id="winnerMsg" class="ModalContentText">Estadisticas</p>
+            <i class="fa fa-smile-o ModalContentIcon"></i>
+            <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { closeModal() }">Cerrar</button>
+          </div>
+        </div>
+        <!-- /ko -->
+
         <!-- ko if: globalError() != "" && globalError() != null -->
         <div class="GlobalError" data-bind="html: globalError"></div>
         <!-- /ko -->
@@ -129,7 +150,7 @@
             </div>
 
             <!-- ko if: gameError != "" -->
-            <div class="oj-sm-12 m-b-20 m-t-20" data-bind="html : gameError"></div>
+            <div class="oj-sm-12 m-b-20 m-t-20 gameErrorT" data-bind="html : gameError"></div>
             <!-- /ko -->
 
             <!-- /ko -->
