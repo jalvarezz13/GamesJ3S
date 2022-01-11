@@ -130,7 +130,7 @@ class JupiterTest extends MvcTestCase{
 		assertTrue(jsaGames.length() == 2);
 		
 		// Correct Join Game {Everything is correct}
-		response = doGet("/games/joinGame/Las damas", sesU).andExpect(status().isOk())
+		response = doGet("/games/joinGame/Las damas&null", sesU).andExpect(status().isOk())
 				.andReturn().getResponse().getContentAsString();
 		JSONObject matchU = new JSONObject(response);
 		
@@ -139,15 +139,50 @@ class JupiterTest extends MvcTestCase{
 		assertFalse(matchU.getBoolean("ready"));
 		assertEquals(1, matchU.getJSONArray("players").length());
 		
+		// {Check if the parameters are correctly set to begin the match}
+		response = doGet("games/joinGame/Las damas&null", sesU2).andExpect(status().isOk())
+				.andReturn().getResponse().getContentAsString();
+		JSONObject matchU2 = new JSONObject(response);
+		assertEquals("CheckersMatch", matchU2.getString("game"));
+		assertTrue(matchU2.getBoolean("ready"));
+		assertEquals(2, matchU2.getJSONArray("players").length());
+		assertTrue(matchU.getString("id").equals(matchU2.getString("id")));
 		
-		response = doGet("games/joinGame/Tres en raya", this.sessionAna).andReturn().getResponse().getContentAsString();
-		JSONObject jsoPartidaAna = new JSONObject(response);
+		// Start moving in the game		
+		// {Wrong turn}
+		response = doPost("games/move", sesU2, 
+				"pieceId", "1", 
+				"pieceColor", "NEGRO",
+				"movementX", "4",
+				"movementY", "2",
+				"direction", "RightUp",
+				"matchId", matchU2.getString("id"))
+				.andExpect(status().is4xxClientError())
+				.andReturn().getResponse().getContentAsString();
 		
-		assertTrue(jsoPartidaPepe.getString("id").equals(jsoPartidaAna.getString("id")));
-		assertTrue(jsoPartidaAna.getBoolean("ready"));
+		// {Impossible move piece}-->es imposible mover, entonces creo k no se puede comprobar
+//		response = doPost("games/move", sesU, 
+//				"pieceId", "8", 
+//				"pieceColor", "BLANCO",
+//				"movementX", "",
+//				"movementY", "",
+//				"direction", "",
+//				"matchId", matchU2.getString("id"))
+//				.andExpect(status().is4xxClientError())
+//				.andReturn().getResponse().getContentAsString();
 		
-		System.out.println(jsoPartidaAna.toString());
-		String matchId = jsoPartidaAna.getString("id");
+		// {Correct move}
+		response = doPost("games/move", sesU, 
+				"pieceId", "1", 
+				"pieceColor", "BLANCO",
+				"movementX", "3",
+				"movementY", "5",
+				"direction", "RightUp",
+				"matchId", matchU2.getString("id"))
+				.andExpect(status().isOk())
+				.andReturn().getResponse().getContentAsString();
+		matchU = new JSONObject(response);
+		assertTrue(matchU.getJSONObject("playerWithTurn").getString("name").equals(u2.get("name")));
 	}
 	
  	private JSONObject genRandPerson(String type) {

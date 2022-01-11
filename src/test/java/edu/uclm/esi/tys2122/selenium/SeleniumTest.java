@@ -72,7 +72,7 @@ public class SeleniumTest {
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[7]/div/button")).click();
 		msg = driverWhite.findElement(By.id("registerError"));
 		pause(500);
-		assertEquals(msg.getText(), "No puede quedar ningún campo vacío");
+		assertEquals("No puede quedar ningún campo vacío", msg.getText());
 		
 		//invalid register: short passwords
 		pause(5000);
@@ -81,7 +81,7 @@ public class SeleniumTest {
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[7]/div/button")).click();
 		msg = driverWhite.findElement(By.id("registerError"));
 		pause(500);
-		assertEquals(msg.getText(), "La contraseña debe tener al menos cuatro caracteres");
+		assertEquals("La contraseña debe tener al menos cuatro caracteres", msg.getText());
 		
 		//invalid register: different passwords
 		pause(5000);
@@ -93,7 +93,7 @@ public class SeleniumTest {
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[7]/div/button")).click();
 		msg = driverWhite.findElement(By.id("registerError"));
 		pause(500);
-		assertEquals(msg.getText(), "Las contraseñas no coinciden");
+		assertEquals("Las contraseñas no coinciden", msg.getText());
 		
 		//valid register
 		pause(5000);
@@ -103,14 +103,14 @@ public class SeleniumTest {
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[7]/div/button")).click();
 		msg = driverWhite.findElement(By.id("registerSuccess"));
 		pause(500);
-		assertEquals(msg.getText(), "Registro completado exitosamente");
+		assertEquals("Registro completado exitosamente", msg.getText());
 
 		//invalid register: existing user
 		pause(5000);
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[7]/div/button")).click();
 		msg = driverWhite.findElement(By.id("registerError"));
 		pause(500);
-		assertEquals(msg.getText(), "El usuario ya existe");
+		assertEquals("El usuario ya existe", msg.getText());
 	}
 	
 	public void loginUser (ArrayList<String> fields) {
@@ -124,7 +124,7 @@ public class SeleniumTest {
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[5]/div/button")).click();
 		msg = driverWhite.findElement(By.id("loginError"));
 		pause(500);
-		assertEquals(msg.getText(), "Credenciales no válidas o cuenta no validada");
+		assertEquals("Credenciales no válidas o cuenta no validada", msg.getText());
 		
 		//bad recover password: wrong email
 		pause(5000);
@@ -135,7 +135,7 @@ public class SeleniumTest {
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[4]/div/button")).click();
 		msg = driverWhite.findElement(By.id("resetError"));
 		pause(500);
-		assertEquals(msg.getText(), "No existe ningún usuario con ese correo");
+		assertEquals("No existe ningún usuario con ese correo", msg.getText());
 		
 		//good recover password
 		pause(5000);
@@ -145,7 +145,7 @@ public class SeleniumTest {
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[4]/div/button")).click();
 		msg = driverWhite.findElement(By.id("resetSuccess"));
 		pause(500);
-		assertEquals(msg.getText(), "Te hemos enviado un mensaje para recuperar tu contraseña");
+		assertEquals("Te hemos enviado un mensaje para recuperar tu contraseña", msg.getText());
 		
 		//bad recover password: wrong email
 		pause(5000);
@@ -157,7 +157,7 @@ public class SeleniumTest {
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[5]/div/button")).click();
 		msg = driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/span"));
 		pause(500);
-		assertEquals(msg.getText(), "Juegos");
+		assertEquals("Juegos", msg.getText());
 	}
 	
 	public void playMatch() {
@@ -182,7 +182,7 @@ public class SeleniumTest {
 		pause(500);
 		msg = driverWhite.findElement(By.id("gameError"));
 		pause(500);
-		assertEquals(msg.getText(), "No se puede mover esta ficha");
+		assertEquals("No se puede mover esta ficha", msg.getText());
 		pause(3000);
 
 		// Not your turn
@@ -190,7 +190,7 @@ public class SeleniumTest {
 		pause(500);
 		msg = driverBlack.findElement(By.id("gameError"));
 		pause(500);
-		assertEquals(msg.getText(), "No es tu turno");
+		assertEquals("No es tu turno", msg.getText());
 		pause(3000);
 
 		// start Movements
@@ -323,14 +323,14 @@ public class SeleniumTest {
 		// winner assert
 		msg = driverWhite.findElement(By.id("winnerMsg"));
 		pause(500);
-		assertEquals(msg.getText(), "¡Has Ganado!");
+		assertEquals("¡Has Ganado!", msg.getText());
 		pause(500);
 		driverWhite.findElement(By.id("WinnerEndGame")).click();
 		
 		// looser assert
 		msg = driverBlack.findElement(By.id("looserMsg"));
 		pause(500);
-		assertEquals(msg.getText(), "¡Has Perdido!");
+		assertEquals("¡Has Perdido!", msg.getText());
 		pause(500);
 		driverBlack.findElement(By.id("WinnerEndGame")).click();
 		
@@ -350,13 +350,13 @@ public class SeleniumTest {
 		pause(500);
 		msg = driverBlack.findElement(By.id("looserMsg"));
 		pause(500);
-		assertEquals(msg.getText(), "¡Has Perdido!");
+		assertEquals("¡Has Perdido!", msg.getText());
 		pause(500);
 		driverBlack.findElement(By.id("WinnerEndGame")).click();
 		
 		msg = driverWhite.findElement(By.id("winnerMsg"));
 		pause(500);
-		assertEquals(msg.getText(), "¡Has Ganado!");
+		assertEquals("¡Has Ganado!", msg.getText());
 		pause(500);
 		driverWhite.findElement(By.id("WinnerEndGame")).click();
 		
