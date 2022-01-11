@@ -24,7 +24,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @SuppressWarnings("unused") // remember to delete this
 @SpringBootTest
 @ExtendWith(SpringExtension.class)
-public class TestCompleteCheckersMatch {
+public class SeleniumTest {
 	private WebDriver driverWhite;
 	private WebDriver driverBlack;
 
@@ -333,6 +333,32 @@ public class TestCompleteCheckersMatch {
 		assertEquals(msg.getText(), "¡Has Perdido!");
 		pause(500);
 		driverBlack.findElement(By.id("WinnerEndGame")).click();
+		
+		// SURRENDER GAME
+		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/div[3]/div/button")).click();
+		pause(500);
+		// scroll to bottom page
+		driverWhite.findElement(By.tagName("html")).sendKeys(Keys.END);
+			
+		driverBlack.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/div[3]/div/button")).click();
+		pause(500);
+		// scroll to bottom page
+		driverBlack.findElement(By.tagName("html")).sendKeys(Keys.END);
+		
+		pause(500);
+		driverBlack.findElement(By.id("surrender")).click();
+		pause(500);
+		msg = driverBlack.findElement(By.id("looserMsg"));
+		pause(500);
+		assertEquals(msg.getText(), "¡Has Perdido!");
+		pause(500);
+		driverBlack.findElement(By.id("WinnerEndGame")).click();
+		
+		msg = driverWhite.findElement(By.id("winnerMsg"));
+		pause(500);
+		assertEquals(msg.getText(), "¡Has Ganado!");
+		pause(500);
+		driverWhite.findElement(By.id("WinnerEndGame")).click();
 	}
 
 	private void selectItem(WebDriver driver, String pieceName) {
@@ -359,6 +385,11 @@ public class TestCompleteCheckersMatch {
 		pause(500);
 	}
 	
+	private void goLogin () {
+		driverWhite.findElement(By.xpath("/html/body/div/div[2]/div/oj-navigation-list/div/div/ul/li[1]/a/span")).click();
+		pause(500);
+	}
+	
 	private void cleanFields(WebDriver driver, String field) {
 		pause(500);
 		driver.findElement(By.id(field)).clear();
@@ -379,11 +410,6 @@ public class TestCompleteCheckersMatch {
 		fields.add("selenium" + id);
 		
 		return fields;
-	}
-	
-	private void goLogin () {
-		driverWhite.findElement(By.xpath("/html/body/div/div[2]/div/oj-navigation-list/div/div/ul/li[1]/a/span")).click();
-		pause(500);
 	}
 
 	private void pause(long millis) {
