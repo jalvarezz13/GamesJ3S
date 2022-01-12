@@ -1,11 +1,19 @@
  <img src="https://github.com/jalvarezz13/GamesJ3S/blob/master/images/logo.png" width="" height="90" align = "left">
 
 # GamesJ3S
-## Contenido
-Se trata de una aplicación web para jugar a juegos de tablero de dos jugadores. El sistema ofrece a los jugadores, las tres en rayas y las damas, entre otros. Los envíos de información del user agent al servidor se realizan por HTTP. Las actualizaciones de tablero desde el servidor al user agent se hacen mediante WebSockets. La aplicación también permite realizar videoconferencias y el uso de un chat. Toda la aplicación es testeada mediante pruebas de JUnit Jupiter, Selenium y JMeter.
+## ¿Qué es GamesJ3S?
+En la situación actual en la que se encuentra el mundo, como consecuencia del COVID 19, muchas tareas cotidianas del día a día han tenído que adaptarse al mundo digital. Por ello, muchas personas también tiene que hacer vida social desde casa y una magnífica manera de hacerlo es mediante juegos en línea...
 
-## Como usar
-Contiene todo el código y los recursos multimedia para la correcta ejecución de la aplicación. Para ello:
+Aquí es donde aparece GamesJ3S, una página web de juegos de mesa online. Actualmente cuenta con juegos como el Tres en Raya y las Damas pero pronto contará con muchos más.
+
+Dentro de GamesJ3S podrás jugar contra personas de todo el mundo y hablar con ellos a través de un chat de texto. También podrás competir contra tus amigos para ver quién tiene las mejores estadísticas como por ejemplo ver quién ha ganado más partidas. Toda esta información quedará almacenada en tu cuenta, la cual podrás crear mediante la interfaz de GamesJ3S o mediante Google. 
+
+No te preocupes si pierdes la contraseña ya que con GamesJ3S nunca te quedarás tirado, introduce tu correo electrónico y recibirás un mensaje para recuperar tu contraseña.
+
+¿A qué esperas para probar GamesJ3S?
+
+## ¿Cómo puedo usar GamesJ3S?
+
   1. Clona el repositorio con 
 ```
 git clone https://github.com/jalvarezz13/GamesJ3S
