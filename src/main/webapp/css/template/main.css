@@ -7,22 +7,22 @@
 
 @font-face {
   font-family: Poppins-Regular;
-  src: url("../fonts/poppins/Poppins-Regular.ttf");
+  src: url('../fonts/poppins/Poppins-Regular.ttf');
 }
 
 @font-face {
   font-family: Poppins-Medium;
-  src: url("../fonts/poppins/Poppins-Medium.ttf");
+  src: url('../fonts/poppins/Poppins-Medium.ttf');
 }
 
 @font-face {
   font-family: Poppins-Bold;
-  src: url("../fonts/poppins/Poppins-Bold.ttf");
+  src: url('../fonts/poppins/Poppins-Bold.ttf');
 }
 
 @font-face {
   font-family: Poppins-SemiBold;
-  src: url("../fonts/poppins/Poppins-SemiBold.ttf");
+  src: url('../fonts/poppins/Poppins-SemiBold.ttf');
 }
 
 /*//////////////////////////////////////////////////////////////////
@@ -313,7 +313,7 @@ iframe {
 }
 
 .focus-input100::before {
-  content: "";
+  content: '';
   display: block;
   position: absolute;
   bottom: -2px;
@@ -453,7 +453,7 @@ iframe {
 }
 
 .alert-validate::after {
-  content: "\f06a";
+  content: '\f06a';
   font-family: FontAwesome;
   display: block;
   position: absolute;
@@ -521,6 +521,11 @@ iframe {
 /*****************************[ GAMES ]*****************************/
 
 /**************[ CONTAINER ]**************/
+.CompletePage {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .wrap-games {
   width: fit-content;
   background: #232e33;
@@ -985,10 +990,9 @@ iframe {
 }
 /**************************[ END ERRORS ]**************************/
 
-
 /**************************[ MODAL STATISTICS ]**************************/
 .ModalWinner .ModalContent .statisticsContent {
-  display: flex; 
+  display: flex;
   flex-direction: column;
   width: 100%;
 }
@@ -1001,7 +1005,6 @@ iframe {
   border-radius: 15px;
   padding: 5px;
 }
-
 
 .ModalWinner .ModalContent .dataGame {
   display: flex;
@@ -1053,3 +1056,73 @@ iframe {
 }
 
 /**************************[ END STATISTICS ]**************************/
+
+/**************************[ CHAT ]**************************/
+.Chat {
+  color: white;
+  margin-left: 20px;
+  padding: 20px;
+}
+
+.Chat .Title {
+  padding-top: 20px;
+}
+
+.Chat .ChatContent {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  padding: 10px;
+  min-height: 500px;
+  max-height: 500px;
+  min-width: 310px;
+  max-width: 310px;
+  overflow: scroll;
+  scroll-behavior: smooth;
+}
+
+.Chat .ChatContent .Message {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  margin: 5px;
+  line-height: 17px;
+}
+
+.Chat .ChatContent .Message .User {
+  color: #26bae3;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.Chat .ChatContent .Message .Text {
+  color: white;
+}
+
+.Chat .ChatInput {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.Chat .ChatInput .Input {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  padding: 10px 35px 10px 10px;
+  margin-right: -20px;
+  color: white;
+}
+
+.Chat .ChatInput button {
+  position: relative;
+  color: white;
+  z-index: 1;
+  right: 10px;
+}
+
+.Chat .ChatInput button:hover {
+  color: #a64bf4;
+}
+/**************************[ END CHAT ]**************************/
