@@ -4,7 +4,6 @@ import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.servlet.http.HttpSession;
 
@@ -143,7 +142,7 @@ public class GamesController extends CookiesController {
 			boolean token = false;
 
 			for (int i = 0; i < array.length; i++) {
-				token = ((BigInteger) array[i]).intValue() > 0 ? token : true;
+				token = ((BigInteger) array[i]).intValue() == 0 ? token : true;
 				statistics[i + 1] = ((BigInteger) array[i]).intValue();
 			}
 			statistics[0] = token ? 1 : 0;

@@ -861,7 +861,7 @@ iframe {
 .ModalWinner .ModalContent button {
   margin-top: 20px;
   font-size: 1.5rem;
-  padding: 10px;
+  padding: 5px 25px;
   border-radius: 20px;
   background-color: #f0ac1b;
   color: white;
@@ -984,3 +984,72 @@ iframe {
   padding: 5px;
 }
 /**************************[ END ERRORS ]**************************/
+
+
+/**************************[ MODAL STATISTICS ]**************************/
+.ModalWinner .ModalContent .statisticsContent {
+  display: flex; 
+  flex-direction: column;
+  width: 100%;
+}
+
+.ModalWinner .ModalContent .statisticsContent .titleGame {
+  text-align: center;
+  font-size: 20px;
+  color: white;
+  background-color: coral;
+  border-radius: 15px;
+  padding: 5px;
+}
+
+
+.ModalWinner .ModalContent .dataGame {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 20px;
+  color: white;
+  margin-top: 5px;
+  margin-bottom: 25px;
+}
+
+.ModalWinner .ModalContent .dataGame .column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 20px;
+  color: white;
+}
+
+.ModalWinner .ModalContent .dataGame .column .titleData {
+  font-size: 15px;
+  color: white;
+}
+
+.ModalWinner .ModalContent .dataGame .column .numberDataW {
+  font-size: 30px;
+  color: white;
+  background-color: mediumseagreen;
+  padding: 0px 80px;
+  border-radius: 15px;
+}
+
+.ModalWinner .ModalContent .dataGame .column .numberDataL {
+  font-size: 30px;
+  color: white;
+  background-color: #e63946;
+  padding: 0px 80px;
+  border-radius: 15px;
+}
+
+.ModalWinner .ModalContent .statisticsButton {
+  margin: 0px !important;
+  font-size: 1.5rem;
+  padding: 5px 25px;
+  border-radius: 20px;
+  background-color: #f0ac1b;
+  color: white;
+}
+
+/**************************[ END STATISTICS ]**************************/

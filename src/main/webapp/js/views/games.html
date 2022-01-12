@@ -57,9 +57,38 @@
         <!-- ko if: visibleModal() == true -->
         <div class="ModalWinner">
           <div class="ModalContent">
-            <p id="winnerMsg" class="ModalContentText">Estadisticas</p>
-            <i class="fa fa-smile-o ModalContentIcon"></i>
-            <button id="WinnerEndGame" class="WinnerEndGame" data-bind="click: function() { closeModal() }">Cerrar</button>
+            <p id="winnerMsg" class="ModalContentText">Estadísticas</p>
+            <div class="statisticsContent">
+              <div class="titleGame">
+                LAS DAMAS
+              </div>
+              <div class="dataGame">
+                <div class="column">
+                  <p class="titleData">Victorias</p>
+                  <span class="numberDataW" data-bind="html: statistics()[2]"></span>
+                </div>
+                <div class="column">
+                  <p class="titleData">Derrotas</p>
+                  <span class="numberDataL" data-bind="html: statistics()[1]">30</span>
+                </div>
+              </div>
+              <div class="titleGame">
+                TRES EN RAYA
+              </div>
+              <div class="dataGame">
+                <div class="column">
+                  <p class="titleData">Victorias</p>
+                  <span class="numberDataW" data-bind="html: statistics()[4]">25</span>
+                </div>
+                <div class="column">
+                  <p class="titleData">Derrotas</p>
+                  <span class="numberDataL" data-bind="html: statistics()[3]">30</span>
+                </div>
+              </div>
+
+            </div>
+
+            <button id="WinnerEndGame" class="statisticsButton" data-bind="click: function() { closeModal() }">Cerrar</button>
           </div>
         </div>
         <!-- /ko -->
