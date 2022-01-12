@@ -43,6 +43,7 @@ public class WebSocketGenerico extends TextWebSocketHandler {
 	protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
 		session.setBinaryMessageSizeLimit(1000 * 1024 * 1024);
 
+		@SuppressWarnings("unused")
 		byte[] payload = message.getPayload().array();
 	}
 
