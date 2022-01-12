@@ -17,6 +17,9 @@ define([], function () {
         surrender: "/games/surrender/",
 
         webSocket: "wsGenerico",
+        webSocketChat: "wsGenericoChat",
+
+        sendMessage: "/games/sendMessageChat"
     }
     
     self.getRoutes = function() {

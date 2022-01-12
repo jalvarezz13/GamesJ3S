@@ -24,6 +24,10 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
       self.statistics = ko.observableArray([]);
       self.visibleModal = ko.observable(false);
 
+      //Chat
+      self.chat = ko.observableArray([]);
+      self.inputChat = ko.observable(null);
+
       // Header Config
       self.headerConfig = ko.observable({
         view: [],
@@ -40,25 +44,25 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
           });
         });
 
-      // STATISTICS: Gets statistics
+    }
+
+    // STATISTICS: Gets statistics
+    getStatistics(){
+      let self = this;
+      
       let data = {
         type: "get",
         url: self.routes.getStatistics,
         success: function (response) {
           self.statistics(response);
-          console.log("exito")
         },
         error: function (response) {
-          console.log("error")
         },
       };
       $.ajax(data);
     }
 
-    connected() {
-      accUtils.announce("Juegos.");
-      document.title = "Juegos";
-
+    getGames(){
       let self = this;
 
       let data = {
@@ -72,6 +76,48 @@ define(["knockout", "appController", "ojs/ojmodule-element-utils", "accUtils", "
         },
       };
       $.ajax(data);
+    }
+
+    connectChat(){
+        let self = this;
+
+        let ws = new WebSocket(`ws://${window.location.origin.split("//")[1]}/${self.routes.webSocketChat}`);
+        ws.onopen = function (event) {};
+        ws.onmessage = function (event) {
+          let msg = JSON.parse(event.data);
+          self.chat().push({
+            user: msg.user,
+            msg: msg.msg
+          })
+        }    
+    }
+
+    sendMessage(){
+      let self = this;
+      let info = {
+          msg: self.inputChat(),
+      }
+
+      let data = {
+        type: "post",
+        url: self.routes.sendMessage,
+        data: JSON.stringify(info),
+        contentType: "application/json",
+        success: function (response) {},
+        error: function (response) {},
+      };
+      $.ajax(data);
+    }
+
+    connected() {
+      accUtils.announce("Juegos.");
+      document.title = "Juegos";   
+
+      let self = this;
+
+      self.getGames()
+      self.getStatistics()
+      self.connectChat()
     }
 
     // BOTH: Joins a game
