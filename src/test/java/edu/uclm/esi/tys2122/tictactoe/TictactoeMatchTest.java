@@ -76,7 +76,6 @@ public class TictactoeMatchTest extends MvcTestCase {
 		assertTrue(jsoPartidaPepe.getString("id").equals(jsoPartidaAna.getString("id")));
 		assertTrue(jsoPartidaAna.getBoolean("ready"));
 		
-		System.out.println(jsoPartidaAna.toString());
 		String matchId = jsoPartidaAna.getString("id");
 		
 		HttpSession sessionWithTurn = 
@@ -89,7 +88,6 @@ public class TictactoeMatchTest extends MvcTestCase {
 		
 		JSONObject jsoPartida = new JSONObject(result.getResponse().getContentAsString());
 		JSONArray jsaBoard = jsoPartida.getJSONObject("board").getJSONArray("squares");
-		System.out.println(jsaBoard);
 		assertTrue(jsaBoard.getJSONArray(1).getInt(1)== (sessionWithTurn == sessionPepe ? 1 : 2));
 		
 		sessionWithTurn = changeTurn(sessionWithTurn);

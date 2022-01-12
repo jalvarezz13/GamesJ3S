@@ -21,7 +21,6 @@ public class WebSocketGenerico extends TextWebSocketHandler {
 	@Override
 	public void afterConnectionEstablished(WebSocketSession wsSession) throws Exception {
 		wsSession.setBinaryMessageSizeLimit(1000 * 1024 * 1024);
-		System.out.println(wsSession.getId());
 
 		HttpHeaders headers = wsSession.getHandshakeHeaders();
 		List<String> cookies = headers.get("cookie");
@@ -38,7 +37,6 @@ public class WebSocketGenerico extends TextWebSocketHandler {
 		WrapperSession matchSession = new WrapperSession(wsSession);
 		Manager.get().add(matchSession, httpSessionId);
 
-		System.out.println(headers);
 	}
 
 	@Override
@@ -46,7 +44,6 @@ public class WebSocketGenerico extends TextWebSocketHandler {
 		session.setBinaryMessageSizeLimit(1000 * 1024 * 1024);
 
 		byte[] payload = message.getPayload().array();
-		System.out.println("La sesión " + session.getId() + " manda un binario de " + payload.length + " bytes");
 	}
 
 	@Override

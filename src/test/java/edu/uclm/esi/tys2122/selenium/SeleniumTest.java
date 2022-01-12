@@ -130,7 +130,7 @@ public class SeleniumTest {
 		pause(5000);
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[8]/a[1]")).click();
 		pause(500);
-		fillFields(driverWhite, "email", "Selenium999999");
+		fillFields(driverWhite, "email", "Selenium999999@selenium.com");
 		pause(500);
 		driverWhite.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/form/div[4]/div/button")).click();
 		msg = driverWhite.findElement(By.id("resetError"));
@@ -169,7 +169,15 @@ public class SeleniumTest {
 		pause(500);
 		// scroll to bottom page
 		driverWhite.findElement(By.tagName("html")).sendKeys(Keys.END);
-			
+		
+		// Can't move if the game doesn't start
+		pause(3000);
+		movePiece(driverWhite, "1 BLANCO", "rightUp");
+		pause(500);
+		msg = driverWhite.findElement(By.id("gameError"));
+		pause(500);
+		assertEquals("Esperando jugadores, aún no se puede mover", msg.getText());
+		pause(3000);
 		
 		driverBlack.findElement(By.xpath("/html/body/div/oj-module/div[1]/div/div/div[3]/div/button")).click();
 		pause(500);

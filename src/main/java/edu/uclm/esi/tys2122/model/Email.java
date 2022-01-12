@@ -73,10 +73,4 @@ public class Email {
 			return new PasswordAuthentication(sender, pwd);
 		}
 	}
-
-//	public static void main(String[] args) throws Exception {
-//		Email sender=new Email();
-//		sender.send("juegostysw@gmail.com", "Recuperación de contraseña", "Para recuperar tu contraseña pulsa aquí: https://www.chollometro.com/");
-//		System.out.println("Enviado");
-//	}
 }
