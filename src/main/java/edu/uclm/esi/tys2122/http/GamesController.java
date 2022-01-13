@@ -1,5 +1,6 @@
 package edu.uclm.esi.tys2122.http;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 import java.util.List;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import edu.uclm.esi.tys2122.checkers.CheckersMatch;
 import edu.uclm.esi.tys2122.checkers.CheckersPiece;
@@ -150,6 +153,28 @@ public class GamesController extends CookiesController {
 		return statistics;
 	}
 
+	@PostMapping("/sendMessageChat")
+	public void sendMessageChat(HttpSession session, @RequestBody Map<String, Object> messageInfo) {
+		JSONObject jso = new JSONObject(messageInfo);
+		String msg = jso.getString("msg");
+		User user = (User) session.getAttribute("user");
+		
+		JSONObject jsoMsg = new JSONObject();
+		jsoMsg.put("user", user.getName());
+		jsoMsg.put("msg", msg);
+		byte[] payload = jsoMsg.toString().getBytes();
+		TextMessage wsmsg = new TextMessage(payload);
+		
+		for (WebSocketSession ws : Manager.get().getChatSessions()) {
+			try {
+				ws.sendMessage(wsmsg);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
 	/* Functions */
 
 	private Match getMatch(Game game) {

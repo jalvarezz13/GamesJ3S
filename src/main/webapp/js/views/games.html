@@ -18,6 +18,7 @@
   <body>
     <div class="limiter">
       <div class="container-login100 CompletePage" style="background-image: url('css/images/fondoPrincipal.jpg')">
+        <!-- ko if: matches().length != 0 -->
         <!-- ChatPanel   -->
         <div class="Chat wrap-games">
           <div class="Title">
@@ -33,11 +34,12 @@
           </div>
           <div class="ChatInput">
             <input class="Input" data-bind="value : inputChat" type="text" placeholder="Mensaje" />
-            <button>
+            <button data-bind="click: function() { sendMessage(); }">
               <i class="fa fa-send"></i>
             </button>
           </div>
         </div>
+        <!-- /ko -->
 
         <!-- GamesPanel -->
         <div class="wrap-games p-l-55 p-r-55 p-t-65 p-b-54">

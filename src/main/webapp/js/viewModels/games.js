@@ -28,6 +28,7 @@ define(['knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils', '
       self.chat = ko.observableArray([
         { user: 'GamesJ3S-Bot🤖', msg: 'Bienvenido a GamesJ3S, escribe en el chat para comunicarte con el resto de jugadores.😉' },
       ]);
+
       self.inputChat = ko.observable(null);
 
       // Header Config
@@ -85,28 +86,36 @@ define(['knockout', 'appController', 'ojs/ojmodule-element-utils', 'accUtils', '
       ws.onopen = function (event) {};
       ws.onmessage = function (event) {
         let msg = JSON.parse(event.data);
-        self.chat().push({
-          user: msg.user,
-          msg: msg.msg,
-        });
+        self.addMsgChat(msg);
       };
+    }
+
+    addMsgChat(msg) {
+      let self = this;
+
+      self.chat().push(msg);
+      self.chat.valueHasMutated();
     }
 
     sendMessage() {
       let self = this;
-      let info = {
-        msg: self.inputChat(),
-      };
+      if (self.inputChat() != '') {
+        let info = {
+          msg: self.inputChat(),
+        };
 
-      let data = {
-        type: 'post',
-        url: self.routes.sendMessage,
-        data: JSON.stringify(info),
-        contentType: 'application/json',
-        success: function (response) {},
-        error: function (response) {},
-      };
-      $.ajax(data);
+        let data = {
+          type: 'post',
+          url: self.routes.sendMessage,
+          data: JSON.stringify(info),
+          contentType: 'application/json',
+          success: function (response) {
+            self.inputChat('');
+          },
+          error: function (response) {},
+        };
+        $.ajax(data);
+      }
     }
 
     connected() {

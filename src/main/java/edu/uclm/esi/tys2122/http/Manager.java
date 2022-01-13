@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.WebSocketSession;
 
 import edu.uclm.esi.tys2122.dao.BattleRepository;
 import edu.uclm.esi.tys2122.dao.UserRepository;
@@ -39,11 +40,14 @@ public class Manager {
 	private ConcurrentHashMap<String, WrapperSession> matchSessionsByHttp;
 
 	private ConcurrentHashMap<String, WrapperSession> matchSessionsByWs;
+	
+	private Vector<WebSocketSession> chatSessions;
 
 	/* Constructors */
 
 	private Manager() {
 		this.games = new Vector<>();
+		this.chatSessions = new Vector<>();
 		this.httpSessions = new ConcurrentHashMap<>();
 		this.matchSessionsByHttp = new ConcurrentHashMap<>();
 		this.matchSessionsByWs = new ConcurrentHashMap<>();
@@ -119,8 +123,20 @@ public class Manager {
 		}
 
 	}
+	
+	public void addChatSession(WebSocketSession wsSession) {
+		this.chatSessions.add(wsSession);
+	}
 
 	/* Utilities */
+
+	public Vector<WebSocketSession> getChatSessions() {
+		return chatSessions;
+	}
+
+	public void setChatSessions(Vector<WebSocketSession> chatSessions) {
+		this.chatSessions = chatSessions;
+	}
 
 	private void loadParameters() throws IOException {
 		this.configuration = read("./parametros.txt");
@@ -198,6 +214,17 @@ public class Manager {
 
 	public void setAjedrezSessionsPorWs(ConcurrentHashMap<String, WrapperSession> matchSessionsPorWs) {
 		this.matchSessionsByWs = matchSessionsPorWs;
+	}
+
+	public void removeChatSession(WebSocketSession wssession) {
+		Vector<WebSocketSession> cSessions = this.getChatSessions();
+		for(WebSocketSession ws : cSessions) {
+			if(ws.getId() == wssession.getId()) {
+				cSessions.remove(ws);
+				break;
+			}
+		}
+		
 	}
 
 }

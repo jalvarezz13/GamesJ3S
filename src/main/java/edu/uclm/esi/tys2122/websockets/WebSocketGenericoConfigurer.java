@@ -12,5 +12,6 @@ public class WebSocketGenericoConfigurer implements WebSocketConfigurer {
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(new WebSocketGenerico(), "/wsGenerico").setAllowedOrigins("*").addInterceptors(new HttpSessionHandshakeInterceptor());
+		registry.addHandler(new WebsocketGenericoChat(), "/wsGenericoChat").setAllowedOrigins("*").addInterceptors(new HttpSessionHandshakeInterceptor());
 	}
 }
