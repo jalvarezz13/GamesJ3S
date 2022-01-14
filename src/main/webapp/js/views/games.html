@@ -24,7 +24,7 @@
           <div class="Title">
             <span class="login100-form-title p-b-20"> Chat </span>
           </div>
-          <div class="ChatContent">
+          <div id="chatContent" class="ChatContent">
             <!-- ko foreach : chat -->
             <div class="Message">
               <span class="User" data-bind="html: user"></span>
@@ -33,7 +33,7 @@
             <!-- /ko -->
           </div>
           <div class="ChatInput">
-            <input class="Input" data-bind="value : inputChat" type="text" placeholder="Mensaje" />
+            <input id="inputChat" class="Input" data-bind="value : inputChat, event: { 'keyup': handleEnterChat}" type="text" placeholder="Mensaje" />
             <button data-bind="click: function() { sendMessage(); }">
               <i class="fa fa-send"></i>
             </button>
