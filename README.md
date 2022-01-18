@@ -24,15 +24,15 @@ git clone https://github.com/jalvarezz13/GamesJ3S
 ## Capturas
 <div align="center">
 <h2>Login</h2>
-<img src="https://github.com/jalvarezz13/GamesJ3S/blob/master/images/login.png" width="60%" height="">
+<img src="https://github.com/jalvarezz13/GamesJ3S/blob/master/images/login.png" width="100%" height="">
 </div>
 <div align="center">
   <h2>Registro</h2>
-  <img src="https://github.com/jalvarezz13/GamesJ3S/blob/master/images/register.png" width="60%" height="">
+  <img src="https://github.com/jalvarezz13/GamesJ3S/blob/master/images/register.png" width="100%" height="">
 </div>
 <div align="center">
   <h2>Juegos</h2>
-  <img src="https://github.com/jalvarezz13/GamesJ3S/blob/master/images/games.png" width="60%" height="">
+  <img src="https://github.com/jalvarezz13/GamesJ3S/blob/master/images/games.png" width="100%" height="">
 </div>
 
 ## Tecnologías
